@@ -36,7 +36,7 @@ int vitesse;
 
 void init_perso(perso* p);
 afficher_perso(perso* p; SDL_Surface *screen);
-deplacer_perso(perso* p);
+deplacer_perso(perso* p, int dt);
 saut_perso(perso* p);
 void animation(perso* p);
 #endif
