@@ -7,6 +7,12 @@ struct minimap
 	SDL_Rect pos_minimap;
 	SDL_Surface* mini_hero;
 	SDL_Rect pos_minihero;
+	SDL_Surface* mini_bg;
+	SDL_Rect pos_minibg;
+	SDL_Surface* mini_obs;
+	SDL_Rect pos_minobs;
+	SDL_Surface* mini_ennemi;
+	SDL_Rect pos_miniennemi;
 };
 typedef struct minimap minimap; 
 
