@@ -1,5 +1,5 @@
-#ifndef functionminimap_H_INCLUDED
-#define functionminimap_H_INCLUDED
+#ifndef MINIMAP_H_INCLUDED
+#define MINIMAP_H_INCLUDED
 
 struct minimap
 {
