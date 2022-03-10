@@ -25,7 +25,7 @@ int state; // chasing / idle / fighting
 
 int hp;
 
-int damage;
+int damage;//damage var
 
 }enemy;
 void init_enemy(enemy * e, char filename[], int x, int y, int direction,int run_speed);
