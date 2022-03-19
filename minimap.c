@@ -4,8 +4,8 @@ void initminimap(minimap* m)
 {
     char *file ;
     int x ,y ;
-    m->minimap=IMG_Load(file);
-	if(m->minimap==NULL)
+    m->mini_map=IMG_Load(file);
+	if(m->mini_map==NULL)
 	{
 		return ;
 	}
@@ -13,16 +13,16 @@ void initminimap(minimap* m)
 	m->pos_minimap.y=y;
 	m->pos_minihero.x=0;
 	m->pos_minihero.y=0;
-	m->pos_minihero.w=I->img->w;
-	m->pos_minihero.h=I->img->h;
+	m->pos_minihero.w=m->mini_hero->w;
+	m->pos_minihero.h=m->mini_hero->h;
 	m->pos_miniennemi.x=0;
 	m->pos_miniennemi.y=0;
-	m->pos_miniennemi.w=I->img->w;
-	m->pos_miniennemi.h=I->img->h;
+	m->pos_miniennemi.w=m->mini_ennemi->w;
+	m->pos_miniennemi.h=m->mini_ennemi->h;
 	m->pos_minobs.x=0;
 	m->pos_minobs.y=0;
-	m->pos_minobs.w=I->img->w;
-	m->pos_minobs.h=I->img->h;
+	m->pos_minobs.w=m->mini_obs->w;
+	m->pos_minobs.h=m->mini_obs->h;
 }
 
 void MAJMinimap (SDL_Rect* pos_perso,minimap *m , SDL_Rect camera,int redimensionnement)
@@ -39,9 +39,23 @@ void afficherminimap( minimap m,SDL_Surface *screen)
     SDL_BlitSurface(m.mini_obs, &m.pos_minobs, screen, &m.pos_scrn);
 }
 
-void sauvegarder (int score[] , char nomjoueur[] , char nomfichier[])
+void sauvegarder (int score , char nomjoueur[] , char nomfichier[])
 {
-    int i,j;
+    int i;
+    FILE * fichier = NULL;
+    fichier = fopen ("historique .txt","a+");
+    if (fichier != NULL)
+    {
+        fseek(fichier , 0 , SEEK_END);
+        fprintf(fichier,"SCORE %d : %d \n",i,score);
+        i=i+1;
+        fclose (fichier);
+    }
+    else
+    {
+        printf ("ERREUR!! \n IMPOSSIBKE D'OUVRIR LE FICHIER\n");
+    }
+    /*int i,j;
     FILE* f;
     if (niveau==1)
      {
@@ -70,7 +84,7 @@ void sauvegarder (int score[] , char nomjoueur[] , char nomfichier[])
         if (f != NULL)
         {
             fseek(f, 0, SEEK_SET);
-            fprintf(,"%u",sec); 
+            fprintf(,"%u",sec);
             printf("\n");
             fclose(f);
             printf("Nouveau Meilleur Temps sauvegarder\n");
@@ -81,15 +95,16 @@ void sauvegarder (int score[] , char nomjoueur[] , char nomfichier[])
         }
         fflush(stdout);
     }
-    getch();
+    getch();*/
     return 0;
 }
 
 void free_minimap(minimap* m)
 {
-  SDL_FreeSurface(m.mini_bg);
-  SDL_FreeSurface(m.mini_ennemi);
-  SDL_FreeSurface(m.mini_hero);
-  SDL_FreeSurface(m.mini_map);
-  SDL_FreeSurface(m.mini_obs);
+  SDL_FreeSurface(m->mini_bg);
+  SDL_FreeSurface(m->mini_ennemi);
+  SDL_FreeSurface(m->mini_hero);
+  SDL_FreeSurface(m->mini_map);
+  SDL_FreeSurface(m->mini_obs);
 }
+
