@@ -3,7 +3,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <stdio.h>
-
+/*
 struct minimap
 {
         SDL_Rect pos_scrn;
@@ -26,5 +26,14 @@ void afficherminimap( minimap m,SDL_Surface *screen);
 void sauvegarder (int score , char nomjoueur[] , char nomfichier[]);
 void meilleur(char nomfichier[] , int * score , char nomjoueur[]);
 void free_minimap(minimap* mp);
+*/
+typedef struct image
+{
+	SDL_Surface *img;//wyn chnachargo image
+	SDL_Rect pos;// Position mta3 background
+}image;
 
+image init_image(char nameofpicture[100],int x,int y);
+void affichage(SDL_Surface *ecran,image img);
+void librer_image(image img);
 #endif 
