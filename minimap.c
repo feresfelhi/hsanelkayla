@@ -1,6 +1,5 @@
-/*#include "minimap.h"
-#include "text.h"
-void initminimap(minimap* m)
+#include "minimap.h"
+/*void initminimap(minimap* m)
 {
     char *file ;
     int x ,y ;
@@ -106,9 +105,9 @@ void free_minimap(minimap* m)
   SDL_FreeSurface(m->mini_hero);
   SDL_FreeSurface(m->mini_map);
   SDL_FreeSurface(m->mini_obs);
-}*/
-
-#include <stdio.h>
+}
+//found on github
+/*#include <stdio.h>
 #include <stdlib.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
@@ -133,4 +132,73 @@ SDL_BlitSurface(image.img,NULL,ecran,&image.pos);
 void librer_image(image image)
 {
  SDL_FreeSurface(image.img);//Liberer memoire
+}*/
+void affichertemps (int  temps,SDL_Surface *screen)//temps compteur
+{
+
+    TTF_Init();
+    TTF_Font *police=NULL;
+    police=TTF_OpenFont("Urusans.TTF",40);
+    SDL_Color couleur= {255,255,255};
+SDL_Rect postemps;
+postemps.x=0;
+    postemps.y=0;
+    char s[20];//pour mettre "temps:"
+
+    sprintf(s,"Temps: %d",temps);
+    SDL_Surface *txt;
+    txt=TTF_RenderText_Blended(police,s,couleur);
+    SDL_BlitSurface(txt,NULL,screen,&postemps);//affichage temps
+
 }
+void initmap( minimap * m)
+{
+  m->minimap=IMG_Load ("cadreminimap.PNG");//initialiser cadre minimap
+  m->posminimap.x=400;
+  m->posminimap.y=20;
+  m->minimap=IMG_Load ("minimap.PNG");//initialiser minimap
+  m->posminimap.x=400;
+  m->posminimap.y=20;
+  m->point=IMG_Load ("point.png");// initialiser point 
+  m->pospoint.x=400;
+  m->pospoint.y=80;
+}
+void afficherminimap (minimap m, SDL_Surface * screen)
+{   
+    SDL_BlitSurface(m.minimap,NULL,screen,&m.poscadreminimap);//affichage cadre minimap
+    SDL_BlitSurface(m.minimap,NULL,screen,&m.posminimap);//affichage minimap
+    SDL_BlitSurface(m.point,NULL,screen,&m.pospoint);//affichage point
+}
+//x+imin y+tahbet
+
+SDL_Color GetPixel (SDL_Surface* pSurface,int x,int y)//na3tiwha cordonne ta3 il point traj3ilna couleur
+{
+  SDL_Color color;
+  Uint32 col= 0;
+  char* pPosition = (char*) pSurface->pixels;
+  pPosition += (pSurface->pitch * y);
+  pPosition += (pSurface->format->BytesPerPixel * x);
+  memcpy (&col,pPosition,pSurface->format->BytesPerPixel);
+  SDL_GetRGB (col,pSurface->format,&color.r,&color.g,&color.b);
+ return (color);
+}
+
+int collisionPP( Personne p, SDL_Surface * Masque)
+{
+   SDL_Color col;//detecteur du coleur
+   if(p.direction==1)//imin
+   col=GetPixel(Masque,p.posperso.x+p.perso->w,p.posperso.y+(p.perso->h/2));
+   if(p.direction==2)//isar
+   col=GetPixel(Masque,p.posperso.x,p.posperso.y+(p.perso->h/2));
+   //lfou9
+   //col=GetPixel(Masque,p.posperso.x+(p.perso->w/2) ,p.posperso.y); 
+  //louta 
+   if(p.direction==4)
+   col=GetPixel(Masque,p.posperso.x+(p.perso->w/2),p.posperso.y+p.perso->h); 
+   if ((col.r==0)&&(col.b==0)&&(col.g==0))
+    {
+      return 1;
+    }
+   else return 0;
+}
+

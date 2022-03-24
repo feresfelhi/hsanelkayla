@@ -1,9 +1,9 @@
-#ifndef MINIMAP_H_INCLUDED
+/*#ifndef MINIMAP_H_INCLUDED
 #define MINIMAP_H_INCLUDED
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <stdio.h>
-/*
+
 struct minimap
 {
         SDL_Rect pos_scrn;
@@ -26,7 +26,8 @@ void afficherminimap( minimap m,SDL_Surface *screen);
 void sauvegarder (int score , char nomjoueur[] , char nomfichier[]);
 void meilleur(char nomfichier[] , int * score , char nomjoueur[]);
 void free_minimap(minimap* mp);
-*/
+
+//found on github
 typedef struct image
 {
 	SDL_Surface *img;//wyn chnachargo image
@@ -36,4 +37,35 @@ typedef struct image
 image init_image(char nameofpicture[100],int x,int y);
 void affichage(SDL_Surface *ecran,image img);
 void librer_image(image img);
-#endif 
+#endif */
+#ifndef HEADER_H_
+#define HEADER_H_
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include<SDL/SDL.h>
+#include<SDL/SDL_image.h>
+#include<SDL/SDL_ttf.h>
+#include<SDL/SDL_mixer.h>
+typedef struct
+ {
+  SDL_Surface *perso;//image perso
+  SDL_Rect posperso;//position perso
+  int direction;//direction perso 1 imin 2 essar
+ }Personne;
+
+typedef struct
+ {
+   SDL_Surface *minimap;//image minimap
+   SDL_Surface *point;//image point minimap
+   SDL_Surface *cadreminimap;//image cadreminimap
+   SDL_Rect posminimap;//position minimap
+   SDL_Rect pospoint;//position point minimap
+   SDL_Rect poscadreminimap;//position cadre minimap
+ }minimap;
+ 
+void initmap( minimap * m); 
+void afficherminimap (minimap m, SDL_Surface * screen);
+void affichertemps (int temps, SDL_Surface * screen);
+int collisionPP( Personne p, SDL_Surface * Masque);
+#endif
