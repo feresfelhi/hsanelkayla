@@ -23,7 +23,7 @@ int main()
    SDL_Rect posimage;//position background
    posimage.x=0;
    posimage.y=0;
-   image=IMG_Load("lbo3.jpg");//background
+   image=IMG_Load("nBG.png");//background
    imageM=IMG_Load("masque.jpg");//masque
    //personnage
    Personne p;
