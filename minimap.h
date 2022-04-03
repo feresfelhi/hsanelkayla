@@ -1,3 +1,55 @@
+#ifndef salma_H_
+#define salma_H_
+#include <time.h>
+
+typedef struct
+{
+	SDL_Rect position_perso;  //lel perso l kbir
+	SDL_Surface *sprite;
+} Personne;
+
+typedef struct
+{
+	SDL_Rect position_mini; //lel point rouge
+	SDL_Surface *sprite;     
+} minimap;
+
+typedef struct temps
+{
+	SDL_Surface *texte;  
+	SDL_Rect position;  //limin lfouk
+
+	TTF_Font *police;
+
+	char entree[100];
+	int secondesEcoulees;     
+	SDL_Color couleurBlanche;   
+	time_t t1, t2;
+	int min, sec;
+} temps;
+
+
+//minimap
+void initmap(minimap *m);   
+void afficherminimap(minimap m, SDL_Surface *screen);
+void free_minimap(minimap *m);
+void majminimap (Personne *p, minimap *m ,SDL_Rect camera ,int redimensionnement);
+//temps
+void initialiser_temps(temps *t);
+void afficher_temps(temps *t, SDL_Surface *ecran);
+void free_temps(temps *t, SDL_Surface *ecran);
+//map
+SDL_Color GetPixel(SDL_Surface *Background, int x, int y);
+int collisionPP(Personne p, SDL_Surface *Masque);
+
+#endif
+
+
+
+
+
+
+
 /*#ifndef MINIMAP_H_INCLUDED
 #define MINIMAP_H_INCLUDED
 #include <SDL/SDL.h>
@@ -38,6 +90,7 @@ image init_image(char nameofpicture[100],int x,int y);
 void affichage(SDL_Surface *ecran,image img);
 void librer_image(image img);
 #endif */
+/*
 #ifndef HEADER_H_
 #define HEADER_H_
 #include <stdio.h>
@@ -47,6 +100,7 @@ void librer_image(image img);
 #include<SDL/SDL_image.h>
 #include<SDL/SDL_ttf.h>
 #include<SDL/SDL_mixer.h>
+
 typedef struct
  {
   SDL_Surface *perso;//image perso
@@ -64,8 +118,12 @@ typedef struct
    SDL_Rect poscadreminimap;//position cadre minimap
  }minimap;
  
-void initmap( minimap * m); 
+void initminimap( minimap * m); 
+//MAJMinimap (perso p , minimap * m, SDL_Rect camera , int redimensionnement);
 void afficherminimap (minimap m, SDL_Surface * screen);
 void affichertemps (int temps, SDL_Surface * screen);
 int collisionPP( Personne p, SDL_Surface * Masque);
-#endif
+void sauvegarder (int score , char nomjoueur[] , char nomfichier[]);
+void meilleur (char nomfichier[] , int *score , char nomjoueur[]);*/
+
+//#endif
