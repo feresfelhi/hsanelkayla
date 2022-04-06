@@ -8,32 +8,35 @@
 
 void initminimap (minimap *m)
 {
+  m->posminimap.x=0;
+  m->posminimap.y=0;
+  m->minimap = NULL;
   m->minimap = IMG_Load("niveau1.png");
-  m->posminimap.x=100;
-  m->posminimap.y=40;
-  m->point = IMG_Load("perso.png");
-  m->pospoint.x = 100;
-  m->pospoint.y = 80;
 }
+
 void afficherminimap (minimap m, SDL_Surface *screen)
 {
   SDL_BlitSurface(m.minimap , NULL , screen , &m.posminimap);
-  SDL_BlitSurface(m.point, NULL, screen,&m.pospoint);
+}
+void freeminimap(minimap *m)
+{
+    SDL_FreeSurface(m->minimap);
 }
 void affichertemps (int temps , SDL_Surface *screen)
 {
+  char s[19];
+  SDL_Surface *txt;
   TTF_Font *police = NULL;
   police = TTF_OpenFont("Urusans.TTF",40);
-  SDL_Color couleur = {0,0,0};
-  SDL_Rect post;
-  post.x=0;
+  SDL_Color couleur = {0,0,0}; //couleur noir
+  SDL_Rect post;// fou9 3al isar 
+  post.x=0; 
   post.y=0;
-  char s[19];
   sprintf (s,"Temps : %d" , temps );
-  SDL_Surface *txt;
   txt = TTF_RenderText_Blended (police, s , couleur);
   SDL_BlitSurface(txt,NULL,screen,&post);
 }
+
 SDL_Color GetPixel(SDL_Surface *BG, int x, int y)
 {
   SDL_Color color;
@@ -90,4 +93,22 @@ void majminimap (personne *p, minimap *m ,SDL_Rect camera , int redimensionnemen
     p->posperso.y += redimensionnement;
   if (camera.x==3)
     p->posperso.y -= redimensionnement;
+}
+
+void sauvegarder (int score , char nomjoueur[] , char nomfichier[])
+{
+    int i,j;
+    FILE * fichier = NULL;
+    fichier = fopen ("historique .txt","a+");
+    if (fichier != NULL)
+    {
+        fseek(fichier , 0 , SEEK_END);
+        fprintf(fichier,"SCORE %d : %d \n",i,score);
+        i=i+1;
+        fclose (fichier);
+    }
+    else
+    {
+        printf ("ERREUR!! \n IMPOSSIBKE D'OUVRIR LE FICHIER\n");
+    }
 }

@@ -8,7 +8,7 @@
 
 int main()
 {
-  int collision , distance=100 , exit=1;
+  int collision , distance=100 , exit=1; //exit variable de la boucle du jeux
   int temps;
   int frame=0;//pour savoir fps
   Uint32 start,end;//pour fps
@@ -20,7 +20,7 @@ int main()
   SDL_Rect posBG , poschiffres , poscamera;
   int longeurM=8000 , largeurM = 800, longeur = 800 , largeur = 80, i=0;
   int redimonsionnement = distance * longeur /longeurM;
-  screen = SDL_SetVideoMode(1914, 878, 32, SDL_SWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE);
+  screen = SDL_SetVideoMode(1600, 800,32, SDL_SWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE);
   TTF_Init();
   if (screen == NULL)
    {
@@ -29,23 +29,31 @@ int main()
    }
   posBG.x=0;
   posBG.y=0;
-  imageFond = IMG_Load("niveau1.png");
-  initminimap(&m);
+  imageFond = IMG_Load("lvl1.png");//image kbira il principal
+  //initialisation du minimap
+  initminimap(&m); 
   masked = IMG_Load("map1_masked.png");
+  //mini personnage
   p.perso = IMG_Load("miniperso.png");
   p.posperso.x = 0;
-  p.posperso.y = 40;
+  p.posperso.y = 150;
+  //personnage principale
   pM.perso = IMG_Load("perso.png");
   pM.posperso.x = 0;
-  pM.posperso.y = 350;
+  pM.posperso.y = 450;
+  //position prochaine du personnage principale
   pMprochaine.posperso.x = pM.posperso.x;
-  pMprochaine.posperso.y = pM.posperso.y;
+  pMprochaine.posperso.y = pM.posperso.y; 
   while (exit)
    {
+     start=SDL_GetTicks();
      SDL_BlitSurface(imageFond,NULL,screen,&posBG);
+     //affichage de la minimap
      afficherminimap(m,screen);
      SDL_BlitSurface(p.perso,NULL,screen,&p.posperso);
      SDL_BlitSurface(pM.perso,NULL,screen,&pM.posperso);
+     //affichage temps
+     affichertemps ( temps,screen);
      while (SDL_PollEvent(&event))
       {
         switch (event.type)
@@ -135,11 +143,6 @@ int main()
                      SDL_Delay(300);
                    }
                    break;
-                case SDLK_p:
-                  imageFond = IMG_Load("map1_masked.png");
-                  break;
-                case SDLK_o:
-                  imageFond = IMG_Load("niveau1.png");   
               }
          } 
       }
@@ -155,6 +158,8 @@ int main()
       if(1000/FPS>SDL_GetTicks()-start)
          SDL_Delay(1000/FPS-(SDL_GetTicks()-start));
    } 
+   
+   freeminimap(&m);
    SDL_FreeSurface(p.perso);
    SDL_FreeSurface(chiffres[1]);
    SDL_FreeSurface(chiffres[2]);
