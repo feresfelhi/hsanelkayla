@@ -8,14 +8,17 @@
 
 int main()
 {
-  int collision , distance=100 , exit=1; //exit variable de la boucle du jeux
-  int temps;
-  int frame=0;//pour savoir fps
-  Uint32 start,end;//pour fps
+  int collision , distance=100 , exit=1;//continuer=0; //exit variable de la boucle du jeux et continuer la variable de la boucle saisie du nom joueur 
+  int score=0;
+  int temps=60;
+  int frame=0;//pour savoir frame par seconde  fps
+  Uint32 start;//pour fps
   const int FPS=20;//fixation fps en 20
   SDL_Event event;
   minimap m;
   personne p , pM , pMprochaine ;
+  SDL_Rect posb;
+  SDL_Surface *b;
   SDL_Surface *screen = NULL , *imageFond = NULL , *masked = NULL , *chiffres[30];
   SDL_Rect posBG , poschiffres , poscamera;
   int longeurM=8000 , largeurM = 800, longeur = 800 , largeur = 80, i=0;
@@ -44,8 +47,11 @@ int main()
   //position prochaine du personnage principale
   pMprochaine.posperso.x = pM.posperso.x;
   pMprochaine.posperso.y = pM.posperso.y; 
+  b = IMG_Load("rouge.png");
+  posb.x = 700;
+  posb.y = 570;
   while (exit)
-   {
+   { 
      start=SDL_GetTicks();
      SDL_BlitSurface(imageFond,NULL,screen,&posBG);
      //affichage de la minimap
@@ -54,6 +60,9 @@ int main()
      SDL_BlitSurface(pM.perso,NULL,screen,&pM.posperso);
      //affichage temps
      affichertemps ( temps,screen);
+     SDL_BlitSurface(b , NULL , screen , &posb);
+     //affichage score
+     afficherscore (screen,pM, &score);
      while (SDL_PollEvent(&event))
       {
         switch (event.type)
@@ -61,6 +70,7 @@ int main()
            case SDL_QUIT:
              exit = 0;
              break;
+           //mouvement perso + miniperso
            case SDL_KEYDOWN :
              switch(event.key.keysym.sym)
               {
@@ -146,8 +156,8 @@ int main()
               }
          } 
       }
-      SDL_Flip(screen);//permute les tompons dd'ecran
-      temps=60;
+      //sauvegarder (score ,nomfichier);
+      SDL_Flip(screen);//permute les tompons d'ecran
       if(frame==20)
        {
          if(temps>0)

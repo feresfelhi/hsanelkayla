@@ -26,8 +26,11 @@ void majminimap (personne *p , minimap * m, SDL_Rect camera , int redimensionnem
 void affichertemps (int temps, SDL_Surface *screen);
 SDL_Color GetPixel (SDL_Surface *BG , int x , int y);//traj3ilna couleur ta3 position ili fiha il perso hkk nfar9ou bin perso w il be9i
 int collisionPP (personne p , SDL_Surface *masque);//mouvement
-//sauvegardage du scors
-void sauvegarder (int score , char nomjoueur[] , char nomfichier[]);
+//sauvegardage 
+void afficherscore (SDL_Surface *screen,personne pM,int *score);
+//void entrernom (SDL_Surface * screen);
+void display_score(void) ;
+//void sauvegarder (int score , char nomjoueur[] , char nomfichier[]);
 
 #endif 
 

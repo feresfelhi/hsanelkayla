@@ -10,7 +10,6 @@ void initminimap (minimap *m)
 {
   m->posminimap.x=0;
   m->posminimap.y=0;
-  m->minimap = NULL;
   m->minimap = IMG_Load("niveau1.png");
 }
 
@@ -22,6 +21,7 @@ void freeminimap(minimap *m)
 {
     SDL_FreeSurface(m->minimap);
 }
+
 void affichertemps (int temps , SDL_Surface *screen)
 {
   char s[19];
@@ -35,6 +35,34 @@ void affichertemps (int temps , SDL_Surface *screen)
   sprintf (s,"Temps : %d" , temps );
   txt = TTF_RenderText_Blended (police, s , couleur);
   SDL_BlitSurface(txt,NULL,screen,&post);
+}
+
+void afficherscore (SDL_Surface *screen,personne pM,int *score)
+{
+  char s[19];
+  SDL_Surface *sc;
+  TTF_Font *police = NULL;
+  police = TTF_OpenFont ("Urusans.TTF",40);
+  SDL_Color couleur = {0,0,0}; //couleur noir
+  SDL_Rect possc;// fil wosit 
+  possc.x=0; 
+  possc.y=50;
+  SDL_Flip(screen);//permute les tompons d'ecran
+  if (pM.posperso.x == 400 && pM.posperso.y == 450) 
+   {
+     (*score)++; 
+     sprintf (s,"Score : %d" , *score );
+     sc = TTF_RenderText_Blended (police, s , couleur);
+     SDL_BlitSurface(sc,NULL,screen,&possc);
+   }
+   else
+    {
+      printf ("si\n");
+      sprintf (s,"Score : %d",*score);
+      sc = TTF_RenderText_Blended(police , s, couleur);
+      SDL_BlitSurface(sc,NULL,screen,&possc);
+    }
+  TTF_CloseFont(police);
 }
 
 SDL_Color GetPixel(SDL_Surface *BG, int x, int y)
@@ -85,30 +113,65 @@ int collisionPP (personne p , SDL_Surface *masque)
 
 void majminimap (personne *p, minimap *m ,SDL_Rect camera , int redimensionnement)
 {
-  if (camera.x==0)
+  if (camera.x==0) //ymin
     p->posperso.x += redimensionnement;
-  if (camera.x ==1)
+  if (camera.x ==1) //ysar
     p->posperso.x -= redimensionnement;
-  if (camera.x == 2)
+  if (camera.x == 2) //fou9
     p->posperso.y += redimensionnement;
-  if (camera.x==3)
+  if (camera.x==3) //louta
     p->posperso.y -= redimensionnement;
 }
 
+/*void entrernom (SDL_Surface * screen)
+{
+  int j;
+  FILE * nom = NULL;
+  nom = fopen ("joueurs.txt","r+");//ouverture du fichier nom
+  //tester si l'ouverture a reussi
+  //l'ouverture a reussi
+  if (nom != NULL)
+  {
+    fseek(nom,0,SEEK_END);
+    fprintf(nom,"%s \n",joueur);
+  }
+  //echec de l'ouverture 
+  else
+  {
+    printf ("ERREUR!! \n IMPOSSIBKE D'OUVRIR LE FICHIER\n");
+  }
+  fclose (nom);
+  TTF_Font * sans = TTF_OpenFont("Urusans.TTF",40);
+  SDL_Color black = {0,0,0};
+  SDL_Surface * message = TTF_RenderText_Solid(sans,"put your text here",black);
+  SDL_Texture * Message = SDL_CreateTextureFromSurface(renderer,message);
+  SDL_Rect message_rect;
+  message_rect.x = 0;
+  message_rect.y = 100;
+  message_rect.w = 100;
+  message_rect.h = 100;
+  SDL_RenderCopy(renderer, Message, NULL, &message_rect);
+  SDL_FreeSurface(message);
+  SDL_DestroyTexture(Message);
+}*/
+
 void sauvegarder (int score , char nomjoueur[] , char nomfichier[])
 {
-    int i,j;
-    FILE * fichier = NULL;
-    fichier = fopen ("historique .txt","a+");
-    if (fichier != NULL)
+    int i;
+    FILE * sauvegarde = NULL;
+    sauvegarde = fopen ("score.txt","r"); //ouverture du fichier sauvegarde 
+    //tester si l'ouverture du fichier a reussi
+    //succes de l'ouverture
+    if (sauvegarde != NULL) 
     {
-        fseek(fichier , 0 , SEEK_END);
-        fprintf(fichier,"SCORE %d : %d \n",i,score);
-        i=i+1;
-        fclose (fichier);
+        fseek(sauvegarde , 0 , SEEK_END);
+        fprintf(sauvegarde,"SCORE %d : %d \n",i,score);
     }
+    //echec de l'ouverture 
     else
     {
         printf ("ERREUR!! \n IMPOSSIBKE D'OUVRIR LE FICHIER\n");
     }
+    fclose (sauvegarde);
 }
+
