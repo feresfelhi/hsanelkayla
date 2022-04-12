@@ -84,16 +84,17 @@ int main()
 		case SDLK_SPACE:
 			dt=3;
                	deplacerPerso(&p ,screen,dt);
+                saut(&p);
 	
 			
 		break;
 		
 		case SDLK_UP:
-			vitesseUP(&p);
+			augmenter_vitesse(&p);
 		break;
 		
 		case SDLK_DOWN:
-			vitesseDOWN(&p);
+			diminuer_vitesse(&p);
 		break;
                
 		case SDLK_ESCAPE: 

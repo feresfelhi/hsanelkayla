@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
-#include "vieetscore.h"
+#include "score.h"
 
 
 typedef struct { 
@@ -17,9 +17,7 @@ typedef struct {
 
 	
 	int nbframe; 
-	//Text vie;
-	int direction; 
-	Text score; 
+	int direction;  
         int test;	 
         int courant;    
 	double acceleration;  
@@ -28,7 +26,8 @@ typedef struct {
 	double vx;
 	double vgrav ;
 	double vsaut ;
-	double vy ; 
+	double vy ;
+	Text score; 
 	
 }Personne;
 
@@ -39,7 +38,7 @@ void afficherPerso (Personne p,SDL_Surface *screen);
 void deplacerPerso(Personne *p ,SDL_Surface *screen,int dt);
 void animerPerso(Personne *p);
 void saut(Personne *p);
-void vitesseUP(Personne *p);
-void vitesseDOWN(Personne *p);
+void augmenter_vitesse(Personne *p);
+void diminuer_vitesse(Personne *p);
 #endif
 

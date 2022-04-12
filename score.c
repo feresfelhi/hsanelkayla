@@ -1,4 +1,4 @@
-#include "vieetscore.h"
+#include "score.h"
 //score:
 
 int initTextscore(Text* T)

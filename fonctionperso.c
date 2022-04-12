@@ -3,14 +3,12 @@
 void initPerso(Personne *p){
 
 int sc;
-//vi=initTextvie(&p->vie);
 sc=initTextscore(&p->score);
-
-//(*p).
   p->vie=IMG_Load("vie1.png");
   p->posvie.x=40;
 		p->posvie.y=40;
-(*p).image=IMG_Load("spritesheet mc.png");  
+//(*p)
+p->image=IMG_Load("spritesheet mc.png");  
 
 p->position.x=0;
 p->position.y=700;
@@ -30,7 +28,7 @@ p->vgrav = 0.3;
 p->vsaut = -6.5;
 p->vy = p->vsaut;
 
-p->acceleration=5;
+p->acceleration=6;
 p->vitesse=0;
 
 }
@@ -121,16 +119,28 @@ void animerPerso(Personne *p){
 
 
 void saut(Personne *p){
-	
-	if(p->position.y<700){
+	if(p->position.y<700)
+	{
+     if(p->direction==1)
+{
    	p->position.x += p->vx;
    	p->position.y+= p->vy;
    	p->vy += p->vgrav;
-   }
+}
+if(p->direction==2)
+	{
+        p->position.x -= p->vx;
+   	p->position.y+= p->vy;
+   	p->vy += p->vgrav;
+
+        }
+}
   	if (p->position.y> 700)
     	p->vy = p->vsaut;
 }
-void vitesseUP(Personne *p){
+
+void augmenter_vitesse(Personne *p)
+{
 	 SDL_Delay(10);
        
          p->vitesse+=p->acceleration;
@@ -141,7 +151,7 @@ void vitesseUP(Personne *p){
           p->vitesse=30;
          }
 }
-void vitesseDOWN(Personne *p){
+void diminuer_vitesse(Personne *p){
  	p->vitesse=0; 
 
 }
