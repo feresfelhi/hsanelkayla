@@ -1,4 +1,4 @@
-#include "fct.h"
+#include "fctBG.h"
 
 void initBack(Background * BG)
 {
