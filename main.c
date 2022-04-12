@@ -21,61 +21,61 @@ int main(int argc, char** argv)
 	Mix_Chunk * eff;
 	atexit(SDL_Quit);
 	
-	screen=SDL_SetVideoMode(1914, 878, 32, SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_FULLSCREEN);
+	screen=SDL_SetVideoMode(1914, 878, 32, SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_RESIZABLE);
 	if(!screen)
 	{
 		printf("unable to open a 1914x878 wind %s\n", SDL_GetError());
 		return 1;
 	}
 
-	music=Mix_LoadMUS("music menu.mp3");
-	eff=Mix_LoadWAV("click.wav");
+	music=Mix_LoadMUS("menu/music menu.mp3");
+	eff=Mix_LoadWAV("menu/click.wav");
 	
-	initImg(&BG, "BG2.png", 0, 0);
-	initImg(&BG2, "nBG.png", 0, 0);
-	initImg(&str1, "start1.png", 694, 270);
-	initImg(&str2, "start2.png", 694, 261);
-	initImg(&sett1, "settings1.png", 694, 412);
-	initImg(&sett2, "settings2.png", 694, 404);
-	initImg(&cred1, "credits1.png", 694, 554);
-	initImg(&cred2, "credits2.png", 694, 544);
-	initImg(&qt1, "quit1.png", 694, 696);
-	initImg(&qt2, "quit2.png", 694, 686);
-	initImg(&settBG, "SettBG.png", 689, 100);
-	initImg(&X1, "X.png", 1135, 180);
-	initImg(&X2, "X2.png", 1135, 180);
-	initImg(&arr1, "arrow1.png", 735, 180);
-	initImg(&arr2, "arrow2.png", 735, 180);
-	initImg(&sound1, "sound1.png", 809, 360);
-	initImg(&sound2, "sound2.png", 809, 360);
-	initImg(&plus1, "+.png", 1130, 378);
-	initImg(&plus2, "+2.png", 1130, 378);
-	initImg(&mins1, "-.png", 730, 378);
-	initImg(&mins2, "-2.png", 730, 378);
-	initImg(&on, "on.png", 833, 480);
-	initImg(&off, "off.png", 833, 450);
-	initImg(&on2, "on.png", 1100, 480);
-	initImg(&off2, "off.png", 1100, 480);
-	initImg(&res, "res.png", 881, 625);
-	initImg(&res1, "resF.png", 881, 625);
-	initImg(&res2, "resXF.png", 881, 625);
-	initImg(&qtBG, "qt conf.png", 450, 350);
-	initImg(&YES, "YES.png", 810, 465);
-	initImg(&YES2, "YES2.png", 810, 465);
-	initImg(&NO, "NO.png", 1008, 465);
-	initImg(&NO2, "NO2.png", 1008, 465);
-	initImg(&cred, "credits.png", 720, 270);
-	for (x=0; x<=117; x++)
+	initImg(&BG, "menu/BG2.png", 0, 0);
+	initImg(&BG2, "menu/nBG.png", 0, 0);
+	initImg(&str1, "menu/start1.png", 694, 270);
+	initImg(&str2, "menu/start2.png", 694, 261);
+	initImg(&sett1, "menu/settings1.png", 694, 412);
+	initImg(&sett2, "menu/settings2.png", 694, 404);
+	initImg(&cred1, "menu/credits1.png", 694, 554);
+	initImg(&cred2, "menu/credits2.png", 694, 544);
+	initImg(&qt1, "menu/quit1.png", 694, 696);
+	initImg(&qt2, "menu/quit2.png", 694, 686);
+	initImg(&settBG, "menu/SettBG.png", 689, 100);
+	initImg(&X1, "menu/X.png", 1135, 180);
+	initImg(&X2, "menu/X2.png", 1135, 180);
+	initImg(&arr1, "menu/arrow1.png", 735, 180);
+	initImg(&arr2, "menu/arrow2.png", 735, 180);
+	initImg(&sound1, "menu/sound1.png", 809, 360);
+	initImg(&sound2, "menu/sound2.png", 809, 360);
+	initImg(&plus1, "menu/+.png", 1130, 378);
+	initImg(&plus2, "menu/+2.png", 1130, 378);
+	initImg(&mins1, "menu/-.png", 730, 378);
+	initImg(&mins2, "menu/-2.png", 730, 378);
+	initImg(&on, "menu/on.png", 833, 480);
+	initImg(&off, "menu/off.png", 833, 450);
+	initImg(&on2, "menu/on.png", 1100, 480);
+	initImg(&off2, "menu/off.png", 1100, 480);
+	initImg(&res, "menu/res.png", 881, 625);
+	initImg(&res1, "menu/resF.png", 881, 625);
+	initImg(&res2, "menu/resXF.png", 881, 625);
+	initImg(&qtBG, "menu/qt conf.png", 450, 350);
+	initImg(&YES, "menu/YES.png", 810, 465);
+	initImg(&YES2, "menu/YES2.png", 810, 465);
+	initImg(&NO, "menu/NO.png", 1008, 465);
+	initImg(&NO2, "menu/NO2.png", 1008, 465);
+	initImg(&cred, "menu/credits.png", 720, 270);
+	for (x=0; x<=60; x++)
 	{
-		sprintf(nbBG, "frames/BG%d.jpg", x);
+		sprintf(nbBG, "menu/frames/BG%d.jpg", x);
 		initImg(&Menu_anime[x], nbBG, 0, 0);
 	}
 
-	initTitle(&txt, 650, 90, 80, "Bleeding_Cowboys.ttf");
-	initText(&qttxt, 660, 375, 40, "MedusaGothic D.otf");
-	initText(&txt1, 720, 270, 50, "MedusaGothic D.otf");
-	initText(&txt2, 1020, 475, 32, "MedusaGothic D.otf");
-	initText(&txt3, 760, 535, 50, "MedusaGothic D.otf");
+	initTitle(&txt, 650, 90, 80, "menu/Bleeding_Cowboys.ttf");
+	initText(&qttxt, 660, 375, 40, "menu/MedusaGothic D.otf");
+	initText(&txt1, 720, 270, 50, "menu/MedusaGothic D.otf");
+	initText(&txt2, 1020, 475, 32, "menu/MedusaGothic D.otf");
+	initText(&txt3, 760, 535, 50, "menu/MedusaGothic D.otf");
 	
 	Mix_PlayMusic(music, -1);
 	volM=Mix_VolumeMusic(MIX_MAX_VOLUME/2);
@@ -97,13 +97,13 @@ int main(int argc, char** argv)
 	Pr.h=100;
 	pos.x=Bg[0].camera.x+40;
 	pos.y=Bg[0].camera.y+564;
-	perso=IMG_Load("black.png");
+	perso=IMG_Load("BG/black.png");
 		if(Bg[0].anim[0]==NULL)
 			return 0;
 	
 	while(!done)
 	{
-		if(x>117)
+		if(x>60)
 			i=0;
 		i+=0.2;
 		x=i;
@@ -326,13 +326,14 @@ int main(int argc, char** argv)
 		switch(choice)
 		{
 			case 1:
+				Mix_FadeOutMusic(1000);
 				exit=0;
 				while(!exit)
 				{
-		SDL_Flip(scre);
-		afficherBack(Bg[lvl], scre);
-		SDL_BlitSurface(Bg[0].mask[0], &Bg[0].camera, scre, NULL);
-		SDL_BlitSurface(perso, NULL, scre, &Pr);
+		SDL_Flip(screen);
+		afficherBack(Bg[lvl], screen);
+		SDL_BlitSurface(Bg[0].mask[0], &Bg[0].camera, screen, NULL);
+		SDL_BlitSurface(perso, NULL, screen, &Pr);
 		pos.x=Bg[0].camera.x+40;
 		pos.y=Bg[0].camera.y+564;
 		if(collisionPP( pos, Bg[0].mask[0])!=1)
@@ -344,6 +345,10 @@ int main(int argc, char** argv)
 			case SDL_KEYDOWN:
 				switch(event.key.keysym.sym)
 				{
+					case SDLK_ESCAPE:
+						exit=1;
+						SDL_Delay(200);
+						break;
 					case SDLK_d:
 						collision=collisionPP( pos, Bg[0].mask[0]);
 						scrolling (&Bg[lvl], 0, collision);
@@ -368,16 +373,16 @@ int main(int argc, char** argv)
 						{
 							collision=collisionPP( pos, Bg[0].mask[0]);
 							scrolling (&Bg[lvl], 2, collision);
-							SDL_Flip(scre);
-							afficherBack(Bg[lvl], scre);
-							SDL_BlitSurface(Bg[0].mask[0], &Bg[0].camera, scre, NULL);
-							SDL_BlitSurface(perso, NULL, scre, &Pr);
+							SDL_Flip(screen);
+							afficherBack(Bg[lvl], screen);
+							SDL_BlitSurface(Bg[0].mask[0], &Bg[0].camera, screen, NULL);
+							SDL_BlitSurface(perso, NULL, screen, &Pr);
 							SDL_PollEvent(&event4);
 							
 							switch(event4.type)
 							{
 								case SDL_KEYDOWN:
-								switch(event2.key.keysym.sym)
+								switch(event4.key.keysym.sym)
 								{
 									case SDLK_d:
 										collision=collisionPP( pos, Bg[0].mask[0]);
@@ -404,11 +409,13 @@ int main(int argc, char** argv)
 				break;
 			
 			case SDL_QUIT:
-				done=1;
+				exit=1;
+				SDL_Delay(200);
 				break;
 		}
 	}
 	free_BG(Bg[0]);
+				Mix_FadeInMusic(music,-1,1000);
 				break;
 			case 2:
 				exit=0;
@@ -430,7 +437,7 @@ int main(int argc, char** argv)
 					afficher_img(off2, screen);
 				while(!exit)
 				{
-					if(x>117)
+					if(x>60)
 						i=0;
 					i+=0.2;
 					x=i;
@@ -761,7 +768,7 @@ int main(int argc, char** argv)
 				while(exit!=1)
 				{
 					SDL_Flip(screen);
-					if(x>117)
+					if(x>60)
 						i=0;
 					i+=0.2;
 					x=i;
@@ -820,7 +827,7 @@ int main(int argc, char** argv)
 				afficher_img(NO2, screen);
 				while(exit==0)
 				{
-					if(x>117)
+					if(x>60)
 						i=0;
 					i+=0.2;
 					x=i;
@@ -946,7 +953,7 @@ int main(int argc, char** argv)
 				break;
 		}
 	}
-	for(i=0; i<=117; i++)
+	for(i=0; i<=60; i++)
 	free_img(Menu_anime[x]);
 	free_img(str1);
 	free_img(str2);

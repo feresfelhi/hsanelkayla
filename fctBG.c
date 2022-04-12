@@ -38,10 +38,10 @@ void initBack(Background * BG)
 		BG[i]->pos_img.h=BG->anim[0]->h;
 		BG[i].nb_anim=0;
 	}*/
-	BG[0].anim[0]=IMG_Load("lvl1.png");
+	BG[0].anim[0]=IMG_Load("BG/lvl1.png");
 		if(BG[0].anim[0]==NULL)
 			return ;
-	BG[0].mask[0]=SDL_LoadBMP("lvl1mask.bmp");
+	BG[0].mask[0]=SDL_LoadBMP("BG/lvl1mask.bmp");
 		if(BG[0].mask[0]==NULL)
 			return ;
 	BG[0].camera.x=0;
