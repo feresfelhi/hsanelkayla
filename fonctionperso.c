@@ -142,10 +142,7 @@ void saut(Personne *p)
 void augmenter_vitesse(Personne *p)
 {
     SDL_Delay(10);
-
     p->vitesse= p->vitesse+p->acceleration;
-    //p->position.x+=p->vitesse;
-    //p->direction=1;
     if(p->vitesse>=40)
     {
         p->vitesse=40;
