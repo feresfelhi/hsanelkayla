@@ -1,45 +1,44 @@
-#ifndef PERSO_H_
-#define PERSO_H_
+#ifndef perso_H_INCLUDED  
+#define perso_H_INCLUDED
+#include <stdio.h>  
+#include <stdlib.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "score.h"
 
-typedef struct
-{
-int vie;
-SDL_Surface *imagevie;
-SDL_Rect Position_vie;
-}Vie
-typedef struct
-{
-SDL_Surface *text_score;
-SDL_Rect positionscore;
-TTF_Font *police;
-int score
-}Score;
 
-typedef struct
-{
-SDL_Surface *sprite_sheet;
-SDL_Rect positionperso,position_spriteshite;
-Vie vie_perso;
-Score score_perso;
-int mouvement;//sourie ou clavier
-int jump;
-int attack;
-int direction ;//droite ou gauche
-int max_frame;
-int frame;//le framme actuelle de perso
-int vitesse;
-}perso;
+typedef struct { 
 
-void init_perso(perso* p);
-afficher_perso(perso* p; SDL_Surface *screen);
-deplacer_perso(perso* p);
-saut_perso(perso* p);
-void animation(perso* p);
+	SDL_Surface *image;
+	SDL_Rect position;
+	SDL_Rect frame;
+	SDL_Surface *vie;
+        SDL_Rect posvie;
+
+	
+	int nbframe; 
+	int direction;  
+        int test;	 
+        int courant;    
+	double acceleration;  
+	double decelere;	 
+	double vitesse;   
+	double vx;
+	double vgrav ;
+	double vsaut ;
+	double vy ;
+	Text score; 
+	
+}Personne;
+
+
+void initPerso(Personne *p);  
+void initPerso2(Personne *p);
+void afficherPerso (Personne p,SDL_Surface *screen);
+void deplacerPerso(Personne *p ,SDL_Surface *screen,int dt);
+void animerPerso(Personne *p);
+void saut(Personne *p);
+void augmenter_vitesse(Personne *p);
+void diminuer_vitesse(Personne *p);
 #endif
-
-
 
