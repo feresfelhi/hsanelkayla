@@ -1,0 +1,6 @@
+malek : 23 
+dina : 102 
+malek : 47 
+malek : 14 
+sarah : 34 
+efgg : 26 

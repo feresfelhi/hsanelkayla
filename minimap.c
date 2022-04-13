@@ -10,12 +10,17 @@ void initminimap (minimap *m)
 {
   m->posminimap.x=0;
   m->posminimap.y=0;
-  m->minimap = IMG_Load("niveau1.png");
+  m->minimap = IMG_Load("lvl1d.png");
+  //mini personnage
+  m->bonhomme = IMG_Load("miniperso.png");
+  m->posbonhomme.x = 0;
+  m->posbonhomme.y = 150;
 }
 
 void afficherminimap (minimap m, SDL_Surface *screen)
 {
   SDL_BlitSurface(m.minimap , NULL , screen , &m.posminimap);
+  SDL_BlitSurface(m.bonhomme ,NULL,screen,&m.posbonhomme);
 }
 void freeminimap(minimap *m)
 {
@@ -48,7 +53,7 @@ void afficherscore (SDL_Surface *screen,personne pM,int *score)
   possc.x=0; 
   possc.y=50;
   SDL_Flip(screen);//permute les tompons d'ecran
-  if (pM.posperso.x == 400 && pM.posperso.y == 450) 
+  if (pM.posperso.x == 400 && pM.posperso.y == 450 ) 
    {
      (*score)++; 
      sprintf (s,"Score : %d" , *score );
@@ -113,59 +118,27 @@ int collisionPP (personne p , SDL_Surface *masque)
 
 void majminimap (personne *p, minimap *m ,SDL_Rect camera , int redimensionnement)
 {
-  if (camera.x==0) //ymin
-    p->posperso.x += redimensionnement;
-  if (camera.x ==1) //ysar
-    p->posperso.x -= redimensionnement;
-  if (camera.x == 2) //fou9
-    p->posperso.y += redimensionnement;
-  if (camera.x==3) //louta
-    p->posperso.y -= redimensionnement;
+  int JoueurABSx ;
+  int JoueurABSy;
+  camera.x = 0;
+  camera.y = 0;
+  camera.h = 1918;
+  camera.w = 878;
+  JoueurABSx = p->posperso.x + camera.x;
+  JoueurABSy = p->posperso.y + camera.y;
+  m->posbonhomme.x = JoueurABSx * redimensionnement/100;
+  m->posbonhomme.y = JoueurABSy * redimensionnement/100;
 }
-
-/*void entrernom (SDL_Surface * screen)
-{
-  int j;
-  FILE * nom = NULL;
-  nom = fopen ("joueurs.txt","r+");//ouverture du fichier nom
-  //tester si l'ouverture a reussi
-  //l'ouverture a reussi
-  if (nom != NULL)
-  {
-    fseek(nom,0,SEEK_END);
-    fprintf(nom,"%s \n",joueur);
-  }
-  //echec de l'ouverture 
-  else
-  {
-    printf ("ERREUR!! \n IMPOSSIBKE D'OUVRIR LE FICHIER\n");
-  }
-  fclose (nom);
-  TTF_Font * sans = TTF_OpenFont("Urusans.TTF",40);
-  SDL_Color black = {0,0,0};
-  SDL_Surface * message = TTF_RenderText_Solid(sans,"put your text here",black);
-  SDL_Texture * Message = SDL_CreateTextureFromSurface(renderer,message);
-  SDL_Rect message_rect;
-  message_rect.x = 0;
-  message_rect.y = 100;
-  message_rect.w = 100;
-  message_rect.h = 100;
-  SDL_RenderCopy(renderer, Message, NULL, &message_rect);
-  SDL_FreeSurface(message);
-  SDL_DestroyTexture(Message);
-}*/
 
 void sauvegarder (int score , char nomjoueur[] , char nomfichier[])
 {
-    int i;
     FILE * sauvegarde = NULL;
-    sauvegarde = fopen ("score.txt","r"); //ouverture du fichier sauvegarde 
+    sauvegarde = fopen (nomfichier,"a"); //ouverture du fichier sauvegarde 
     //tester si l'ouverture du fichier a reussi
     //succes de l'ouverture
     if (sauvegarde != NULL) 
     {
-        fseek(sauvegarde , 0 , SEEK_END);
-        fprintf(sauvegarde,"SCORE %d : %d \n",i,score);
+        fprintf(sauvegarde,"%s : %d \n",nomjoueur,score);
     }
     //echec de l'ouverture 
     else
@@ -174,4 +147,201 @@ void sauvegarder (int score , char nomjoueur[] , char nomfichier[])
     }
     fclose (sauvegarde);
 }
+int entrernom (SDL_Surface * screen, char nom[30], int *x)
+{
+  int continuer=1;
+  char ch[30];
+  char txt[50];
+  SDL_Surface *surftxt;
+  SDL_Rect pos;
+  TTF_Font *font = NULL;
+  SDL_Color noir = {0,0,0};
+  SDL_Surface *ecriture ;
+  SDL_Rect posecriture;
+  TTF_Init();
+  posecriture.x = 548;
+  posecriture.y = 213;
+  font = TTF_OpenFont("Urusans.TTF",45);
+  SDL_Event event ;
+  SDL_Surface *ecrivez ,  *play ;
+  SDL_Rect posecriv , posplay;
+  posecriv.x = 0;
+  posecriv.y = 0;
+  posplay.x = 170;
+  posplay.y = 450;
+  ecrivez = IMG_Load("lvl1.png");
+  pos.x = 250;
+  pos.y = 213;
+  surftxt=TTF_RenderText_Blended(font, "entrer votre nom", noir);
+  play = IMG_Load("Play1.png");
+  ecriture = TTF_RenderText_Blended (font,nom,noir);
+  while (continuer)
+  {
+    SDL_BlitSurface(ecrivez,NULL,screen,&posecriv);
+    ecriture = TTF_RenderText_Blended (font , nom , noir);
+    SDL_BlitSurface(play,NULL,screen,&posplay);
+    SDL_BlitSurface(ecriture,NULL,screen,&posecriture);
+    SDL_BlitSurface(surftxt, NULL, screen, &pos);
+    affichermeilleurscore(screen);
+    SDL_Flip(screen);
+    SDL_WaitEvent(&event);
+    switch(event.type)
+    {
+      case SDL_QUIT :
+         *x=0;
+          continuer = 0;
+          break;
+      case SDL_KEYUP :
+        switch (event.key.keysym.sym)
+        {
+          case SDLK_a:
+             strcat(nom,"a");
+             break;
+          case SDLK_z :
+             strcat(nom,"z");
+             break;
+          case SDLK_e :
+             strcat(nom,"e");
+             break;
+             case SDLK_r:
+             strcat(nom,"r");
+             break;
+          case SDLK_t:
+             strcat(nom,"t");
+             break;
+          case SDLK_y :
+             strcat(nom,"y");
+             break;
+             case SDLK_u:
+             strcat(nom,"u");
+             break;
+          case SDLK_i :
+             strcat(nom,"i");
+             break;
+          case SDLK_o :
+             strcat(nom,"o");
+             break;
+             case SDLK_p:
+             strcat(nom,"p");
+             break;
+          case SDLK_q :
+             strcat(nom,"q");
+             break;
+          case SDLK_s :
+             strcat(nom,"s");
+             break;
+             case SDLK_d:
+             strcat(nom,"d");
+             break;
+          case SDLK_f :
+             strcat(nom,"f");
+             break;
+          case SDLK_g :
+             strcat(nom,"g");
+             break;
+             case SDLK_h:
+             strcat(nom,"h");
+             break;
+          case SDLK_j :
+             strcat(nom,"j");
+             break;
+          case SDLK_k :
+             strcat(nom,"k");
+             break;
+             case SDLK_l:
+             strcat(nom,"l");
+             break;
+          case SDLK_m :
+             strcat(nom,"m");
+             break;
+          case SDLK_w :
+             strcat(nom,"w");
+             break;
+             case SDLK_x:
+             strcat(nom,"x");
+             break;
+          case SDLK_c :
+             strcat(nom,"c");
+             break;
+          case SDLK_v :
+             strcat(nom,"v");
+             break;
+             case SDLK_b :
+             strcat(nom,"b");
+             break;
+          case SDLK_n :
+             strcat(nom,"n");
+             break;
+          case SDLK_SPACE :
+             strcat(nom," ");
+             break;
+          case SDLK_RETURN : 
+             if (strlen(nom)>3)
+                continuer = 0;
+                break;
+          case SDLK_BACKSPACE :
+             strcpy(nom,"");
+             break;
+        }
+      case SDL_MOUSEMOTION : 
+          if((event.motion.x < posplay.x+195 && event.motion.x > posplay.x) && (event.motion.y < posplay.y+73 && event.motion.y > posplay.y))
+            {
+              play = IMG_Load("Play2.png");
+            }
+          else
+            {
+              play = IMG_Load("Play1.png");
+            }
+           break;
+      case SDL_MOUSEBUTTONDOWN :
+         if ((event.button.button == SDL_BUTTON_LEFT) && (event.button.x < posplay.x+195 && event.button.x > posplay.x) && (event.button.y < posplay.y+73 && event.button.y > posplay.y) && (strlen(nom)>3))
+           {
+             continuer = 0;
+           }
+         break;
+    }
+  }
+  return continuer ;
+}
 
+void cherchermeilleurscore (int *score , char nomjoueur[] , char nomfichier[])
+{
+  FILE *f = NULL;
+  int x;
+  char ch[30] = "";
+  char ch1[30];
+  f = fopen(nomfichier,"r");
+  if (f != NULL)
+   {
+     while (fgets(ch, 30 , f ) != NULL)
+     {
+       sscanf (ch,"%s %i",ch,&x);
+       if (x > *score)
+       {
+         (*score)=x;
+         strcpy(nomjoueur,ch1);
+       }
+     }
+     fclose(f);
+   }
+}
+
+void affichermeilleurscore (SDL_Surface *screen)
+{
+  SDL_Rect pos;
+  SDL_Color noir = {0,0,0};
+  SDL_Surface *surftxt;
+  TTF_Font *font;
+  char nom[60],txt[70];
+  int x=0;
+  int i=1 ;
+  pos.x = 0;
+  pos.y = 0;
+  font = TTF_OpenFont ("Urusans.TTF",50);
+  TTF_Init();
+  cherchermeilleurscore(&x,nom,"score.txt");
+  sprintf(txt,"%s %d",nom,x);
+  surftxt = TTF_RenderText_Blended(font,txt,noir);
+  SDL_BlitSurface(surftxt,NULL,screen,&pos);
+  SDL_Flip(screen);
+}

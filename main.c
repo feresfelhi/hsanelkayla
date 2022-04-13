@@ -8,21 +8,22 @@
 
 int main()
 {
-  int collision , distance=100 , exit=1;//continuer=0; //exit variable de la boucle du jeux et continuer la variable de la boucle saisie du nom joueur 
+  char nom[30];
+  int collision , distance=100 , exit=1 , i,x=1;//continuer=0; //exit variable de la boucle du jeux et continuer la variable de la boucle saisie du nom joueur 
   int score=0;
   int temps=60;
   int frame=0;//pour savoir frame par seconde  fps
   Uint32 start;//pour fps
   const int FPS=20;//fixation fps en 20
   SDL_Event event;
+  char sh[70]="score.txt";
   minimap m;
-  personne p , pM , pMprochaine ;
+  personne pM , pMprochaine ;
   SDL_Rect posb;
   SDL_Surface *b;
   SDL_Surface *screen = NULL , *imageFond = NULL , *masked = NULL , *chiffres[30];
   SDL_Rect posBG , poschiffres , poscamera;
-  int longeurM=8000 , largeurM = 800, longeur = 800 , largeur = 80, i=0;
-  int redimonsionnement = distance * longeur /longeurM;
+  int redimonsionnement = 30;
   screen = SDL_SetVideoMode(1600, 800,32, SDL_SWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE);
   TTF_Init();
   if (screen == NULL)
@@ -36,10 +37,6 @@ int main()
   //initialisation du minimap
   initminimap(&m); 
   masked = IMG_Load("map1_masked.png");
-  //mini personnage
-  p.perso = IMG_Load("miniperso.png");
-  p.posperso.x = 0;
-  p.posperso.y = 150;
   //personnage principale
   pM.perso = IMG_Load("perso.png");
   pM.posperso.x = 0;
@@ -50,13 +47,16 @@ int main()
   b = IMG_Load("rouge.png");
   posb.x = 700;
   posb.y = 570;
+   //entrer nom ou play
+  if(entrernom(screen,nom,&x)) ;
+  if(x==1)
+  {
   while (exit)
    { 
-     start=SDL_GetTicks();
+     start = SDL_GetTicks();
      SDL_BlitSurface(imageFond,NULL,screen,&posBG);
      //affichage de la minimap
      afficherminimap(m,screen);
-     SDL_BlitSurface(p.perso,NULL,screen,&p.posperso);
      SDL_BlitSurface(pM.perso,NULL,screen,&pM.posperso);
      //affichage temps
      affichertemps ( temps,screen);
@@ -84,7 +84,7 @@ int main()
                    {
                      poscamera.x=0;
                      pM.posperso.x = pMprochaine.posperso.x;
-                     majminimap(&p,&m,poscamera,redimonsionnement);
+                     majminimap(&pM,&m,poscamera,redimonsionnement);
                    }
                   else
                    {
@@ -103,7 +103,7 @@ int main()
                    {
                      poscamera.x=1;
                      pM.posperso.x = pMprochaine.posperso.x;
-                     majminimap(&p,&m,poscamera,redimonsionnement);
+                     majminimap(&pM,&m,poscamera,redimonsionnement);
                    }
                   else
                    {
@@ -122,7 +122,7 @@ int main()
                    {
                      poscamera.x=2;
                      pM.posperso.y = pMprochaine.posperso.y;
-                     majminimap(&p,&m,poscamera,redimonsionnement);
+                     majminimap(&pM,&m,poscamera,redimonsionnement);
                    }
                   else
                    {
@@ -141,7 +141,7 @@ int main()
                    {
                      poscamera.x=3;
                      pM.posperso.y = pMprochaine.posperso.y;
-                     majminimap(&p,&m,poscamera,redimonsionnement);
+                     majminimap(&pM,&m,poscamera,redimonsionnement);
                    }
                   else
                    {
@@ -156,7 +156,6 @@ int main()
               }
          } 
       }
-      //sauvegarder (score ,nomfichier);
       SDL_Flip(screen);//permute les tompons d'ecran
       if(frame==20)
        {
@@ -168,9 +167,10 @@ int main()
       if(1000/FPS>SDL_GetTicks()-start)
          SDL_Delay(1000/FPS-(SDL_GetTicks()-start));
    } 
-   
+   //sauvegarder (score ,nomfichier);
+      sauvegarder(score,nom,sh);
+   }
    freeminimap(&m);
-   SDL_FreeSurface(p.perso);
    SDL_FreeSurface(chiffres[1]);
    SDL_FreeSurface(chiffres[2]);
    SDL_FreeSurface(chiffres[3]);

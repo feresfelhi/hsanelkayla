@@ -15,6 +15,9 @@ typedef struct
 { 
   SDL_Rect posminimap;
   SDL_Surface *minimap;
+  SDL_Surface *bonhomme;
+  SDL_Rect posbonhomme; 
+
 }minimap;
 
 //minimap
@@ -28,9 +31,11 @@ SDL_Color GetPixel (SDL_Surface *BG , int x , int y);//traj3ilna couleur ta3 pos
 int collisionPP (personne p , SDL_Surface *masque);//mouvement
 //sauvegardage 
 void afficherscore (SDL_Surface *screen,personne pM,int *score);
-//void entrernom (SDL_Surface * screen);
-void display_score(void) ;
-//void sauvegarder (int score , char nomjoueur[] , char nomfichier[]);
+void sauvegarder (int score , char nomjoueur[] , char nomfichier[]);
+//option
+int entrernom (SDL_Surface * screen, char nom[30], int *x);
+void cherchermeilleurscore (int *score , char nomjoueur[] , char nomfichier[]);
+void affichermeilleurscore (SDL_Surface *screen);
 
 #endif 
 
