@@ -1,8 +1,4 @@
-malek : 23 
-dina : 102 
-malek : 47 
-malek : 14 
-sarah : 34 
-efgg : 26 
-aya : 34 
-tdtdtdui : 32 
+malek  23 
+dina  102 
+feres  9 
+darine  0 

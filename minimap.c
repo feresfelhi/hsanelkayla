@@ -138,7 +138,7 @@ void sauvegarder (int score , char nomjoueur[] , char nomfichier[])
     //succes de l'ouverture
     if (sauvegarde != NULL) 
     {
-        fprintf(sauvegarde,"%s : %d \n",nomjoueur,score);
+        fprintf(sauvegarde,"%s  %d \n",nomjoueur,score);
     }
     //echec de l'ouverture 
     else
