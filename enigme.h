@@ -34,6 +34,6 @@ int Verify_Enigme(Enigme *e,int *Game,SDL_Surface *ecran);
 void Free_Enigme(Enigme *e);
 void animerEnigme (SDL_Surface *porte[14],SDL_Rect *port,SDL_Surface *ecran);
 void animerEnigmee (SDL_Surface *porte[14],SDL_Rect *port,SDL_Surface *ecran);
-
+void free_memory(Enigme *e ) ;
 
 #endif
