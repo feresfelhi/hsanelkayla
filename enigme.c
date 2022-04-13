@@ -1,15 +1,15 @@
 #include "enigme.h"
 void Init_Enigme(Enigme *e, char *f1 , char *f2 ,char *f3)
 {
-	e->background[0]=IMG_Load("fond2.jpg");
-	e->background[1]=IMG_Load("enigmes.png");
+	e->background[0]=IMG_Load("enigme/fond2.jpg");
+	e->background[1]=IMG_Load("enigme/enigmes.png");
 
-	e->win=IMG_Load("youWin1.png");
-   	e->lost=IMG_Load("gameOver.png");
+	e->win=IMG_Load("enigme/youWin1.png");
+   	e->lost=IMG_Load("enigme/gameOver.png");
 
         Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024);  
         Mix_Music *music ;
-        music=Mix_LoadMUS("game1.mp3");
+        music=Mix_LoadMUS("enigme/game1.mp3");
         Mix_PlayMusic(music,-1);
 	for(int i=1;i<5;i++)
 	{
@@ -29,7 +29,7 @@ void Init_Enigme(Enigme *e, char *f1 , char *f2 ,char *f3)
 	SDL_Color couleurNoire={0,0,0};
 	TTF_Font *police;
 	TTF_Init();
-	police = TTF_OpenFont("Candara.ttf", 16);
+	police = TTF_OpenFont("enigme/Candara.ttf", 16);
 
 	char question[150];
 	FILE *fichier;
@@ -201,8 +201,8 @@ int Verify_Enigme(Enigme *e,int *Game,SDL_Surface *ecran)
 {
       Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024);  
      Mix_Chunk* button,*win1, *lose1; 
-     win1=Mix_LoadWAV("win.wav");
-     lose1=Mix_LoadWAV("fail.wav");
+     win1=Mix_LoadWAV("enigme/win.wav");
+     lose1=Mix_LoadWAV("enigme/fail.wav");
 	SDL_Rect position={100,100};
 	if(e->positionVraiReponse==e->image_courrante)
 	{
@@ -327,7 +327,7 @@ void animerEnigme (SDL_Surface *porte[14],SDL_Rect *port,SDL_Surface *ecran)
 
     for(j=1; j<15; j++)
     {
-        sprintf(ch,"../projet1/animation/%d.png",j);
+        sprintf(ch,"../projet1/enigme/animation/%d.png",j);
         porte[j]=IMG_Load(ch);
     }
 
@@ -349,7 +349,7 @@ void animerEnigmee (SDL_Surface *porte[14],SDL_Rect *port,SDL_Surface *ecran)
 
     for(j=1; j<14; j++)
     {
-        sprintf(ch,"../projet1/animation/%d.png",j);
+        sprintf(ch,"../projet1/enigme/animation/%d.png",j);
         porte[j]=IMG_Load(ch);
     }
 
@@ -361,3 +361,19 @@ void animerEnigmee (SDL_Surface *porte[14],SDL_Rect *port,SDL_Surface *ecran)
     }  
 }
 
+
+
+
+void free_memory(Enigme *e ){
+
+SDL_FreeSurface (e->background[0]) ;
+SDL_FreeSurface (e->background[1]) ;
+SDL_FreeSurface (e->win) ;
+SDL_FreeSurface (e->lost) ;
+for( int i=0;i<4;i++)
+{
+SDL_FreeSurface(e->reponses[i]) ;
+}
+
+
+}
