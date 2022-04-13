@@ -17,23 +17,8 @@ typedef struct {
     
 }Text;
 
-
-
-
-
-//vie:
-//int initTextvie(Text* T);
-//int initTextvie1(Text* T);
-//void displayvie(Text T,SDL_Surface *screen);
-//void freeTextvie(Text T);
-//int loadFontvie(Text* T, char* path);
-
-//score:
-int initTextscore(Text* T);
-int initTextscore1(Text* T);
-void displayscore(Text T,SDL_Surface *screen);
-void freeTextscore(Text T);
+int initscore(Text* T);
 int loadFontscore(Text* T, char* path);
-
-
+void afficherscore(Text T,SDL_Surface *screen);
+void freescore(Text T);
 #endif

@@ -18,7 +18,6 @@ typedef struct {
 	
 	int nbframe; 
 	int direction;  
-        int test;	 
         int courant;    
 	double acceleration;  
 	double decelere;	 

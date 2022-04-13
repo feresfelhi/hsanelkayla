@@ -4,7 +4,6 @@
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_mixer.h>
 #include <SDL/SDL_ttf.h>
-#include <time.h>
 #include "fonctionperso.h"
 
 int main()
@@ -35,7 +34,6 @@ int main()
     bg_pos.x = 0;
     bg_pos.y = 0;
 
-//initialisation
     Personne p;
     initPerso(&p);
     SDL_EnableKeyRepeat(200, 0);

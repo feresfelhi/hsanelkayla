@@ -4,7 +4,7 @@ void initPerso(Personne *p)
 {
 
     int s;
-    s=initTextscore(&p->score);
+    s=initscore(&p->score);
     p->vie=IMG_Load("vie1.png");
     p->posvie.x=40;
     p->posvie.y=40;
@@ -20,7 +20,6 @@ void initPerso(Personne *p)
     p->frame.y=0;
 
     p->nbframe=0;
-    p->test=1;
     p->direction=0;
     p->courant=0;
 
@@ -38,7 +37,7 @@ void afficherPerso (Personne p,SDL_Surface *screen)
 
 
     SDL_BlitSurface(p.vie,NULL,screen,&(p.posvie));
-    displayscore(p.score,screen);
+    afficherscore(p.score,screen);
     SDL_BlitSurface(p.image,&(p.frame),screen,&(p.position));
 }
 void animerPerso(Personne *p)
@@ -115,7 +114,7 @@ void deplacerPerso(Personne *p,SDL_Surface *screen,int dt)
 
     if (dt==3)
     {
-
+ 
         p->position.y=p->position.y-4;
 
     }
