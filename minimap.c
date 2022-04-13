@@ -8,13 +8,12 @@
 
 void initminimap (minimap *m)
 {
-  m->posminimap.x=0;
-  m->posminimap.y=0;
-  m->minimap = IMG_Load("lvl1d.png");
-  //mini personnage
+  m->posminimap.x=100;
+  m->posminimap.y=40;
+  m->minimap = IMG_Load("lvl1.png");
   m->bonhomme = IMG_Load("miniperso.png");
-  m->posbonhomme.x = 0;
-  m->posbonhomme.y = 150;
+  m->posbonhomme.x = 100;
+  m->posbonhomme.y = 90;
 }
 
 void afficherminimap (minimap m, SDL_Surface *screen)
@@ -33,8 +32,8 @@ void affichertemps (int temps , SDL_Surface *screen)
   SDL_Surface *txt;
   TTF_Font *police = NULL;
   police = TTF_OpenFont("Urusans.TTF",40);
-  SDL_Color couleur = {0,0,0}; //couleur noir
-  SDL_Rect post;// fou9 3al isar 
+  SDL_Color couleur = {0,0,0}; 
+  SDL_Rect post; 
   post.x=0; 
   post.y=0;
   sprintf (s,"Temps : %d" , temps );
@@ -42,18 +41,18 @@ void affichertemps (int temps , SDL_Surface *screen)
   SDL_BlitSurface(txt,NULL,screen,&post);
 }
 
-void afficherscore (SDL_Surface *screen,personne pM,int *score)
+void afficherscore (SDL_Surface *screen,Personne p,int *score)
 {
   char s[19];
   SDL_Surface *sc;
   TTF_Font *police = NULL;
   police = TTF_OpenFont ("Urusans.TTF",40);
-  SDL_Color couleur = {0,0,0}; //couleur noir
-  SDL_Rect possc;// fil wosit 
+  SDL_Color couleur = {0,0,0}; 
+  SDL_Rect possc;
   possc.x=0; 
   possc.y=50;
-  SDL_Flip(screen);//permute les tompons d'ecran
-  if (pM.posperso.x == 400 && pM.posperso.y == 450 ) 
+  SDL_Flip(screen);
+  if (p.position.x == 400 && p.position.y == 450 ) 
    {
      (*score)++; 
      sprintf (s,"Score : %d" , *score );
@@ -82,29 +81,28 @@ SDL_Color GetPixel(SDL_Surface *BG, int x, int y)
   return (color);
 }
 
-int collisionPP (personne p , SDL_Surface *masque)
+int collisionPPP (Personne p , SDL_Surface *masque)
 {
-  int collision =0;
+  int collision = 0;
   int x,y,i;
   SDL_Color test , couleurnoir = {0,0,0};
   SDL_Rect pos[8];
-  //w:3ardh
-  pos[0].x = p.posperso.x;
-  pos[0].y = p.posperso.y;
-  pos[1].x = p.posperso.x + p.posperso.w / 2;
-  pos[1].y = p.posperso.y;
-  pos[2].x = p.posperso.x + p.posperso.w;
-  pos[2].y = p.posperso.y;
-  pos[3].x = p.posperso.x;
-  pos[3].y = p.posperso.y + p.posperso.h / 2;
-  pos[4].x = p.posperso.x;
-  pos[4].y = p.posperso.y + p.posperso.h;
-  pos[5].x = p.posperso.x + p.posperso.w / 2;
-  pos[5].y = p.posperso.y + p.posperso.h;
-  pos[6].x = p.posperso.x + p.posperso.w;
-  pos[6].y = p.posperso.y + p.posperso.h;
-  pos[7].x = p.posperso.x + p.posperso.w;
-  pos[7].y = p.posperso.y + p.posperso.h / 2;
+  pos[0].x = p.position.x;
+  pos[0].y = p.position.y;
+  pos[1].x = p.position.x + p.position.w / 2;
+  pos[1].y = p.position.y;
+  pos[2].x = p.position.x + p.position.w;
+  pos[2].y = p.position.y;
+  pos[3].x = p.position.x;
+  pos[3].y = p.position.y + p.position.h / 2;
+  pos[4].x = p.position.x;
+  pos[4].y = p.position.y + p.position.h;
+  pos[5].x = p.position.x + p.position.w / 2;
+  pos[5].y = p.position.y + p.position.h;
+  pos[6].x = p.position.x + p.position.w;
+  pos[6].y = p.position.y + p.position.h;
+  pos[7].x = p.position.x + p.position.w;
+  pos[7].y = p.position.y + p.position.h / 2;
   for (i=0;i<8 && collision==0;i++)
   {
     x = pos[i].x;
@@ -116,7 +114,7 @@ int collisionPP (personne p , SDL_Surface *masque)
   return collision;
 }
 
-void majminimap (personne *p, minimap *m ,SDL_Rect camera , int redimensionnement)
+void majminimap (Personne *p, minimap *m ,SDL_Rect camera , int redimensionnement)
 {
   int JoueurABSx ;
   int JoueurABSy;
@@ -124,8 +122,8 @@ void majminimap (personne *p, minimap *m ,SDL_Rect camera , int redimensionnemen
   camera.y = 0;
   camera.h = 1918;
   camera.w = 878;
-  JoueurABSx = p->posperso.x + camera.x;
-  JoueurABSy = p->posperso.y + camera.y;
+  JoueurABSx = p->position.x + camera.x;
+  JoueurABSy = p->position.y + camera.y;
   m->posbonhomme.x = JoueurABSx * redimensionnement/100;
   m->posbonhomme.y = JoueurABSy * redimensionnement/100;
 }
@@ -133,14 +131,11 @@ void majminimap (personne *p, minimap *m ,SDL_Rect camera , int redimensionnemen
 void sauvegarder (int score , char nomjoueur[] , char nomfichier[])
 {
     FILE * sauvegarde = NULL;
-    sauvegarde = fopen (nomfichier,"a"); //ouverture du fichier sauvegarde 
-    //tester si l'ouverture du fichier a reussi
-    //succes de l'ouverture
+    sauvegarde = fopen (nomfichier,"a"); 
     if (sauvegarde != NULL) 
     {
-        fprintf(sauvegarde,"%s : %d \n",nomjoueur,score);
+        fprintf(sauvegarde,"%s  %d \n",nomjoueur,score);
     }
-    //echec de l'ouverture 
     else
     {
         printf ("ERREUR!! \n IMPOSSIBKE D'OUVRIR LE FICHIER\n");
@@ -172,8 +167,8 @@ int entrernom (SDL_Surface * screen, char nom[30], int *x)
   ecrivez = IMG_Load("lvl1.png");
   pos.x = 250;
   pos.y = 213;
-  surftxt=TTF_RenderText_Blended(font, "entrer votre nom", noir);
-  play = IMG_Load("Play1.png");
+  surftxt=TTF_RenderText_Blended(font, "Enter your name", noir);
+  play = IMG_Load("start1.png");
   ecriture = TTF_RenderText_Blended (font,nom,noir);
   while (continuer)
   {
@@ -285,11 +280,11 @@ int entrernom (SDL_Surface * screen, char nom[30], int *x)
       case SDL_MOUSEMOTION : 
           if((event.motion.x < posplay.x+195 && event.motion.x > posplay.x) && (event.motion.y < posplay.y+73 && event.motion.y > posplay.y))
             {
-              play = IMG_Load("Play2.png");
+              play = IMG_Load("start2.png");
             }
           else
             {
-              play = IMG_Load("Play1.png");
+              play = IMG_Load("start1.png");
             }
            break;
       case SDL_MOUSEBUTTONDOWN :
