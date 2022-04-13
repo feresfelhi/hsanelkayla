@@ -19,7 +19,24 @@ int main(int argc, char** argv)
 	Mix_Music *music;
 	Mix_Chunk * eff;
 	atexit(SDL_Quit);
+
+
+  // enigme
+
+        SDL_Surface *ecran  ;
+        SDL_Surface *porte[14];
+        
+        SDL_Rect port ;
+	SDL_Event event;
+	Enigme e;
+	int boucle=1;
+	int scene=1;
+	Init_Enigme(&e, "questions.txt", "reponses.txt" , "vraireponses.txt");
+       
+	int Game;
 	
+//enigme
+
 	screen=SDL_SetVideoMode(1914, 878, 32, SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_FULLSCREEN);
 	if(!screen)
 	{
