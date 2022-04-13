@@ -276,9 +276,8 @@ int entrernom (SDL_Surface * screen, char nom[30], int *x)
              strcat(nom," ");
              break;
           case SDLK_RETURN : 
-             if (strlen(nom)>3)
-                continuer = 0;
-                break;
+              continuer = 0;
+              break;
           case SDLK_BACKSPACE :
              strcpy(nom,"");
              break;
@@ -304,44 +303,47 @@ int entrernom (SDL_Surface * screen, char nom[30], int *x)
   return continuer ;
 }
 
-void cherchermeilleurscore (int *score , char nomjoueur[] , char nomfichier[])
+void cherchermeuilleurscore (int *score , char nomjoueur[10] , char nomfichier[10]) 
 {
-  FILE *f = NULL;
+  FILE* f = NULL;
+  char ch[20] = ""; 
   int x;
-  char ch[30] = "";
-  char ch1[30];
-  f = fopen(nomfichier,"r");
+  char meilleur[20];
+  f = fopen(nomfichier, "r");
   if (f != NULL)
    {
-     while (fgets(ch, 30 , f ) != NULL)
-     {
-       sscanf (ch,"%s %i",ch,&x);
-       if (x > *score)
+     while (fgets(ch, 20, f) != NULL)
        {
-         (*score)=x;
-         strcpy(nomjoueur,ch1);
+         sscanf(ch,"%s %i",meilleur,&x); 
+         if(x>*score)
+          {
+            (*score)=x;
+            strcpy(nomjoueur,meilleur);
+          }
        }
-     }
-     fclose(f);
-   }
-}
-
+      fclose(f);
+    }
+ }
 void affichermeilleurscore (SDL_Surface *screen)
 {
-  SDL_Rect pos;
+  SDL_Rect pos ,pos1;
   SDL_Color noir = {0,0,0};
   SDL_Surface *surftxt;
+  SDL_Surface *surfmeil;
   TTF_Font *font;
-  char nom[60],txt[70];
-  int x=0;
-  int i=1 ;
+  char nomjoueur[10],copie[30] ; 
+  int score = 0;
   pos.x = 0;
   pos.y = 0;
+  pos1.x = 300;
+  pos1.y = 0;
   font = TTF_OpenFont ("Urusans.TTF",50);
   TTF_Init();
-  cherchermeilleurscore(&x,nom,"score.txt");
-  sprintf(txt,"%s %d",nom,x);
-  surftxt = TTF_RenderText_Blended(font,txt,noir);
+  cherchermeuilleurscore (&score, nomjoueur,"score.txt") ;
+  sprintf(copie,"%s %d",nomjoueur,score);
+  surftxt = TTF_RenderText_Blended(font,"meilleur score : ",noir);
+  surfmeil = TTF_RenderText_Blended(font,copie,noir);
   SDL_BlitSurface(surftxt,NULL,screen,&pos);
+  SDL_BlitSurface(surfmeil,NULL,screen,&pos1);
   SDL_Flip(screen);
 }
