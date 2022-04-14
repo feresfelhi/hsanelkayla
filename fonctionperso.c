@@ -37,7 +37,7 @@ void afficherPerso (Personne p,SDL_Surface *screen)
 
 
     SDL_BlitSurface(p.vie,NULL,screen,&(p.posvie));
-    afficherscore(p.score,screen);
+    afficher_score(p.score,screen);
     SDL_BlitSurface(p.image,&(p.frame),screen,&(p.position));
 }
 void animerPerso(Personne *p)

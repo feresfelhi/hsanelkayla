@@ -4,6 +4,7 @@
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_mixer.h>
 #include <SDL/SDL_ttf.h>
+#include "minimap.h"
 #include "fct.h"
 #include "fctBG.h"
 #include "enigme.h"
@@ -123,6 +124,36 @@ int main(int argc, char** argv)
        Init_Enigme(&e, "enigme/questions.txt", "enigme/reponses.txt" , "enigme/vraireponses.txt");
 	int Game;*/
 
+//mininap
+  char nom[30];
+  int distance=100  , j,y=1;//continuer=0; //exit variable de la boucle du jeux et continuer la variable de la boucle saisie du nom joueur 
+  int score=0;
+  int temps=60;
+  int frame=0;//pour savoir frame par seconde  fps
+  Uint32 start;//pour fps
+  const int FPS=20;//fixation fps en 20
+  char sh[70]="score.txt";
+  minimap m;
+  Personne pMprochaine ;
+  SDL_Rect posb;
+  SDL_Surface *b;
+  SDL_Surface *imageFond = NULL , *masked = NULL , *chiffres[30];
+  SDL_Rect posBG , poschiffres , poscamera;
+  int redimonsionnement = 30;
+  
+  posBG.x=0;
+  posBG.y=0;
+  imageFond = IMG_Load("lvl1.png");//image kbira il principal
+  //initialisation du minimap
+  initminimap(&m); 
+  masked = IMG_Load("map1_masked.png");
+  //position prochaine du personnage principale
+  pMprochaine.position.x = p.position.x;
+  pMprochaine.position.y = p.position.y; 
+  b = IMG_Load("rouge.png");
+  posb.x = 700;
+  posb.y = 570;
+  
     while(!done)
     {
         if(x>60)
@@ -131,7 +162,7 @@ int main(int argc, char** argv)
         x=i;
         SDL_Flip(screen);
         SDL_PollEvent(&event);
-
+        affichermeilleurscore(screen);
         switch(event.type)
         {
         case SDL_KEYDOWN:
@@ -348,6 +379,9 @@ int main(int argc, char** argv)
         switch(choice)
         {
         case 1:
+            if(entrernom(screen,nom,&x)) ;
+            if(y==1)
+            {
             Mix_FadeOutMusic(1000);
             exit=0;
             while(!exit)
@@ -385,6 +419,7 @@ int main(int argc, char** argv)
                         SDL_Delay(200);
                         break;
                     case SDLK_RIGHT:
+                    	
                         if (p.position.x<screen->w/2)
                         {
                             dt=1;
@@ -396,6 +431,22 @@ int main(int argc, char** argv)
                             scrolling (&Bg[lvl], 0, collision);
                             animerPerso(&p);
                         }
+                        pMprochaine.position.x += distance;
+                  if (collisionPPP(pMprochaine , masked)==0)
+                   {
+                     poscamera.x=0;
+                     p.position.x = pMprochaine.position.x;
+                     majminimap(&p,&m,poscamera,redimonsionnement);
+                   }
+                  else
+                   {
+                     if (j==13)
+                       j=0;
+                     j++;
+                     pMprochaine.position.x = p.position.x;
+                     SDL_BlitSurface(chiffres[j],NULL,screen,&p.position);
+                     SDL_Delay(300);
+                   }
                         break;
 
                     case SDLK_LEFT:
@@ -410,6 +461,22 @@ int main(int argc, char** argv)
                             scrolling (&Bg[lvl], 1, collision);
                             animerPerso(&p);
                         }
+                        pMprochaine.position.x -= distance;
+                  if (collisionPPP(pMprochaine , masked)==0)
+                   {
+                     poscamera.x=1;
+                     p.position.x = pMprochaine.position.x;
+                     majminimap(&p,&m,poscamera,redimonsionnement);
+                   }
+                  else
+                   {
+                     if (j==13)
+                       j=0;
+                     j++;
+                     pMprochaine.position.x = p.position.x;
+                     SDL_BlitSurface(chiffres[j],NULL,screen,&p.position);
+                     SDL_Delay(300);
+                   }
                         break;
 
                     case SDLK_UP:
@@ -528,6 +595,18 @@ int main(int argc, char** argv)
                     }
                */    
 		//}
+		SDL_Flip(screen);//permute les tompons d'ecran
+      if(frame==20)
+       {
+         if(temps>0)
+           temps--;
+         frame=0;
+       }
+      frame++;  
+      if(1000/FPS>SDL_GetTicks()-start)
+         SDL_Delay(1000/FPS-(SDL_GetTicks()-start));
+            }
+            sauvegarder(score,nom,sh);
             }
             free_BG(Bg[0]);
             Mix_FadeInMusic(music,-1,1000);
@@ -1069,7 +1148,7 @@ int main(int argc, char** argv)
         }
     }
     for(i=0; i<=60; i++)
-        free_img(Menu_anime[x]);
+    free_img(Menu_anime[x]);
     free_img(str1);
     free_img(str2);
     free_img(sett1);
@@ -1109,20 +1188,24 @@ int main(int argc, char** argv)
     Mix_FreeMusic(music);
     Mix_FreeChunk(eff);
     //free_memory(&e ) ;
+//mini
+   freeminimap(&m);
+   SDL_FreeSurface(chiffres[1]);
+   SDL_FreeSurface(chiffres[2]);
+   SDL_FreeSurface(chiffres[3]);
+   SDL_FreeSurface(chiffres[4]);
+   SDL_FreeSurface(chiffres[5]);
+   SDL_FreeSurface(chiffres[6]);
+   SDL_FreeSurface(chiffres[7]);
+   SDL_FreeSurface(chiffres[8]);
+   SDL_FreeSurface(chiffres[9]);
+   SDL_FreeSurface(chiffres[10]);
+   SDL_FreeSurface(chiffres[11]);
+   SDL_FreeSurface(chiffres[12]);
+   SDL_FreeSurface(chiffres[13]);
+   SDL_FreeSurface(screen);
+   TTF_Quit();
+   SDL_Quit();
     return 0;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -31,7 +31,7 @@ int loadFontscore(Text* T, char* path)
     return (0);
 }
 
-void afficherscore(Text T,SDL_Surface *screen)
+void afficher_score(Text T,SDL_Surface *screen)
 {
     SDL_BlitSurface(T.textSurface,NULL,screen,&(T.positiontext));
 
