@@ -1,5 +1,5 @@
-#ifndef UTILITAIRE_H_INCLUDED
-#define UTILITAIRE_H_INCLUDED
+#ifndef SCORE_H_INCLUDED
+#define SCORE_H_INCLUDED
 #include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
 #include <string.h>
