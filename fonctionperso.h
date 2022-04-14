@@ -19,8 +19,7 @@ typedef struct {
 	int nbframe; 
 	int direction;  
         int courant;    
-	double acceleration;  
-	double decelere;	 
+	double acceleration;  	 
 	double vitesse;   
 	double vx;
 	double vgrav ;
