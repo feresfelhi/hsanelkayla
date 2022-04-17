@@ -6,10 +6,10 @@
 
 typedef struct
 {
-	SDL_Surface *anim[1];
+	SDL_Surface *anim[20];
 	//SDL_Rect pos_scrn;
 	//SDL_Rect pos_img;
-	SDL_Surface *mask[1];
+	SDL_Surface *mask[5];
 	SDL_Rect camera;
 	int nb_anim, gravity;
 }Background;

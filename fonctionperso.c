@@ -107,7 +107,7 @@ void deplacerPerso(Personne *p,SDL_Surface *screen,int dt)
 
     if (dt==2)
     {
-        p->position.x= p->position.x-p->vitesse;
+        p->position.x= p->position.x-(p->vitesse);
         p->direction=dt;
         animerPerso(p);
 

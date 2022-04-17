@@ -10,7 +10,6 @@ enigme.o:enigme.c
 	gcc -c enigme.c -g
 fonctionperso.o:fonctionperso.c
 	gcc -c fonctionperso.c -g 
-score.o:score.c
-	gcc -c score.c -g
+
 minimap.o:minimap.c
 	gcc -c minimap.c -g

@@ -3,7 +3,7 @@
 void initBack(Background * BG)
 {
 	int i;
-	char* B;
+	char B[50];
 	/*for(i=0; i<5; i++)
 	{
 		sprintf(B,"lvl1BG%d.png",i);
@@ -38,10 +38,19 @@ void initBack(Background * BG)
 		BG[i]->pos_img.h=BG->anim[0]->h;
 		BG[i].nb_anim=0;
 	}*/
-	BG[0].anim[0]=IMG_Load("BG/lvl1.png");
+	/*for(i=0; i<3; i++)
+	{
+		sprintf(B,"%dversionlvl1.png",i);
+		BG[0].anim[i]=IMG_Load(B);
+		if(BG[0].anim[i]==NULL)
+			return ;
+	}*/
+	
+	BG[0].anim[0]=IMG_Load("0versionlvl1.png");
 		if(BG[0].anim[0]==NULL)
 			return ;
-	BG[0].mask[0]=SDL_LoadBMP("BG/lvl1mask.bmp");
+	
+	BG[0].mask[0]=IMG_Load("versionlvl1Mask.png");
 		if(BG[0].mask[0]==NULL)
 			return ;
 	BG[0].camera.x=0;
@@ -53,7 +62,7 @@ void initBack(Background * BG)
 
 void afficherBack(Background BG, SDL_Surface * scre)
 {
-	SDL_BlitSurface(BG.anim[BG.nb_anim], &BG.camera, scre, NULL);
+	SDL_BlitSurface(BG.anim[0], &BG.camera, scre, NULL);
 }
 
 void animerBackground(Background * BG)
@@ -68,13 +77,13 @@ int collisionPP( SDL_Rect P, SDL_Surface * Mask)
 	SDL_Color color[8], obs1, obs2;
 	Uint32 col=0;
 	
-	obs1.r=0;
-	obs1.g=0;
-	obs1.b=255;
-	
 	obs2.r=0;
-	obs2.g=255;
+	obs2.g=0;
 	obs2.b=255;
+	
+	obs1.r=0;
+	obs1.g=255;
+	obs1.b=255;
 	
 	pte[0].x=P.x;
 	pte[0].y=P.y;
