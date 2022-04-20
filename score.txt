@@ -127,3 +127,4 @@ feres : 30
 ghj  0 
 fd  0 
 vbn  0 
+fgh  0 
