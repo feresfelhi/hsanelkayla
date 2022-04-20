@@ -1,6 +1,6 @@
-prog:fctBG.o main.o
-	gcc fctBG.o main.o -o prog -g -lSDL -lSDL_image
+prog:BG.o main.o
+	gcc BG.o main.o -o prog -g -lSDL -lSDL_image -lSDL_ttf -lSDL_mixer
 main.o:main.c
 	gcc -c main.c -g
-fctBG.o:fctBG.c
-	gcc -c fctBG.c -g
+BG.o:BG.c
+	gcc -c BG.c -g

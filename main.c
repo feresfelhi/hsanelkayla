@@ -1,9 +1,16 @@
 #include "fct.h"
 #include <unistd.h>
 #include <string.h>
+#include <SDL/SDL_mixer.h>
 
 int main(int argc, char** argv)
 {
+	TTF_Init();
+	if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 512))
+	{
+		printf("%s", Mix_GetError());
+	}
+	
 	SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO);
 	SDL_Surface *scre, *perso;
 	SDL_Rect P, pos;
@@ -11,6 +18,9 @@ int main(int argc, char** argv)
 	atexit(SDL_Quit);
 	int done=0, lvl=0, collision;
 	Background BG[3];
+	Mix_Music *music;
+	music=Mix_LoadMUS("music menu.mp3");
+	Mix_PlayMusic(music, -1);
 	
 	scre=SDL_SetVideoMode(1914, 878, 32, SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_RESIZABLE);
 	if(!scre)
@@ -23,8 +33,8 @@ int main(int argc, char** argv)
 	
 	P.x=40;
 	P.y=564;
-	P.w=50;
-	P.h=100;
+	P.w=75;
+	P.h=150;
 	pos.x=BG[0].camera.x+40;
 	pos.y=BG[0].camera.y+564;
 	perso=IMG_Load("black.png");
@@ -35,12 +45,13 @@ int main(int argc, char** argv)
 	{
 		SDL_Flip(scre);
 		afficherBack(BG[lvl], scre);
-		SDL_BlitSurface(BG[0].mask[0], &BG[0].camera, scre, NULL);
 		SDL_BlitSurface(perso, NULL, scre, &P);
+		
 		pos.x=BG[0].camera.x+40;
 		pos.y=BG[0].camera.y+564;
 		if(collisionPP( pos, BG[0].mask[0])!=1)
 			BG[lvl].camera.y+=5;
+		
 		SDL_PollEvent(&event);
 		
 		switch(event.type)
@@ -74,7 +85,6 @@ int main(int argc, char** argv)
 							scrolling (&BG[lvl], 2, collision);
 							SDL_Flip(scre);
 							afficherBack(BG[lvl], scre);
-							SDL_BlitSurface(BG[0].mask[0], &BG[0].camera, scre, NULL);
 							SDL_BlitSurface(perso, NULL, scre, &P);
 							SDL_PollEvent(&event2);
 							
@@ -95,14 +105,14 @@ int main(int argc, char** argv)
 								}
 							}
 						}
-						/*while(BG[lvl].camera.y<0)
+						while(BG[lvl].camera.y<0)
 						{
 						collision=collisionPP( pos, BG[0].mask[0]);
 						scrolling (&BG[lvl], 3, collision);
 							SDL_Flip(scre);
 							afficherBack(BG[lvl], scre);
 							SDL_BlitSurface(perso, NULL, scre, &P);
-						}*/
+						}
 						break;
 				}
 				break;
