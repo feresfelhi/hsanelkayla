@@ -126,3 +126,4 @@ feres : 30
 gfd  0 
 ghj  0 
 fd  0 
+vbn  0 
