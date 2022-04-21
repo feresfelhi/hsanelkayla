@@ -375,15 +375,17 @@ int main(int argc, char** argv)
         switch(choice)
         {
         case 1:
-            if(entrernom(screen,nom,&x)) ;
+            if(entrernom(screen,nom,&y)) ;
             if(y==1)
             {
                 Mix_FadeOutMusic(1000);
                 exit=0;
                 while(!exit)
                 {
+                    start = SDL_GetTicks();
                     SDL_Flip(screen);
                     afficherBack(Bg[0], screen);
+                    afficherminimap(m,screen);
                     pos.x=Bg[0].camera.x+p.position.x;
                     pos.y=Bg[0].camera.y+p.position.y;
                     if(collisionPP( pos, Bg[0].mask[0])!=1)
@@ -391,7 +393,8 @@ int main(int argc, char** argv)
                     afficherPerso (p,screen);
                     saut(&p);
                     SDL_PollEvent(&event);
-
+                    affichertemps ( temps,screen);
+                    afficherscore (screen,p, &score);
                     switch(event.type)
                     {
                     case SDL_KEYDOWN:
@@ -429,11 +432,11 @@ int main(int argc, char** argv)
                                 animerPerso(&p);
                             }
                             pMprochaine.position.x += distance;
-                            /*if (collisionPPP(pMprochaine , masked)==0)
+                            if (collisionPPP(pMprochaine , masked)==0)
                             {
                             		poscamera.x=0;
                             	p.position.x = pMprochaine.position.x;
-                            	majminimap(&p,&m,poscamera,redimonsionnement);
+                            	majminimap(&p,&m,Bg[lvl].camera,redimonsionnement);
                             }
                             else
                             {
@@ -443,7 +446,7 @@ int main(int argc, char** argv)
                             	pMprochaine.position.x = p.position.x;
                             	SDL_BlitSurface(chiffres[j],NULL,screen,&p.position);
                             	SDL_Delay(300);
-                            }*/
+                            }
                             break;
 
                         case SDLK_LEFT:
@@ -460,7 +463,7 @@ int main(int argc, char** argv)
                                 animerPerso(&p);
                             }
                             pMprochaine.position.x -= distance;
-                            /*if (collisionPPP(pMprochaine , masked)==0)
+                            if (collisionPPP(pMprochaine , masked)==0)
                             {
                             	poscamera.x=1;
                             	p.position.x = pMprochaine.position.x;
@@ -474,7 +477,7 @@ int main(int argc, char** argv)
                             	pMprochaine.position.x = p.position.x;
                             	SDL_BlitSurface(chiffres[j],NULL,screen,&p.position);
                             	SDL_Delay(300);
-                            }*/
+                            }
                             break;
 
                         case SDLK_UP:
@@ -543,7 +546,7 @@ int main(int argc, char** argv)
                     switch(lvl)
                     {
                     case 0:
-                        if(p.position.x==200 && boucle==1)
+                        if(p.position.x==1000 && boucle==1)
                         {
                             Init_Enigme(&e, "enigme/questions.txt", "enigme/reponses.txt", "enigme/vraireponses.txt");
                             while(boucle==1)

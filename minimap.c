@@ -125,7 +125,7 @@ void majminimap (Personne *p, minimap *m ,SDL_Rect camera , int redimensionnemen
   JoueurABSx = p->position.x + camera.x;
   JoueurABSy = p->position.y + camera.y;
   m->posbonhomme.x = JoueurABSx * redimensionnement/100;
-  m->posbonhomme.y = JoueurABSy * redimensionnement/100;
+  m->posbonhomme.y = (JoueurABSy * redimensionnement/100)+10;
 }
 
 void sauvegarder (int score , char nomjoueur[] , char nomfichier[])
@@ -151,6 +151,7 @@ int entrernom (SDL_Surface * screen, char nom[30], int *x)
   SDL_Rect pos;
   TTF_Font *font = NULL;
   SDL_Color noir = {0,0,0};
+  SDL_Color blanc = {255,255,255};
   SDL_Surface *ecriture ;
   SDL_Rect posecriture;
   TTF_Init();
@@ -158,23 +159,18 @@ int entrernom (SDL_Surface * screen, char nom[30], int *x)
   posecriture.y = 213;
   font = TTF_OpenFont("Urusans.TTF",45);
   SDL_Event event ;
-  SDL_Surface *ecrivez ,  *play ;
-  SDL_Rect posecriv , posplay;
-  posecriv.x = 0;
-  posecriv.y = 0;
-  posplay.x = 170;
-  posplay.y = 450;
-  ecrivez = IMG_Load("lvl1.png");
+  SDL_Surface *image ;
+  SDL_Rect posimg ;
+  posimg.x = 0;
+  posimg.y = 0;
+  image = IMG_Load("BG2.png");
   pos.x = 250;
   pos.y = 213;
-  surftxt=TTF_RenderText_Blended(font, "Enter your name", noir);
-  play = IMG_Load("start1.png");
-  ecriture = TTF_RenderText_Blended (font,nom,noir);
+  surftxt=TTF_RenderText_Blended(font, "entrer votre nom", noir);
   while (continuer)
   {
-    SDL_BlitSurface(ecrivez,NULL,screen,&posecriv);
-    ecriture = TTF_RenderText_Blended (font , nom , noir);
-    SDL_BlitSurface(play,NULL,screen,&posplay);
+    SDL_BlitSurface(image,NULL,screen,&posimg);
+    ecriture = TTF_RenderText_Blended (font , nom , blanc);
     SDL_BlitSurface(ecriture,NULL,screen,&posecriture);
     SDL_BlitSurface(surftxt, NULL, screen, &pos);
     affichermeilleurscore(screen);
@@ -184,6 +180,10 @@ int entrernom (SDL_Surface * screen, char nom[30], int *x)
     {
       case SDL_QUIT :
          *x=0;
+          continuer = 0;
+          break;
+      case SDLK_ESCAPE :
+          *x=0;
           continuer = 0;
           break;
       case SDL_KEYUP :
@@ -277,22 +277,6 @@ int entrernom (SDL_Surface * screen, char nom[30], int *x)
              strcpy(nom,"");
              break;
         }
-      case SDL_MOUSEMOTION : 
-          if((event.motion.x < posplay.x+195 && event.motion.x > posplay.x) && (event.motion.y < posplay.y+73 && event.motion.y > posplay.y))
-            {
-              play = IMG_Load("start2.png");
-            }
-          else
-            {
-              play = IMG_Load("start1.png");
-            }
-           break;
-      case SDL_MOUSEBUTTONDOWN :
-         if ((event.button.button == SDL_BUTTON_LEFT) && (event.button.x < posplay.x+195 && event.button.x > posplay.x) && (event.button.y < posplay.y+73 && event.button.y > posplay.y) && (strlen(nom)>3))
-           {
-             continuer = 0;
-           }
-         break;
     }
   }
   return continuer ;
