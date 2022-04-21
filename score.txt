@@ -1,4 +1,0 @@
-malek  23 
-dina  102 
-aya : 42 
-feres : 30 
