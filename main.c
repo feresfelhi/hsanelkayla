@@ -35,19 +35,19 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    music=Mix_LoadMUS("menu/music menu.mp3");
+    music=Mix_LoadMUS("scarymusic.mp3");
     eff=Mix_LoadWAV("menu/click.wav");
 
     initImg(&BG, "menu/BG2.png", 0, 0);
     initImg(&BG2, "menu/nBG.png", 0, 0);
-    initImg(&str1, "menu/start1.png", 694, 270);
-    initImg(&str2, "menu/start2.png", 694, 261);
-    initImg(&sett1, "menu/settings1.png", 694, 412);
-    initImg(&sett2, "menu/settings2.png", 694, 404);
-    initImg(&cred1, "menu/credits1.png", 694, 554);
-    initImg(&cred2, "menu/credits2.png", 694, 544);
-    initImg(&qt1, "menu/quit1.png", 694, 696);
-    initImg(&qt2, "menu/quit2.png", 694, 686);
+    initImg(&str1, "menu/start1.png", 100, 470);
+    initImg(&str2, "menu/start2.png", 100, 470);
+    initImg(&sett1, "menu/settings1.png", 100, 620);
+    initImg(&sett2, "menu/settings2.png", 100, 620);
+    initImg(&cred1, "menu/credits1.png", 1200, 470);
+    initImg(&cred2, "menu/credits2.png", 1200, 470);
+    initImg(&qt1, "menu/quit1.png", 1200, 620);
+    initImg(&qt2, "menu/quit2.png", 1200, 620);
     initImg(&settBG, "menu/SettBG.png", 689, 100);
     initImg(&X1, "menu/X.png", 1135, 180);
     initImg(&X2, "menu/X2.png", 1135, 180);
@@ -72,9 +72,9 @@ int main(int argc, char** argv)
     initImg(&NO, "menu/NO.png", 1008, 465);
     initImg(&NO2, "menu/NO2.png", 1008, 465);
     initImg(&cred, "menu/credits.png", 720, 270);
-    for (x=0; x<=60; x++)
+    for (x=0; x<=49; x++)
     {
-        sprintf(nbBG, "menu/frames/BG%d.jpg", x);
+        sprintf(nbBG, "taille/BG2_%d.png", x);
         initImg(&Menu_anime[x], nbBG, 0, 0);
     }
 
@@ -150,7 +150,7 @@ int main(int argc, char** argv)
 
     while(!done)
     {
-        if(x>60)
+        if(x>49)
             i=0;
         i+=0.2;
         x=i;
@@ -166,7 +166,6 @@ int main(int argc, char** argv)
             {
             case SDLK_DOWN:
                 afficher_img(Menu_anime[x], screen);
-                affichertxt(txt, screen, "HSAN EL KAYLA");
                 if(P==0)
                 {
                     P=1;
@@ -204,7 +203,6 @@ int main(int argc, char** argv)
                 break;
             case SDLK_UP:
                 afficher_img(Menu_anime[x], screen);
-                affichertxt(txt, screen, "HSAN EL KAYLA");
                 if(P==0)
                 {
                     P=3;
@@ -257,7 +255,6 @@ int main(int argc, char** argv)
             break;
         case SDL_KEYUP:
             afficher_img(Menu_anime[x], screen);
-            affichertxt(txt, screen, "HSAN EL KAYLA");
             if(P==0)
             {
                 afficher_img(str2, screen);
@@ -297,7 +294,6 @@ int main(int argc, char** argv)
 
         case SDL_MOUSEMOTION:
             afficher_img(Menu_anime[x], screen);
-            affichertxt(txt, screen, "HSAN EL KAYLA");
             if(event.motion.x>=694 && event.motion.x<=694+str1.pos_img.w && event.motion.y>=270 && event.motion.y<=270+str1.pos_img.h)
             {
                 afficher_img(str2, screen);
