@@ -6,6 +6,7 @@
 #include "enigme.h"
 #include "fonctionperso.h"
 #include "minimap.h"
+#include "enemi.h"
 
 
 int main(int argc, char** argv)
@@ -121,7 +122,7 @@ int main(int argc, char** argv)
 //mininap
     char nom[30];
     int distance=100, j,y=1;  //continuer=0; //exit variable de la boucle du jeux et continuer la variable de la boucle saisie du nom joueur
-    int score=0;
+    int score=10;
     int temps=60;
     int frame=0;//pour savoir frame par seconde  fps
     Uint32 start;//pour fps
@@ -147,7 +148,11 @@ int main(int argc, char** argv)
     b = IMG_Load("rouge.png");
     posb.x = 700;
     posb.y = 570;
-
+    
+//enemy
+    enemie enmy;
+    initenemie (&enmy);
+	
     while(!done)
     {
         if(x>49)
@@ -294,7 +299,7 @@ int main(int argc, char** argv)
 
         case SDL_MOUSEMOTION:
             afficher_img(Menu_anime[x], screen);
-            if(event.motion.x>=694 && event.motion.x<=694+str1.pos_img.w && event.motion.y>=270 && event.motion.y<=270+str1.pos_img.h)
+            if(event.motion.x>=100 && event.motion.x<=100+str1.pos_img.w && event.motion.y>=470 && event.motion.y<=470+str1.pos_img.h)
             {
                 afficher_img(str2, screen);
                 afficher_img(sett1, screen);
@@ -304,7 +309,7 @@ int main(int argc, char** argv)
                     Mix_PlayChannel(-1, eff, 0);
                 P=0;
             }
-            else if(event.motion.x>=694 && event.motion.x<=694+sett1.pos_img.w && event.motion.y>=412 && event.motion.y<=404+sett1.pos_img.h)
+            else if(event.motion.x>=100 && event.motion.x<=100+sett1.pos_img.w && event.motion.y>=620 && event.motion.y<=620+sett1.pos_img.h)
             {
                 afficher_img(str1, screen);
                 afficher_img(sett2, screen);
@@ -314,7 +319,7 @@ int main(int argc, char** argv)
                     Mix_PlayChannel(-1, eff, 0);
                 P=1;
             }
-            else if(event.motion.x>=694 && event.motion.x<=694+cred1.pos_img.w && event.motion.y>=554 && event.motion.y<=554+cred1.pos_img.h)
+            else if(event.motion.x>=1200 && event.motion.x<=1200+cred1.pos_img.w && event.motion.y>=470 && event.motion.y<=470+cred1.pos_img.h)
             {
                 afficher_img(str1, screen);
                 afficher_img(sett1, screen);
@@ -324,7 +329,7 @@ int main(int argc, char** argv)
                     Mix_PlayChannel(-1, eff, 0);
                 P=2;
             }
-            else if(event.motion.x>=694 && event.motion.x<=694+qt1.pos_img.w && event.motion.y>=696 && event.motion.y<=696+qt1.pos_img.h)
+            else if(event.motion.x>=1200 && event.motion.x<=1200+qt1.pos_img.w && event.motion.y>=620 && event.motion.y<=620+qt1.pos_img.h)
             {
                 afficher_img(str1, screen);
                 afficher_img(sett1, screen);
@@ -345,19 +350,19 @@ int main(int argc, char** argv)
             break;
 
         case SDL_MOUSEBUTTONDOWN :
-            if(event.button.button==SDL_BUTTON_LEFT && event.button.x>=694 && event.button.x<=694+str1.pos_img.w && event.button.y>=270 && event.button.y<=270+str1.pos_img.h)
+            if(event.button.button==SDL_BUTTON_LEFT && event.button.x>=100 && event.button.x<=100+str1.pos_img.w && event.button.y>=470 && event.button.y<=470+str1.pos_img.h)
             {
                 choice=1;
             }
-            else if(event.button.button==SDL_BUTTON_LEFT && event.button.x>=694 && event.button.x<=694+sett1.pos_img.w && event.button.y>=412 && event.button.y<=404+sett1.pos_img.h)
+            else if(event.button.button==SDL_BUTTON_LEFT && event.button.x>=100 && event.button.x<=100+sett1.pos_img.w && event.button.y>=620 && event.button.y<=620+sett1.pos_img.h)
             {
                 choice=2;
             }
-            else if(event.button.button==SDL_BUTTON_LEFT && event.button.x>=694 && event.button.x<=694+cred1.pos_img.w && event.button.y>=554 && event.button.y<=554+cred1.pos_img.h)
+            else if(event.button.button==SDL_BUTTON_LEFT && event.button.x>=1200 && event.button.x<=1200+cred1.pos_img.w && event.button.y>=470 && event.button.y<=470+cred1.pos_img.h)
             {
                 choice=3;
             }
-            else if(event.button.button==SDL_BUTTON_LEFT && event.button.x>=694 && event.button.x<=694+qt1.pos_img.w && event.button.y>=696 && event.button.y<=696+qt1.pos_img.h)
+            else if(event.button.button==SDL_BUTTON_LEFT && event.button.x>=1200 && event.button.x<=1200+qt1.pos_img.w && event.button.y>=620 && event.button.y<=620+qt1.pos_img.h)
             {
                 choice=4;
             }
@@ -379,8 +384,9 @@ int main(int argc, char** argv)
                 while(!exit)
                 {
                     start = SDL_GetTicks();
-                    SDL_Flip(screen);
                     afficherBack(Bg[0], screen);
+                    SDL_Flip(screen);
+                    afficher_enemie (enmy,Bg[lvl].anim[Bg[lvl].nb_anim]);
                     afficherminimap(m,screen);
                     pos.x=Bg[0].camera.x+p.position.x;
                     pos.y=Bg[0].camera.y+p.position.y;
@@ -388,6 +394,13 @@ int main(int argc, char** argv)
                         Bg[lvl].camera.y+=5;
                     afficherPerso (p,screen);
                     saut(&p);
+        				  animate_Enemy(&enmy);
+       				  move_enemy(&enmy);
+       				  if(collision_E(enmy,p))
+        				  {
+           				 printf("collison = 1 \n ");
+           				 score-=5;
+       				  }
                     SDL_PollEvent(&event);
                     affichertemps ( temps,screen);
                     afficherscore (screen,p, &score);
@@ -429,12 +442,8 @@ int main(int argc, char** argv)
                             }
                             pMprochaine.position.x += distance;
                             if (collisionPPP(pMprochaine , masked)==0)
-                            {
-                            		poscamera.x=0;
-                            	p.position.x = pMprochaine.position.x;
                             	majminimap(&p,&m,Bg[lvl].camera,redimonsionnement);
-                            }
-                            else
+                            /*else
                             {
                             	if (j==13)
                             	j=0;
@@ -442,7 +451,7 @@ int main(int argc, char** argv)
                             	pMprochaine.position.x = p.position.x;
                             	SDL_BlitSurface(chiffres[j],NULL,screen,&p.position);
                             	SDL_Delay(300);
-                            }
+                            }*/
                             break;
 
                         case SDLK_LEFT:
@@ -460,12 +469,8 @@ int main(int argc, char** argv)
                             }
                             pMprochaine.position.x -= distance;
                             if (collisionPPP(pMprochaine , masked)==0)
-                            {
-                            	poscamera.x=1;
-                            	p.position.x = pMprochaine.position.x;
-                            	majminimap(&p,&m,poscamera,redimonsionnement);
-                            }
-                            else
+                            	majminimap(&p,&m,Bg[lvl].camera,redimonsionnement);
+                            /*else
                             {
                             	if (j==13)
                             	j=0;
@@ -473,7 +478,7 @@ int main(int argc, char** argv)
                             	pMprochaine.position.x = p.position.x;
                             	SDL_BlitSurface(chiffres[j],NULL,screen,&p.position);
                             	SDL_Delay(300);
-                            }
+                            }*/
                             break;
 
                         case SDLK_UP:
@@ -542,7 +547,7 @@ int main(int argc, char** argv)
                     switch(lvl)
                     {
                     case 0:
-                        if(p.position.x==1000 && boucle==1)
+                        if(pos.x==1000 && boucle==1)
                         {
                             Init_Enigme(&e, "enigme/questions.txt", "enigme/reponses.txt", "enigme/vraireponses.txt");
                             while(boucle==1)
@@ -557,8 +562,8 @@ int main(int argc, char** argv)
                             }
                             else if (!Game)
                             {
-                                animerEnigmee(porte,&port,screen);
                                 printf("you lost!!! %d ",Game);
+                                animerEnigmee(porte,&port,screen);
                             }
                             Mix_FadeOutMusic(1000);
                         }
@@ -1176,6 +1181,8 @@ int main(int argc, char** argv)
     SDL_FreeSurface(screen);
     TTF_Quit();
     SDL_Quit();
+//enemy
+	 SDL_FreeSurface(enmy.sprite);
     return 0;
 
 }
