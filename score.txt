@@ -137,3 +137,17 @@ feres : 30
 pp  0 
   0 
   0 
+kjh  0 
+k  0 
+kj  0 
+jh  0 
+jhg  0 
+jhg  0 
+jk  0 
+jhg  0 
+hg  0 
+jhg  0 
+hg  0 
+jhg  0 
+hg  0 
+fg  -3250 

@@ -211,7 +211,7 @@ int Verify_Enigme(Enigme *e,int *Game,SDL_Surface *ecran)
 		SDL_BlitSurface(e->win,NULL,ecran,&position);
 		SDL_Flip(ecran);
                  Mix_PlayChannel(-1,win1,0);
-		SDL_Delay(6000);
+		SDL_Delay(3000);
 		return 0;//win
 	}
 	else
@@ -220,7 +220,7 @@ int Verify_Enigme(Enigme *e,int *Game,SDL_Surface *ecran)
 		SDL_BlitSurface(e->lost,NULL,ecran,&position);
 		SDL_Flip(ecran);
                 Mix_PlayChannel(-1,lose1,0);
-		SDL_Delay(6000);
+		SDL_Delay(3000);
 		return 0;//lost
 	}
 }
