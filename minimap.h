@@ -30,7 +30,7 @@ void afficherscore (SDL_Surface *screen,Personne p,int *score);
 void sauvegarder (int score , char nomjoueur[] , char nomfichier[]);
 //option
 int entrernom (SDL_Surface * screen, char nom[30], int *x);
-void cherchermeuilleurscore (int *score , char nomjoueur[10] , char nomfichier[10]) ;
+void cherchermeuilleurscore (int *score , char nomjoueur[10] , FILE* f) ;
 void affichermeilleurscore (SDL_Surface *screen);
 
 #endif 

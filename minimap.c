@@ -127,17 +127,22 @@ void majminimap (Personne *p, minimap *m ,SDL_Rect camera , int redimensionnemen
 void sauvegarder (int score , char nomjoueur[] , char nomfichier[])
 {
     FILE * sauvegarde = NULL;
-    sauvegarde = fopen (nomfichier,"a"); 
+    
+    sauvegarde = fopen (nomfichier,"r+"); 
     if (sauvegarde != NULL) 
-    {
-        fprintf(sauvegarde,"%s  %d \n",nomjoueur,score);
-    }
+    	  cherchermeuilleurscore (&score , nomjoueur ,sauvegarde);
     else
-    {
         printf ("ERREUR!! \n IMPOSSIBKE D'OUVRIR LE FICHIER\n");
-    }
+    fclose(sauvegarde);
+    
+    sauvegarde = fopen (nomfichier,"w"); 
+    if (sauvegarde != NULL) 
+    	  fprintf(sauvegarde,"%s %d",nomjoueur,score);
+    else
+        printf ("ERREUR!! \n IMPOSSIBKE D'OUVRIR LE FICHIER\n");
     fclose (sauvegarde);
 }
+
 int entrernom (SDL_Surface * screen, char nom[30], int *x)
 {
   int continuer=1;
@@ -278,29 +283,28 @@ int entrernom (SDL_Surface * screen, char nom[30], int *x)
   return continuer ;
 }
 
-void cherchermeuilleurscore (int *score , char nomjoueur[10] , char nomfichier[10]) 
+void cherchermeuilleurscore (int *score , char* nomjoueur , FILE* f) 
 {
-  FILE* f = NULL;
-  char ch[20] = ""; 
-  int x;
-  char meilleur[20];
-  f = fopen(nomfichier, "r");
-  if (f != NULL)
-   {
-     while (fgets(ch, 20, f) != NULL)
-       {
-         sscanf(ch,"%s %i",meilleur,&x); 
-         if(x>*score)
-          {
-            (*score)=x;
-            strcpy(nomjoueur,meilleur);
-          }
-       }
-      fclose(f);
-    }
- }
+	char ch[20] = "\0"; 
+  	int x=0;
+  	char meilleur[20];
+  	if (f != NULL)
+  	{
+  		rewind(f);
+     	fscanf(f,"%s %d",meilleur,&x); 
+    	printf("%d\n", x);
+     	printf("%d\n", *score);
+		if(x>(*score))
+    	{
+      	(*score)=x;
+      	strcpy(nomjoueur,meilleur);
+     	}
+ 	}
+}
+ 
 void affichermeilleurscore (SDL_Surface *screen)
 {
+  FILE* f;
   SDL_Rect pos ,pos1;
   SDL_Color noir = {0,0,0};
   SDL_Surface *surftxt;
@@ -314,7 +318,12 @@ void affichermeilleurscore (SDL_Surface *screen)
   pos1.y = 0;
   font = TTF_OpenFont ("Urusans.TTF",50);
   TTF_Init();
-  cherchermeuilleurscore (&score, nomjoueur,"score.txt") ;
+  f=fopen("score.txt", "r");
+  //cherchermeuilleurscore (&score, nomjoueur,f) ;
+  fscanf(f,"%s %d",nomjoueur,&score); 
+  //printf("%d", x);
+  //printf("%d", score);
+  fclose(f);
   sprintf(copie,"%s %d",nomjoueur,score);
   surftxt = TTF_RenderText_Blended(font,"meilleur score : ",noir);
   surfmeil = TTF_RenderText_Blended(font,copie,noir);

@@ -120,9 +120,9 @@ int main(int argc, char** argv)
     int Game;
 
 //mininap
-    char nom[30];
+    char nom[30]="\0";
     int distance=100, j,y=1;  //continuer=0; //exit variable de la boucle du jeux et continuer la variable de la boucle saisie du nom joueur
-    int score=10;
+    int score=30;
     int temps=60;
     int frame=0;//pour savoir frame par seconde  fps
     Uint32 start;//pour fps
