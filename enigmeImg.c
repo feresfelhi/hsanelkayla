@@ -1,5 +1,5 @@
 /**  
-* @file enigme.c  
+* @file enigmeImg.c  
 */
 
 #include <stdio.h>
@@ -9,7 +9,7 @@
 #include <string.h>
 #include <math.h>
 #include <time.h>
-#include "enigme.h"
+#include "enigmeImg.h"
 
 /**  
 * @brief Initialiser Image
@@ -20,7 +20,7 @@
 * @return nothing
 */
 
-void initImg(pic *I, char *file, int x, int y)
+void init_Img(Pic *I, char *file, int x, int y)
 {
 	I->img=IMG_Load(file);
 	if(I->img==NULL)
@@ -42,13 +42,13 @@ void initImg(pic *I, char *file, int x, int y)
 * @return nothing
 */
 
-int initEnigme(enigme *e ,char *nomfichier)
+int init_Enigme(enigme *en ,char *nomfichier)
 {	
 	int find,i,alt;
 	char * quest;
 	//enigme e1;
-	e->position_enigme.x=600;
-	e->position_enigme.y=50;
+	en->position_enigme.x=600;
+	en->position_enigme.y=50;
 	srand(time(NULL));
 	alt = 1 + rand() % 3 ;
 	FILE* Question;
@@ -59,7 +59,7 @@ int initEnigme(enigme *e ,char *nomfichier)
 		{
 		 	if (i == alt)
 			{
-		 		 e->image_enigme = IMG_Load(nomfichier);
+		 		 en->image_enigme = IMG_Load(nomfichier);
 		 	}
 		 	else i++;	 	
 		}
@@ -77,7 +77,7 @@ int initEnigme(enigme *e ,char *nomfichier)
 * @return nothing
 */
 
-void afficher_img(pic I, SDL_Surface *screen)
+void afficher_Img(Pic I, SDL_Surface *screen)
 {
 	SDL_BlitSurface(I.img, &I.pos_img, screen, &I.pos_scrn);
 }
@@ -89,9 +89,9 @@ void afficher_img(pic I, SDL_Surface *screen)
 * @return nothing
 */
 
-void afficheEnigme(enigme e, SDL_Surface *screen)
+void affiche_Enigme(enigme en, SDL_Surface *screen)
 {
-	SDL_BlitSurface(e.image_enigme, NULL, screen, &(e.position_enigme));
+	SDL_BlitSurface(en.image_enigme, NULL, screen, &(en.position_enigme));
 }
 
 /**  
@@ -100,10 +100,11 @@ void afficheEnigme(enigme e, SDL_Surface *screen)
 * @return nothing
 */
 
-int resoudreEnigme(enigme *e)
+/*int resoudreEnigme(enigme *en)
 {
 
 }
+*/
 
 /**  
 * @brief Animer Enigme
@@ -111,7 +112,7 @@ int resoudreEnigme(enigme *e)
 * @return nothing
 */
 
-void animerEnigme(enigme *e)
+void Enigme_animer(enigme *en)
 {
 	char nbC[50];
 	int x;
@@ -119,17 +120,17 @@ void animerEnigme(enigme *e)
 	for(x=0; x<6 ; x++)
 	{
 		sprintf(nbC,"Clock/C%d.png",x);
-		e->anim[x]=IMG_Load(nbC);
-		if(e->anim[x]==NULL)
+		en->anim[x]=IMG_Load(nbC);
+		if(en->anim[x]==NULL)
 		{
 			return ;
 		}
-		e->position_anim.x=1;
-		e->position_anim.y=1;
+		en->position_anim.x=1;
+		en->position_anim.y=1;
 		SDL_Delay(50);	
 	}
-	if(e->alea >= 5)
-		e->alea=0;
-	e->alea+=1;
+	if(en->alea >= 5)
+		en->alea=0;
+	en->alea+=1;
 		
 }
