@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <string.h>
 
+
 typedef struct
 {
 	SDL_Rect pos_scrn;

@@ -34,12 +34,12 @@ typedef struct
 	SDL_Rect pos_scrn; /*!< Rectangle*/
 	SDL_Rect pos_img; /*!< Rectangle*/
 	SDL_Surface *img; /*!< Surface*/ 
-}pic;
+}Pic;
 
-void initImg(pic *, char *, int, int);
-void afficher_img(pic, SDL_Surface *);
-int initEnigme(enigme* e ,char *nomfichier);
-void afficheEnigme(enigme e, SDL_Surface *screen);
-void resoudreEnigme(enigme *e);
-void animerEnigme(enigme *e);
+void init_Img(Pic *, char *, int, int);
+void afficher_Img(Pic, SDL_Surface *);
+int init_Enigme(enigme* en ,char *nomfichier);
+void affiche_Enigme(enigme en, SDL_Surface *screen);
+void resoudre_Enigme(enigme *en);
+void Enigme_animer(enigme *en);
 #endif

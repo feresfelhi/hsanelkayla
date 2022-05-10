@@ -12,7 +12,7 @@
 
 int main(int argc, char** argv)
 {
-	 TTF_Init();
+    TTF_Init();
     if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 512))
     {
         printf("%s", Mix_GetError());
@@ -149,33 +149,33 @@ int main(int argc, char** argv)
     b = IMG_Load("rouge.png");
     posb.x = 700;
     posb.y = 570;
-    
+
 //enemy
     enemie enmy;
     initenemie (&enmy);
-    
+
 //enigmeimg
-	enigme en;
-	pic mat[3][4];
-	char nomfichier[20];
-	int g;
-	
-	initImg(&mat[0][0], "Q10.png", 600, 50);
-	initImg(&mat[0][1], "Q11.png", 600, 50);
-	initImg(&mat[0][2], "Q12.png", 600, 50);
-	initImg(&mat[0][3], "Q13.png", 600, 50);
-	initImg(&mat[1][0], "Q20.png", 600, 50);
-	initImg(&mat[1][1], "Q21.png", 600, 50);
-	initImg(&mat[1][2], "Q22.png", 600, 50);
-	initImg(&mat[1][3], "Q23.png", 600, 50);
-	initImg(&mat[2][0], "Q30.png", 600, 50);
-	initImg(&mat[2][1], "Q31.png", 600, 50);
-	initImg(&mat[2][2], "Q32.png", 600, 50);
-	initImg(&mat[2][3], "Q33.png", 600, 50);
-	
-	
-	g=initEnigme(&e ,nomfichier)-1;
-	
+    enigme en;
+    Pic mat[3][4];
+    char nomfichier[20];
+    int g;
+
+    init_Img(&mat[0][0], "Q10.png", 600, 50);
+    init_Img(&mat[0][1], "Q11.png", 600, 50);
+    init_Img(&mat[0][2], "Q12.png", 600, 50);
+    init_Img(&mat[0][3], "Q13.png", 600, 50);
+    init_Img(&mat[1][0], "Q20.png", 600, 50);
+    init_Img(&mat[1][1], "Q21.png", 600, 50);
+    init_Img(&mat[1][2], "Q22.png", 600, 50);
+    init_Img(&mat[1][3], "Q23.png", 600, 50);
+    init_Img(&mat[2][0], "Q30.png", 600, 50);
+    init_Img(&mat[2][1], "Q31.png", 600, 50);
+    init_Img(&mat[2][2], "Q32.png", 600, 50);
+    init_Img(&mat[2][3], "Q33.png", 600, 50);
+
+
+    g=init_Enigme(&en,nomfichier)-1;
+
     while(!done)
     {
         if(x>49)
@@ -417,13 +417,13 @@ int main(int argc, char** argv)
                         Bg[lvl].camera.y+=5;
                     afficherPerso (p,screen);
                     saut(&p);
-        				  animate_Enemy(&enmy);
-       				  move_enemy(&enmy);
-       				  if(collision_E(enmy,p))
-        				  {
-           				 printf("collison = 1 \n ");
-           				 score-=5;
-       				  }
+                    animate_Enemy(&enmy);
+                    move_enemy(&enmy);
+                    if(collision_E(enmy,p))
+                    {
+                        printf("collison = 1 \n ");
+                        score-=5;
+                    }
                     SDL_PollEvent(&event);
                     affichertemps ( temps,screen);
                     afficherscore (screen,p, &score);
@@ -464,8 +464,8 @@ int main(int argc, char** argv)
                                 animerPerso(&p);
                             }
                             pMprochaine.position.x += distance;
-                            if (collisionPPP(pMprochaine , masked)==0)
-                            	majminimap(&p,&m,Bg[lvl].camera,redimonsionnement);
+                            if (collisionPPP(pMprochaine, masked)==0)
+                                majminimap(&p,&m,Bg[lvl].camera,redimonsionnement);
                             /*else
                             {
                             	if (j==13)
@@ -491,8 +491,8 @@ int main(int argc, char** argv)
                                 animerPerso(&p);
                             }
                             pMprochaine.position.x -= distance;
-                            if (collisionPPP(pMprochaine , masked)==0)
-                            	majminimap(&p,&m,Bg[lvl].camera,redimonsionnement);
+                            if (collisionPPP(pMprochaine, masked)==0)
+                                majminimap(&p,&m,Bg[lvl].camera,redimonsionnement);
                             /*else
                             {
                             	if (j==13)
@@ -592,167 +592,264 @@ int main(int argc, char** argv)
                         }
                         if(pos.x==1200)
                         {
-                        	P=0;
-                        	while(!boucle)
-				{	
-				SDL_Flip(screen);
-				afficheEnigme(en, screen);
-				animerEnigme(&en);
-				SDL_BlitSurface(en.anim[en.alea],NULL,screen,(&en.position_anim));
-				SDL_PollEvent(&event);
-				
-				switch(event.type)
-				
-				{
-					case SDL_QUIT:
-					{
-						boucle=1;
-					}
-					break;
-				
-					case SDL_KEYDOWN:
-						switch(event.key.keysym.sym)
-						{
-							case SDLK_DOWN:
-								if(P==0)
-								{
-									P=1;
-									afficher_img(mat[g][2], screen);
-								}
-								else if(P==1)
-								{
-									P=2;
-									afficher_img(mat[g][3], screen);
-								}
-								else if(P==2)
-								{
-									P=0;
-									afficher_img(mat[g][1], screen);
-								}
-								break;
-								
-							case SDLK_UP:
-								if(P==0)
-								{
-									P=2;
-									afficher_img(mat[g][3], screen);
-								}
-								else if(P==1)
-								{
-									P=0;
-									afficher_img(mat[g][1], screen);
-								}
-								else if(P==2)
-								{
-									P=1;
-									afficher_img(mat[g][2], screen);
-								}
-								break;
-						}
-						break;
-						
-						
-						case SDL_MOUSEMOTION:
-					    	if(event.motion.x>=650 && event.motion.x<=1300 && event.motion.y>=250 && event.motion.y<=400)
-					    {
-						afficher_img(mat[g][1], screen);
-						P=0;
-					    }
-					    else if(event.motion.x>=650 && event.motion.x<=1300 && event.motion.y>=450 && event.motion.y<=550)
-					    {
-						afficher_img(mat[g][2], screen);
-						P=1;
-					    }
-					    else if(event.motion.x>=650 && event.motion.x<=1300 && event.motion.y>=600 && event.motion.y<=750)
-					    {
-					    	afficher_img(mat[g][3], screen);
-						P=2;
-					    }
-					    else
-					    {
-						afficher_img(mat[g][0], screen);
-					    }
-					    break;
-										
-							}
-					}
-					
-					SDL_FreeSurface(screen);
-				}	
+                            P=0;
+                            while(!boucle)
+                            {
+                                SDL_Flip(screen);
+                                affiche_Enigme(en, screen);
+                                Enigme_animer(&en);
+                                SDL_BlitSurface(en.anim[en.alea],NULL,screen,(&en.position_anim));
+                                SDL_PollEvent(&event);
+
+                                switch(event.type)
+
+                                {
+                                case SDL_QUIT:
+                                {
+                                    boucle=1;
+                                }
+                                break;
+
+                                case SDL_KEYDOWN:
+                                    switch(event.key.keysym.sym)
+                                    {
+                                    case SDLK_DOWN:
+                                        if(P==0)
+                                        {
+                                            P=1;
+                                            afficher_Img(mat[g][2], screen);
+                                        }
+                                        else if(P==1)
+                                        {
+                                            P=2;
+                                            afficher_Img(mat[g][3], screen);
+                                        }
+                                        else if(P==2)
+                                        {
+                                            P=0;
+                                            afficher_Img(mat[g][1], screen);
+                                        }
+                                        break;
+
+                                    case SDLK_UP:
+                                        if(P==0)
+                                        {
+                                            P=2;
+                                            afficher_Img(mat[g][3], screen);
+                                        }
+                                        else if(P==1)
+                                        {
+                                            P=0;
+                                            afficher_Img(mat[g][1], screen);
+                                        }
+                                        else if(P==2)
+                                        {
+                                            P=1;
+                                            afficher_Img(mat[g][2], screen);
+                                        }
+                                        break;
+                                    }
+                                    break;
+
+
+                                case SDL_MOUSEMOTION:
+                                    if(event.motion.x>=650 && event.motion.x<=1300 && event.motion.y>=250 && event.motion.y<=400)
+                                    {
+                                        afficher_Img(mat[g][1], screen);
+                                        P=0;
+                                    }
+                                    else if(event.motion.x>=650 && event.motion.x<=1300 && event.motion.y>=450 && event.motion.y<=550)
+                                    {
+                                        afficher_Img(mat[g][2], screen);
+                                        P=1;
+                                    }
+                                    else if(event.motion.x>=650 && event.motion.x<=1300 && event.motion.y>=600 && event.motion.y<=750)
+                                    {
+                                        afficher_Img(mat[g][3], screen);
+                                        P=2;
+                                    }
+                                    else
+                                    {
+                                        afficher_Img(mat[g][0], screen);
+                                    }
+                                    break;
+
+                                }
+                            }
+
+                            SDL_FreeSurface(screen);
                         }
-                        break;
+                    break;
                     }
-                    SDL_Flip(screen);
-                    if(frame==20)
-                    {
-                        if(temps>0)
-                            temps--;
-                        frame=0;
-                    }
-                    frame++;
-                    if(1000/FPS>SDL_GetTicks()-start)
-                        SDL_Delay(1000/FPS-(SDL_GetTicks()-start));
-                }
-                sauvegarder(score,nom,sh);
-            }
-            free_BG(Bg[0]);
-            Mix_FadeInMusic(music,-1,1000);
-            choice=-1;
-            break;
-        case 2:
-            exit=0;
-            choice=-1;
-            afficher_img(Menu_anime[x], screen);
-            afficher_img(settBG, screen);
-            afficher_img(arr1, screen);
-            affichertxt(txt1, screen, "Sound:");
-            afficher_img(sound1, screen);
-            afficher_img(sound2, screen);
-            afficher_img(plus1, screen);
-            afficher_img(mins1, screen);
-            affichertxt(txt2, screen, "SFX");
-            affichertxt(txt3, screen, "Resolution:");
-            afficher_img(res, screen);
-            if(NSFX==0)
-                afficher_img(on2, screen);
-            else
-                afficher_img(off2, screen);
-            while(!exit)
-            {
-                if(x>60)
-                    i=0;
-                i+=0.2;
-                x=i;
+                    
+                
                 SDL_Flip(screen);
-                SDL_PollEvent(&event2);
-                switch(event2.type)
+                if(frame==20)
                 {
-                case SDL_KEYDOWN:
-                    switch(event2.key.keysym.sym)
-                    {
-                    case SDLK_BACKSPACE:
-                        choice2=1;
-                        break;
-
-                    case SDLK_KP_PLUS:
-                        choice2=2;
-                        break;
-
-                    case SDLK_KP_MINUS:
-                        choice2=3;
-                        break;
-
-                    case SDLK_s:
-                        choice2=4;
-                        break;
-
-                    case SDLK_f:
-                        choice2=5;
-                        break;
-                    }
+                    if(temps>0)
+                        temps--;
+                    frame=0;
+                }
+                frame++;
+                if(1000/FPS>SDL_GetTicks()-start)
+                    SDL_Delay(1000/FPS-(SDL_GetTicks()-start));
+                }
+            sauvegarder(score,nom,sh);
+        
+        }
+        free_BG(Bg[0]);
+        Mix_FadeInMusic(music,-1,1000);
+        choice=-1;
+        break;
+    case 2:
+        exit=0;
+        choice=-1;
+        afficher_img(Menu_anime[x], screen);
+        afficher_img(settBG, screen);
+        afficher_img(arr1, screen);
+        affichertxt(txt1, screen, "Sound:");
+        afficher_img(sound1, screen);
+        afficher_img(sound2, screen);
+        afficher_img(plus1, screen);
+        afficher_img(mins1, screen);
+        affichertxt(txt2, screen, "SFX");
+        affichertxt(txt3, screen, "Resolution:");
+        afficher_img(res, screen);
+        if(NSFX==0)
+            afficher_img(on2, screen);
+        else
+            afficher_img(off2, screen);
+        while(!exit)
+        {
+            if(x>60)
+                i=0;
+            i+=0.2;
+            x=i;
+            SDL_Flip(screen);
+            SDL_PollEvent(&event2);
+            switch(event2.type)
+            {
+            case SDL_KEYDOWN:
+                switch(event2.key.keysym.sym)
+                {
+                case SDLK_BACKSPACE:
+                    choice2=1;
                     break;
 
-                case SDL_KEYUP:
+                case SDLK_KP_PLUS:
+                    choice2=2;
+                    break;
+
+                case SDLK_KP_MINUS:
+                    choice2=3;
+                    break;
+
+                case SDLK_s:
+                    choice2=4;
+                    break;
+
+                case SDLK_f:
+                    choice2=5;
+                    break;
+                }
+                break;
+
+            case SDL_KEYUP:
+                afficher_img(Menu_anime[x], screen);
+                afficher_img(settBG, screen);
+                affichertxt(txt1, screen, "Sound:");
+                afficher_img(sound1, screen);
+                afficher_img(sound2, screen);
+                afficher_img(arr1, screen);
+                afficher_img(plus1, screen);
+                afficher_img(mins1, screen);
+                affichertxt(txt2, screen, "SFX");
+                affichertxt(txt3, screen, "Resolution:");
+                afficher_img(res, screen);
+                if(NSFX==0)
+                    afficher_img(on2, screen);
+                else
+                    afficher_img(off2, screen);
+                break;
+
+            case SDL_MOUSEMOTION:
+                if(event2.motion.x>=735 && event2.motion.x<=735+arr1.pos_img.w && event2.motion.y>=180 && event2.motion.y<=180+arr1.pos_img.h)
+                {
+                    afficher_img(Menu_anime[x], screen);
+                    afficher_img(settBG, screen);
+                    affichertxt(txt1, screen, "Sound:");
+                    afficher_img(sound1, screen);
+                    afficher_img(sound2, screen);
+                    afficher_img(arr2, screen);
+                    afficher_img(plus1, screen);
+                    afficher_img(mins1, screen);
+                    affichertxt(txt2, screen, "SFX");
+                    affichertxt(txt3, screen, "Resolution:");
+                    afficher_img(res, screen);
+                    if(O!=1 && NSFX==0)
+                    {
+                        Mix_PlayChannel(-1, eff, 0);
+                        O=1;
+                    }
+                }
+                else if(event2.motion.x>=1130 && event2.motion.x<=1130+plus1.pos_img.w && event2.motion.y>=378 && event2.motion.y<=378+plus1.pos_img.h)
+                {
+                    afficher_img(Menu_anime[x], screen);
+                    afficher_img(settBG, screen);
+                    affichertxt(txt1, screen, "Sound:");
+                    afficher_img(sound1, screen);
+                    afficher_img(sound2, screen);
+                    afficher_img(arr1, screen);
+                    afficher_img(plus2, screen);
+                    afficher_img(mins1, screen);
+                    affichertxt(txt2, screen, "SFX");
+                    affichertxt(txt3, screen, "Resolution:");
+                    afficher_img(res, screen);
+                    if(O!=2 && NSFX==0)
+                    {
+                        Mix_PlayChannel(-1, eff, 0);
+                        O=2;
+                    }
+                }
+                else if(event2.motion.x>=730 && event2.motion.x<=730+mins1.pos_img.w && event2.motion.y>=378 && event2.motion.y<=378+mins1.pos_img.h)
+                {
+                    afficher_img(Menu_anime[x], screen);
+                    afficher_img(settBG, screen);
+                    affichertxt(txt1, screen, "Sound:");
+                    afficher_img(sound1, screen);
+                    afficher_img(sound2, screen);
+                    afficher_img(arr1, screen);
+                    afficher_img(plus1, screen);
+                    afficher_img(mins2, screen);
+                    affichertxt(txt2, screen, "SFX");
+                    affichertxt(txt3, screen, "Resolution:");
+                    afficher_img(res, screen);
+                    if(O!=3 && NSFX==0)
+                    {
+                        Mix_PlayChannel(-1, eff, 0);
+                        O=3;
+                    }
+                }
+                else if(event2.motion.x>=881 && event2.motion.x<=881+res.pos_img.w && event2.motion.y>=625 && event2.motion.y<=625+res.pos_img.h)
+                {
+                    afficher_img(Menu_anime[x], screen);
+                    afficher_img(settBG, screen);
+                    affichertxt(txt1, screen, "Sound:");
+                    afficher_img(sound1, screen);
+                    afficher_img(sound2, screen);
+                    afficher_img(arr1, screen);
+                    afficher_img(plus1, screen);
+                    afficher_img(mins1, screen);
+                    affichertxt(txt2, screen, "SFX");
+                    affichertxt(txt3, screen, "Resolution:");
+                    if(fulls==1)
+                        afficher_img(res2, screen);
+                    else
+                        afficher_img(res1, screen);
+                }
+                else
+                {
+                    O=0;
                     afficher_img(Menu_anime[x], screen);
                     afficher_img(settBG, screen);
                     affichertxt(txt1, screen, "Sound:");
@@ -764,538 +861,444 @@ int main(int argc, char** argv)
                     affichertxt(txt2, screen, "SFX");
                     affichertxt(txt3, screen, "Resolution:");
                     afficher_img(res, screen);
-                    if(NSFX==0)
-                        afficher_img(on2, screen);
-                    else
-                        afficher_img(off2, screen);
-                    break;
-
-                case SDL_MOUSEMOTION:
-                    if(event2.motion.x>=735 && event2.motion.x<=735+arr1.pos_img.w && event2.motion.y>=180 && event2.motion.y<=180+arr1.pos_img.h)
-                    {
-                        afficher_img(Menu_anime[x], screen);
-                        afficher_img(settBG, screen);
-                        affichertxt(txt1, screen, "Sound:");
-                        afficher_img(sound1, screen);
-                        afficher_img(sound2, screen);
-                        afficher_img(arr2, screen);
-                        afficher_img(plus1, screen);
-                        afficher_img(mins1, screen);
-                        affichertxt(txt2, screen, "SFX");
-                        affichertxt(txt3, screen, "Resolution:");
-                        afficher_img(res, screen);
-                        if(O!=1 && NSFX==0)
-                        {
-                            Mix_PlayChannel(-1, eff, 0);
-                            O=1;
-                        }
-                    }
-                    else if(event2.motion.x>=1130 && event2.motion.x<=1130+plus1.pos_img.w && event2.motion.y>=378 && event2.motion.y<=378+plus1.pos_img.h)
-                    {
-                        afficher_img(Menu_anime[x], screen);
-                        afficher_img(settBG, screen);
-                        affichertxt(txt1, screen, "Sound:");
-                        afficher_img(sound1, screen);
-                        afficher_img(sound2, screen);
-                        afficher_img(arr1, screen);
-                        afficher_img(plus2, screen);
-                        afficher_img(mins1, screen);
-                        affichertxt(txt2, screen, "SFX");
-                        affichertxt(txt3, screen, "Resolution:");
-                        afficher_img(res, screen);
-                        if(O!=2 && NSFX==0)
-                        {
-                            Mix_PlayChannel(-1, eff, 0);
-                            O=2;
-                        }
-                    }
-                    else if(event2.motion.x>=730 && event2.motion.x<=730+mins1.pos_img.w && event2.motion.y>=378 && event2.motion.y<=378+mins1.pos_img.h)
-                    {
-                        afficher_img(Menu_anime[x], screen);
-                        afficher_img(settBG, screen);
-                        affichertxt(txt1, screen, "Sound:");
-                        afficher_img(sound1, screen);
-                        afficher_img(sound2, screen);
-                        afficher_img(arr1, screen);
-                        afficher_img(plus1, screen);
-                        afficher_img(mins2, screen);
-                        affichertxt(txt2, screen, "SFX");
-                        affichertxt(txt3, screen, "Resolution:");
-                        afficher_img(res, screen);
-                        if(O!=3 && NSFX==0)
-                        {
-                            Mix_PlayChannel(-1, eff, 0);
-                            O=3;
-                        }
-                    }
-                    else if(event2.motion.x>=881 && event2.motion.x<=881+res.pos_img.w && event2.motion.y>=625 && event2.motion.y<=625+res.pos_img.h)
-                    {
-                        afficher_img(Menu_anime[x], screen);
-                        afficher_img(settBG, screen);
-                        affichertxt(txt1, screen, "Sound:");
-                        afficher_img(sound1, screen);
-                        afficher_img(sound2, screen);
-                        afficher_img(arr1, screen);
-                        afficher_img(plus1, screen);
-                        afficher_img(mins1, screen);
-                        affichertxt(txt2, screen, "SFX");
-                        affichertxt(txt3, screen, "Resolution:");
-                        if(fulls==1)
-                            afficher_img(res2, screen);
-                        else
-                            afficher_img(res1, screen);
-                    }
-                    else
-                    {
-                        O=0;
-                        afficher_img(Menu_anime[x], screen);
-                        afficher_img(settBG, screen);
-                        affichertxt(txt1, screen, "Sound:");
-                        afficher_img(sound1, screen);
-                        afficher_img(sound2, screen);
-                        afficher_img(arr1, screen);
-                        afficher_img(plus1, screen);
-                        afficher_img(mins1, screen);
-                        affichertxt(txt2, screen, "SFX");
-                        affichertxt(txt3, screen, "Resolution:");
-                        afficher_img(res, screen);
-                    }
-                    if(NSFX==0)
-                        afficher_img(on2, screen);
-                    else
-                        afficher_img(off2, screen);
-                    break;
-
-                case SDL_MOUSEBUTTONDOWN :
-                    if(event2.button.button==SDL_BUTTON_LEFT && event2.motion.x>=735 && event2.motion.x<=735+arr1.pos_img.w && event2.motion.y>=180 && event2.motion.y<=180+arr1.pos_img.h)
-                    {
-                        choice2=1;
-                    }
-                    else if(event2.button.button==SDL_BUTTON_LEFT && event2.motion.x>=1130 && event2.motion.x<=1130+plus1.pos_img.w && event2.motion.y>=378 && event2.motion.y<=378+plus1.pos_img.h)
-                    {
-                        choice2=2;
-                    }
-                    else if(event2.button.button==SDL_BUTTON_LEFT && event2.motion.x>=730 && event2.motion.x<=730+mins1.pos_img.w && event2.motion.y>=378 && event2.motion.y<=378+mins1.pos_img.h)
-                    {
-                        choice2=3;
-                    }
-                    else if(event2.button.button==SDL_BUTTON_LEFT && event2.button.x>=1100 && event2.button.x<=1100+on2.pos_img.w && event2.button.y>=480 && event2.button.y<=480+off2.pos_img.h)
-                    {
-                        choice2=4;
-                    }
-                    else if(event2.button.button==SDL_BUTTON_LEFT && event2.motion.x>=881 && event2.motion.x<=881+res.pos_img.w && event2.motion.y>=625 && event2.motion.y<=625+res.pos_img.h)
-                    {
-                        choice2=5;
-                    }
-                    else
-                        choice2=-1;
-                    break;
-
-                case SDL_QUIT:
-                    done=1;
-                    exit=1;
-                    break;
                 }
-                switch(choice2)
-                {
-                case 1:
-                    exit=1;
-                    choice=-1;
-                    afficher_img(Menu_anime[x], screen);
-                    affichertxt(txt, screen, "HSAN EL KAYLA");
-                    afficher_img(str1, screen);
-                    afficher_img(sett2, screen);
-                    afficher_img(cred1, screen);
-                    afficher_img(qt1, screen);
-                    SDL_Delay(500);
-                    break;
+                if(NSFX==0)
+                    afficher_img(on2, screen);
+                else
+                    afficher_img(off2, screen);
+                break;
 
-                case 2:
-                    afficher_img(Menu_anime[x], screen);
-                    afficher_img(settBG, screen);
-                    afficher_img(arr1, screen);
-                    affichertxt(txt1, screen, "Sound:");
-                    afficher_img(sound1, screen);
-                    afficher_img(plus1, screen);
-                    afficher_img(mins1, screen);
-                    affichertxt(txt2, screen, "SFX");
-                    affichertxt(txt3, screen, "Resolution:");
-                    afficher_img(res, screen);
-                    if(volM!=MIX_MAX_VOLUME)
+            case SDL_MOUSEBUTTONDOWN :
+                if(event2.button.button==SDL_BUTTON_LEFT && event2.motion.x>=735 && event2.motion.x<=735+arr1.pos_img.w && event2.motion.y>=180 && event2.motion.y<=180+arr1.pos_img.h)
+                {
+                    choice2=1;
+                }
+                else if(event2.button.button==SDL_BUTTON_LEFT && event2.motion.x>=1130 && event2.motion.x<=1130+plus1.pos_img.w && event2.motion.y>=378 && event2.motion.y<=378+plus1.pos_img.h)
+                {
+                    choice2=2;
+                }
+                else if(event2.button.button==SDL_BUTTON_LEFT && event2.motion.x>=730 && event2.motion.x<=730+mins1.pos_img.w && event2.motion.y>=378 && event2.motion.y<=378+mins1.pos_img.h)
+                {
+                    choice2=3;
+                }
+                else if(event2.button.button==SDL_BUTTON_LEFT && event2.button.x>=1100 && event2.button.x<=1100+on2.pos_img.w && event2.button.y>=480 && event2.button.y<=480+off2.pos_img.h)
+                {
+                    choice2=4;
+                }
+                else if(event2.button.button==SDL_BUTTON_LEFT && event2.motion.x>=881 && event2.motion.x<=881+res.pos_img.w && event2.motion.y>=625 && event2.motion.y<=625+res.pos_img.h)
+                {
+                    choice2=5;
+                }
+                else
+                    choice2=-1;
+                break;
+
+            case SDL_QUIT:
+                done=1;
+                exit=1;
+                break;
+            }
+            switch(choice2)
+            {
+            case 1:
+                exit=1;
+                choice=-1;
+                afficher_img(Menu_anime[x], screen);
+                affichertxt(txt, screen, "HSAN EL KAYLA");
+                afficher_img(str1, screen);
+                afficher_img(sett2, screen);
+                afficher_img(cred1, screen);
+                afficher_img(qt1, screen);
+                SDL_Delay(500);
+                break;
+
+            case 2:
+                afficher_img(Menu_anime[x], screen);
+                afficher_img(settBG, screen);
+                afficher_img(arr1, screen);
+                affichertxt(txt1, screen, "Sound:");
+                afficher_img(sound1, screen);
+                afficher_img(plus1, screen);
+                afficher_img(mins1, screen);
+                affichertxt(txt2, screen, "SFX");
+                affichertxt(txt3, screen, "Resolution:");
+                afficher_img(res, screen);
+                if(volM!=MIX_MAX_VOLUME)
+                {
+                    if(volM==0)
                     {
-                        if(volM==0)
-                        {
-                            sound2.pos_img.w=75;
-                            afficher_img(sound2, screen);
-                        }
-                        else if(volM==MIX_MAX_VOLUME/4)
-                        {
-                            sound2.pos_img.w=150;
-                            afficher_img(sound2, screen);
-                        }
-                        else if(volM==MIX_MAX_VOLUME/2)
-                        {
-                            sound2.pos_img.w=225;
-                            afficher_img(sound2, screen);
-                        }
-                        else if(volM==MIX_MAX_VOLUME*3/4)
-                        {
-                            sound2.pos_img.w=300;
-                            afficher_img(sound2, screen);
-                        }
-                        volM=Mix_VolumeMusic(volM+MIX_MAX_VOLUME/4);
-                        volM=Mix_VolumeMusic(-1);
-                        if(NSFX==0)
-                            volS=Mix_Volume(-1, volM);
+                        sound2.pos_img.w=75;
+                        afficher_img(sound2, screen);
                     }
-                    else
+                    else if(volM==MIX_MAX_VOLUME/4)
+                    {
+                        sound2.pos_img.w=150;
+                        afficher_img(sound2, screen);
+                    }
+                    else if(volM==MIX_MAX_VOLUME/2)
+                    {
+                        sound2.pos_img.w=225;
+                        afficher_img(sound2, screen);
+                    }
+                    else if(volM==MIX_MAX_VOLUME*3/4)
                     {
                         sound2.pos_img.w=300;
                         afficher_img(sound2, screen);
                     }
+                    volM=Mix_VolumeMusic(volM+MIX_MAX_VOLUME/4);
+                    volM=Mix_VolumeMusic(-1);
                     if(NSFX==0)
-                        afficher_img(on2, screen);
-                    else
-                        afficher_img(off2, screen);
-                    SDL_Delay(500);
-                    afficher_img(plus1, screen);
-                    break;
-
-                case 3:
-                    afficher_img(Menu_anime[x], screen);
-                    afficher_img(settBG, screen);
-                    afficher_img(arr1, screen);
-                    affichertxt(txt1, screen, "Sound:");
-                    afficher_img(sound1, screen);
-                    afficher_img(plus1, screen);
-                    afficher_img(mins1, screen);
-                    affichertxt(txt2, screen, "SFX");
-                    affichertxt(txt3, screen, "Resolution:");
-                    afficher_img(res, screen);
-                    if(volM!=0)
-                    {
-                        if(volM==MIX_MAX_VOLUME)
-                        {
-                            sound2.pos_img.w=225;
-                            afficher_img(sound2, screen);
-                        }
-                        else if(volM==MIX_MAX_VOLUME*3/4)
-                        {
-                            sound2.pos_img.w=150;
-                            afficher_img(sound2, screen);
-                        }
-                        else if(volM==MIX_MAX_VOLUME/2)
-                        {
-                            sound2.pos_img.w=75;
-                            afficher_img(sound2, screen);
-                        }
-                        else if(volM==MIX_MAX_VOLUME/4)
-                        {
-                            sound2.pos_img.w=0;
-                            afficher_img(sound2, screen);
-                        }
-                        volM=Mix_VolumeMusic(volM-MIX_MAX_VOLUME/4);
-                        volM=Mix_VolumeMusic(-1);
-                        if(NSFX==0)
-                            volS=Mix_Volume(-1, volM);
-                    }
-                    if(NSFX==0)
-                        afficher_img(on2, screen);
-                    else
-                        afficher_img(off2, screen);
-                    SDL_Delay(500);
-                    afficher_img(mins1, screen);
-                    break;
-
-                case 4:
-                    if(NSFX!=1)
-                    {
-                        afficher_img(off2, screen);
-                        volS=Mix_Volume(-1, 0);
-                        NSFX=1;
-                    }
-                    else
-                    {
-                        afficher_img(on2, screen);
-                        NSFX=0;
-                        if(volM!=0)
-                            volS=Mix_Volume(-1, volM);
-                        else
-                            volS=Mix_Volume(-1, MIX_MAX_VOLUME/2);
-                    }
-                    SDL_Delay(500);
-                    break;
-
-                case 5:
-                    if(fulls==0)
-                    {
-                        screen=SDL_SetVideoMode(1914, 878, 32, SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_FULLSCREEN);
-                        fulls=1;
-                    }
-                    else
-                    {
-                        screen=SDL_SetVideoMode(1914, 878, 32, SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_RESIZABLE);
-                        fulls=0;
-                    }
-                    SDL_Delay(500);
-                    break;
+                        volS=Mix_Volume(-1, volM);
                 }
-                choice2=-1;
-            }
-            break;
+                else
+                {
+                    sound2.pos_img.w=300;
+                    afficher_img(sound2, screen);
+                }
+                if(NSFX==0)
+                    afficher_img(on2, screen);
+                else
+                    afficher_img(off2, screen);
+                SDL_Delay(500);
+                afficher_img(plus1, screen);
+                break;
 
-        case 3:
-            choice=-1;
-            exit=0;
-            while(exit!=1)
+            case 3:
+                afficher_img(Menu_anime[x], screen);
+                afficher_img(settBG, screen);
+                afficher_img(arr1, screen);
+                affichertxt(txt1, screen, "Sound:");
+                afficher_img(sound1, screen);
+                afficher_img(plus1, screen);
+                afficher_img(mins1, screen);
+                affichertxt(txt2, screen, "SFX");
+                affichertxt(txt3, screen, "Resolution:");
+                afficher_img(res, screen);
+                if(volM!=0)
+                {
+                    if(volM==MIX_MAX_VOLUME)
+                    {
+                        sound2.pos_img.w=225;
+                        afficher_img(sound2, screen);
+                    }
+                    else if(volM==MIX_MAX_VOLUME*3/4)
+                    {
+                        sound2.pos_img.w=150;
+                        afficher_img(sound2, screen);
+                    }
+                    else if(volM==MIX_MAX_VOLUME/2)
+                    {
+                        sound2.pos_img.w=75;
+                        afficher_img(sound2, screen);
+                    }
+                    else if(volM==MIX_MAX_VOLUME/4)
+                    {
+                        sound2.pos_img.w=0;
+                        afficher_img(sound2, screen);
+                    }
+                    volM=Mix_VolumeMusic(volM-MIX_MAX_VOLUME/4);
+                    volM=Mix_VolumeMusic(-1);
+                    if(NSFX==0)
+                        volS=Mix_Volume(-1, volM);
+                }
+                if(NSFX==0)
+                    afficher_img(on2, screen);
+                else
+                    afficher_img(off2, screen);
+                SDL_Delay(500);
+                afficher_img(mins1, screen);
+                break;
+
+            case 4:
+                if(NSFX!=1)
+                {
+                    afficher_img(off2, screen);
+                    volS=Mix_Volume(-1, 0);
+                    NSFX=1;
+                }
+                else
+                {
+                    afficher_img(on2, screen);
+                    NSFX=0;
+                    if(volM!=0)
+                        volS=Mix_Volume(-1, volM);
+                    else
+                        volS=Mix_Volume(-1, MIX_MAX_VOLUME/2);
+                }
+                SDL_Delay(500);
+                break;
+
+            case 5:
+                if(fulls==0)
+                {
+                    screen=SDL_SetVideoMode(1914, 878, 32, SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_FULLSCREEN);
+                    fulls=1;
+                }
+                else
+                {
+                    screen=SDL_SetVideoMode(1914, 878, 32, SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_RESIZABLE);
+                    fulls=0;
+                }
+                SDL_Delay(500);
+                break;
+            }
+            choice2=-1;
+        }
+        break;
+
+    case 3:
+        choice=-1;
+        exit=0;
+        while(exit!=1)
+        {
+            SDL_Flip(screen);
+            if(x>60)
+                i=0;
+            i+=0.2;
+            x=i;
+            afficher_img(Menu_anime[x], screen);
+            afficher_img(settBG, screen);
+            afficher_img(arr1, screen);
+            afficher_img(cred, screen);
+            SDL_PollEvent(&event3);
+            if(event3.type==SDL_KEYDOWN)
             {
-                SDL_Flip(screen);
-                if(x>60)
-                    i=0;
-                i+=0.2;
-                x=i;
+                if(event3.key.keysym.sym==SDLK_BACKSPACE)
+                    exit=1;
+                afficher_img(Menu_anime[x], screen);
+                affichertxt(txt, screen, "HSAN EL KAYLA");
+                afficher_img(str1, screen);
+                afficher_img(sett2, screen);
+                afficher_img(cred1, screen);
+                afficher_img(qt1, screen);
+                SDL_Delay(500);
+            }
+            else if(event3.type==SDL_MOUSEMOTION && SDL_BUTTON_LEFT && event3.motion.x>=735 && event3.motion.x<=735+arr1.pos_img.w && event3.motion.y>=180 && event3.motion.y<=180+arr1.pos_img.h)
+            {
+                afficher_img(Menu_anime[x], screen);
+                afficher_img(settBG, screen);
+                afficher_img(arr2, screen);
+                afficher_img(cred, screen);
+            }
+            else if(event3.type==SDL_MOUSEMOTION && SDL_BUTTON_LEFT && event3.motion.x<735 && event3.motion.x>735+arr1.pos_img.w && event3.motion.y<180 && event3.motion.y>180+arr1.pos_img.h)
+            {
                 afficher_img(Menu_anime[x], screen);
                 afficher_img(settBG, screen);
                 afficher_img(arr1, screen);
                 afficher_img(cred, screen);
-                SDL_PollEvent(&event3);
-                if(event3.type==SDL_KEYDOWN)
-                {
-                    if(event3.key.keysym.sym==SDLK_BACKSPACE)
-                        exit=1;
-                    afficher_img(Menu_anime[x], screen);
-                    affichertxt(txt, screen, "HSAN EL KAYLA");
-                    afficher_img(str1, screen);
-                    afficher_img(sett2, screen);
-                    afficher_img(cred1, screen);
-                    afficher_img(qt1, screen);
-                    SDL_Delay(500);
-                }
-                else if(event3.type==SDL_MOUSEMOTION && SDL_BUTTON_LEFT && event3.motion.x>=735 && event3.motion.x<=735+arr1.pos_img.w && event3.motion.y>=180 && event3.motion.y<=180+arr1.pos_img.h)
-                {
-                    afficher_img(Menu_anime[x], screen);
-                    afficher_img(settBG, screen);
-                    afficher_img(arr2, screen);
-                    afficher_img(cred, screen);
-                }
-                else if(event3.type==SDL_MOUSEMOTION && SDL_BUTTON_LEFT && event3.motion.x<735 && event3.motion.x>735+arr1.pos_img.w && event3.motion.y<180 && event3.motion.y>180+arr1.pos_img.h)
-                {
-                    afficher_img(Menu_anime[x], screen);
-                    afficher_img(settBG, screen);
-                    afficher_img(arr1, screen);
-                    afficher_img(cred, screen);
-                }
-                else if(event3.type==SDL_MOUSEBUTTONDOWN && SDL_BUTTON_LEFT && event3.motion.x>=735 && event3.motion.x<=735+arr1.pos_img.w && event3.motion.y>=180 && event3.motion.y<=180+arr1.pos_img.h)
-                {
-                    exit=1;
-                    afficher_img(Menu_anime[x], screen);
-                    affichertxt(txt, screen, "HSAN EL KAYLA");
-                    afficher_img(str1, screen);
-                    afficher_img(sett2, screen);
-                    afficher_img(cred1, screen);
-                    afficher_img(qt1, screen);
-                    SDL_Delay(500);
-                }
             }
-            break;
-
-        case 4:
-            exit=0;
-            P2=0;
-            afficher_img(Menu_anime[x], screen);
-            afficher_img(qtBG, screen);
-            affichertxt(qttxt, screen, "Do you want to quit?");
-            afficher_img(YES, screen);
-            afficher_img(NO2, screen);
-            while(exit==0)
+            else if(event3.type==SDL_MOUSEBUTTONDOWN && SDL_BUTTON_LEFT && event3.motion.x>=735 && event3.motion.x<=735+arr1.pos_img.w && event3.motion.y>=180 && event3.motion.y<=180+arr1.pos_img.h)
             {
-                if(x>60)
-                    i=0;
-                i+=0.2;
-                x=i;
-                SDL_Flip(screen);
-                SDL_PollEvent(&event3);
-                switch(event3.type)
+                exit=1;
+                afficher_img(Menu_anime[x], screen);
+                affichertxt(txt, screen, "HSAN EL KAYLA");
+                afficher_img(str1, screen);
+                afficher_img(sett2, screen);
+                afficher_img(cred1, screen);
+                afficher_img(qt1, screen);
+                SDL_Delay(500);
+            }
+        }
+        break;
+
+    case 4:
+        exit=0;
+        P2=0;
+        afficher_img(Menu_anime[x], screen);
+        afficher_img(qtBG, screen);
+        affichertxt(qttxt, screen, "Do you want to quit?");
+        afficher_img(YES, screen);
+        afficher_img(NO2, screen);
+        while(exit==0)
+        {
+            if(x>60)
+                i=0;
+            i+=0.2;
+            x=i;
+            SDL_Flip(screen);
+            SDL_PollEvent(&event3);
+            switch(event3.type)
+            {
+            case SDL_KEYDOWN:
+                switch(event3.key.keysym.sym)
                 {
-                case SDL_KEYDOWN:
-                    switch(event3.key.keysym.sym)
-                    {
-                    case SDLK_LEFT:
-                        P2=0;
-                        afficher_img(Menu_anime[x], screen);
-                        afficher_img(qtBG, screen);
-                        affichertxt(qttxt, screen, "Do you want to quit?");
-                        afficher_img(YES2, screen);
-                        afficher_img(NO, screen);
-                        break;
-
-                    case SDLK_RIGHT:
-                        P2=1;
-                        afficher_img(Menu_anime[x], screen);
-                        afficher_img(qtBG, screen);
-                        affichertxt(qttxt, screen, "Do you want to quit?");
-                        afficher_img(YES, screen);
-                        afficher_img(NO2, screen);
-                        break;
-
-                    case SDLK_RETURN:
-                        if(P2==0)
-                        {
-                            choice3=1;
-                        }
-                        else
-                        {
-                            choice3=2;
-                        }
-                        break;
-                    }
+                case SDLK_LEFT:
+                    P2=0;
+                    afficher_img(Menu_anime[x], screen);
+                    afficher_img(qtBG, screen);
+                    affichertxt(qttxt, screen, "Do you want to quit?");
+                    afficher_img(YES2, screen);
+                    afficher_img(NO, screen);
                     break;
 
-                case SDL_KEYUP:
+                case SDLK_RIGHT:
+                    P2=1;
+                    afficher_img(Menu_anime[x], screen);
+                    afficher_img(qtBG, screen);
+                    affichertxt(qttxt, screen, "Do you want to quit?");
+                    afficher_img(YES, screen);
+                    afficher_img(NO2, screen);
+                    break;
+
+                case SDLK_RETURN:
                     if(P2==0)
                     {
-                        afficher_img(Menu_anime[x], screen);
-                        afficher_img(qtBG, screen);
-                        affichertxt(qttxt, screen, "Do you want to quit?");
-                        afficher_img(YES2, screen);
-                        afficher_img(NO, screen);
-                    }
-                    else if(P2==1)
-                    {
-                        afficher_img(Menu_anime[x], screen);
-                        afficher_img(qtBG, screen);
-                        affichertxt(qttxt, screen, "Do you want to quit?");
-                        afficher_img(YES, screen);
-                        afficher_img(NO2, screen);
-                    }
-                    break;
-
-                case SDL_MOUSEMOTION:
-                    afficher_img(Menu_anime[x], screen);
-                    if(event3.motion.x>=1008 && event3.motion.x<=1008+NO.pos_img.w && event3.motion.y>=465 && event3.motion.y<=465+NO.pos_img.h)
-                    {
-                        afficher_img(Menu_anime[x], screen);
-                        afficher_img(qtBG, screen);
-                        affichertxt(qttxt, screen, "Do you want to quit?");
-                        afficher_img(YES, screen);
-                        afficher_img(NO2, screen);
-                        if(P2!=0 && NSFX==0)
-                            Mix_PlayChannel(-1, eff, 0);
-                        P2=0;
-                    }
-                    else if(event3.motion.x>=810 && event3.motion.x<=810+YES.pos_img.w && event3.motion.y>=465 && event3.motion.y<=465+YES.pos_img.h)
-                    {
-                        afficher_img(Menu_anime[x], screen);
-                        afficher_img(qtBG, screen);
-                        affichertxt(qttxt, screen, "Do you want to quit?");
-                        afficher_img(YES2, screen);
-                        afficher_img(NO, screen);
-                        if(P2!=1 && NSFX==0)
-                            Mix_PlayChannel(-1, eff, 0);
-                        P2=1;
+                        choice3=1;
                     }
                     else
                     {
-                        afficher_img(Menu_anime[x], screen);
-                        afficher_img(qtBG, screen);
-                        affichertxt(qttxt, screen, "Do you want to quit?");
-                        afficher_img(YES, screen);
-                        afficher_img(NO, screen);
+                        choice3=2;
                     }
                     break;
+                }
+                break;
 
-                case SDL_MOUSEBUTTONDOWN:
-                    if(event3.button.button==SDL_BUTTON_LEFT && event3.motion.x>=810 && event3.motion.x<=810+YES.pos_img.w && event3.motion.y>=465 && event3.motion.y<=465+YES.pos_img.h)
-                        choice3=1;
-                    else if(event3.button.button==SDL_BUTTON_LEFT && event3.motion.x>=1008 && event3.motion.x<=1008+NO.pos_img.w && event3.motion.y>=465 && event3.motion.y<=465+NO.pos_img.h)
-                        choice3=2;
-                    break;
-                }
-                if(choice3==1)
+            case SDL_KEYUP:
+                if(P2==0)
                 {
-                    exit=1;
-                    done=1;
-                    choice=-1;
-                    choice3=-1;
-                }
-                else if(choice3==2)
-                {
-                    exit=1;
-                    choice=-1;
-                    choice3=-1;
                     afficher_img(Menu_anime[x], screen);
-                    affichertxt(txt, screen, "HSAN EL KAYLA");
-                    afficher_img(str1, screen);
-                    afficher_img(sett1, screen);
-                    afficher_img(cred1, screen);
-                    afficher_img(qt2, screen);
-                    SDL_Delay(500);
+                    afficher_img(qtBG, screen);
+                    affichertxt(qttxt, screen, "Do you want to quit?");
+                    afficher_img(YES2, screen);
+                    afficher_img(NO, screen);
                 }
+                else if(P2==1)
+                {
+                    afficher_img(Menu_anime[x], screen);
+                    afficher_img(qtBG, screen);
+                    affichertxt(qttxt, screen, "Do you want to quit?");
+                    afficher_img(YES, screen);
+                    afficher_img(NO2, screen);
+                }
+                break;
+
+            case SDL_MOUSEMOTION:
+                afficher_img(Menu_anime[x], screen);
+                if(event3.motion.x>=1008 && event3.motion.x<=1008+NO.pos_img.w && event3.motion.y>=465 && event3.motion.y<=465+NO.pos_img.h)
+                {
+                    afficher_img(Menu_anime[x], screen);
+                    afficher_img(qtBG, screen);
+                    affichertxt(qttxt, screen, "Do you want to quit?");
+                    afficher_img(YES, screen);
+                    afficher_img(NO2, screen);
+                    if(P2!=0 && NSFX==0)
+                        Mix_PlayChannel(-1, eff, 0);
+                    P2=0;
+                }
+                else if(event3.motion.x>=810 && event3.motion.x<=810+YES.pos_img.w && event3.motion.y>=465 && event3.motion.y<=465+YES.pos_img.h)
+                {
+                    afficher_img(Menu_anime[x], screen);
+                    afficher_img(qtBG, screen);
+                    affichertxt(qttxt, screen, "Do you want to quit?");
+                    afficher_img(YES2, screen);
+                    afficher_img(NO, screen);
+                    if(P2!=1 && NSFX==0)
+                        Mix_PlayChannel(-1, eff, 0);
+                    P2=1;
+                }
+                else
+                {
+                    afficher_img(Menu_anime[x], screen);
+                    afficher_img(qtBG, screen);
+                    affichertxt(qttxt, screen, "Do you want to quit?");
+                    afficher_img(YES, screen);
+                    afficher_img(NO, screen);
+                }
+                break;
+
+            case SDL_MOUSEBUTTONDOWN:
+                if(event3.button.button==SDL_BUTTON_LEFT && event3.motion.x>=810 && event3.motion.x<=810+YES.pos_img.w && event3.motion.y>=465 && event3.motion.y<=465+YES.pos_img.h)
+                    choice3=1;
+                else if(event3.button.button==SDL_BUTTON_LEFT && event3.motion.x>=1008 && event3.motion.x<=1008+NO.pos_img.w && event3.motion.y>=465 && event3.motion.y<=465+NO.pos_img.h)
+                    choice3=2;
+                break;
             }
-            break;
+            if(choice3==1)
+            {
+                exit=1;
+                done=1;
+                choice=-1;
+                choice3=-1;
+            }
+            else if(choice3==2)
+            {
+                exit=1;
+                choice=-1;
+                choice3=-1;
+                afficher_img(Menu_anime[x], screen);
+                affichertxt(txt, screen, "HSAN EL KAYLA");
+                afficher_img(str1, screen);
+                afficher_img(sett1, screen);
+                afficher_img(cred1, screen);
+                afficher_img(qt2, screen);
+                SDL_Delay(500);
+            }
         }
+        break;
     }
-    for(i=0; i<=60; i++)
-        free_img(Menu_anime[x]);
-    free_img(str1);
-    free_img(str2);
-    free_img(sett1);
-    free_img(sett2);
-    free_img(cred1);
-    free_img(cred2);
-    free_img(qt1);
-    free_img(qt2);
-    free_img(settBG);
-    free_img(X1);
-    free_img(X2);
-    free_img(sound1);
-    free_img(sound2);
-    free_img(plus1);
-    free_img(plus2);
-    free_img(mins1);
-    free_img(mins1);
-    free_img(on);
-    free_img(off);
-    free_img(on2);
-    free_img(off2);
-    free_img(res);
-    free_img(res1);
-    free_img(res2);
-    free_img(qtBG);
-    free_img(YES);
-    free_img(YES2);
-    free_img(NO);
-    free_img(NO2);
-    free_img(cred);
-    freetext(txt);
-    freetext(txt1);
-    freetext(txt2);
-    freetext(txt3);
-    freetext(txt4);
-    freetext(qttxt);
-    Mix_FreeMusic(music);
-    Mix_FreeChunk(eff);
-    free_memory(&e ) ;
+}
+for(i=0; i<=60; i++)
+    free_img(Menu_anime[x]);
+free_img(str1);
+free_img(str2);
+free_img(sett1);
+free_img(sett2);
+free_img(cred1);
+free_img(cred2);
+free_img(qt1);
+free_img(qt2);
+free_img(settBG);
+free_img(X1);
+free_img(X2);
+free_img(sound1);
+free_img(sound2);
+free_img(plus1);
+free_img(plus2);
+free_img(mins1);
+free_img(mins1);
+free_img(on);
+free_img(off);
+free_img(on2);
+free_img(off2);
+free_img(res);
+free_img(res1);
+free_img(res2);
+free_img(qtBG);
+free_img(YES);
+free_img(YES2);
+free_img(NO);
+free_img(NO2);
+free_img(cred);
+freetext(txt);
+freetext(txt1);
+freetext(txt2);
+freetext(txt3);
+freetext(txt4);
+freetext(qttxt);
+Mix_FreeMusic(music);
+Mix_FreeChunk(eff);
+free_memory(&e ) ;
 //mini
-    freeminimap(&m);
-    SDL_FreeSurface(chiffres[1]);
-    SDL_FreeSurface(chiffres[2]);
-    SDL_FreeSurface(chiffres[3]);
-    SDL_FreeSurface(chiffres[4]);
-    SDL_FreeSurface(chiffres[5]);
-    SDL_FreeSurface(chiffres[6]);
-    SDL_FreeSurface(chiffres[7]);
-    SDL_FreeSurface(chiffres[8]);
-    SDL_FreeSurface(chiffres[9]);
-    SDL_FreeSurface(chiffres[10]);
-    SDL_FreeSurface(chiffres[11]);
-    SDL_FreeSurface(chiffres[12]);
-    SDL_FreeSurface(chiffres[13]);
-    SDL_FreeSurface(screen);
-    TTF_Quit();
-    SDL_Quit();
+freeminimap(&m);
+SDL_FreeSurface(chiffres[1]);
+SDL_FreeSurface(chiffres[2]);
+SDL_FreeSurface(chiffres[3]);
+SDL_FreeSurface(chiffres[4]);
+SDL_FreeSurface(chiffres[5]);
+SDL_FreeSurface(chiffres[6]);
+SDL_FreeSurface(chiffres[7]);
+SDL_FreeSurface(chiffres[8]);
+SDL_FreeSurface(chiffres[9]);
+SDL_FreeSurface(chiffres[10]);
+SDL_FreeSurface(chiffres[11]);
+SDL_FreeSurface(chiffres[12]);
+SDL_FreeSurface(chiffres[13]);
+SDL_FreeSurface(screen);
+TTF_Quit();
+SDL_Quit();
 //enemy
-	 SDL_FreeSurface(enmy.sprite);
-    return 0;
+SDL_FreeSurface(enmy.sprite);
+return 0;
 
 }
+
