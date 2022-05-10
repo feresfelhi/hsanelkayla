@@ -7,6 +7,7 @@
 #include "fonctionperso.h"
 #include "minimap.h"
 #include "enemi.h"
+#include "enigmeImg.h"
 
 
 int main(int argc, char** argv)
@@ -152,6 +153,28 @@ int main(int argc, char** argv)
 //enemy
     enemie enmy;
     initenemie (&enmy);
+    
+//enigmeimg
+	enigme en;
+	pic mat[3][4];
+	char nomfichier[20];
+	int g;
+	
+	initImg(&mat[0][0], "Q10.png", 600, 50);
+	initImg(&mat[0][1], "Q11.png", 600, 50);
+	initImg(&mat[0][2], "Q12.png", 600, 50);
+	initImg(&mat[0][3], "Q13.png", 600, 50);
+	initImg(&mat[1][0], "Q20.png", 600, 50);
+	initImg(&mat[1][1], "Q21.png", 600, 50);
+	initImg(&mat[1][2], "Q22.png", 600, 50);
+	initImg(&mat[1][3], "Q23.png", 600, 50);
+	initImg(&mat[2][0], "Q30.png", 600, 50);
+	initImg(&mat[2][1], "Q31.png", 600, 50);
+	initImg(&mat[2][2], "Q32.png", 600, 50);
+	initImg(&mat[2][3], "Q33.png", 600, 50);
+	
+	
+	g=initEnigme(&e ,nomfichier)-1;
 	
     while(!done)
     {
@@ -566,6 +589,96 @@ int main(int argc, char** argv)
                                 animerEnigmee(porte,&port,screen);
                             }
                             Mix_FadeOutMusic(1000);
+                        }
+                        if(pos.x==1200)
+                        {
+                        	P=0;
+                        	while(!boucle)
+				{	
+				SDL_Flip(screen);
+				afficheEnigme(en, screen);
+				animerEnigme(&en);
+				SDL_BlitSurface(en.anim[en.alea],NULL,screen,(&en.position_anim));
+				SDL_PollEvent(&event);
+				
+				switch(event.type)
+				
+				{
+					case SDL_QUIT:
+					{
+						boucle=1;
+					}
+					break;
+				
+					case SDL_KEYDOWN:
+						switch(event.key.keysym.sym)
+						{
+							case SDLK_DOWN:
+								if(P==0)
+								{
+									P=1;
+									afficher_img(mat[g][2], screen);
+								}
+								else if(P==1)
+								{
+									P=2;
+									afficher_img(mat[g][3], screen);
+								}
+								else if(P==2)
+								{
+									P=0;
+									afficher_img(mat[g][1], screen);
+								}
+								break;
+								
+							case SDLK_UP:
+								if(P==0)
+								{
+									P=2;
+									afficher_img(mat[g][3], screen);
+								}
+								else if(P==1)
+								{
+									P=0;
+									afficher_img(mat[g][1], screen);
+								}
+								else if(P==2)
+								{
+									P=1;
+									afficher_img(mat[g][2], screen);
+								}
+								break;
+						}
+						break;
+						
+						
+						case SDL_MOUSEMOTION:
+					    	if(event.motion.x>=650 && event.motion.x<=1300 && event.motion.y>=250 && event.motion.y<=400)
+					    {
+						afficher_img(mat[g][1], screen);
+						P=0;
+					    }
+					    else if(event.motion.x>=650 && event.motion.x<=1300 && event.motion.y>=450 && event.motion.y<=550)
+					    {
+						afficher_img(mat[g][2], screen);
+						P=1;
+					    }
+					    else if(event.motion.x>=650 && event.motion.x<=1300 && event.motion.y>=600 && event.motion.y<=750)
+					    {
+					    	afficher_img(mat[g][3], screen);
+						P=2;
+					    }
+					    else
+					    {
+						afficher_img(mat[g][0], screen);
+					    }
+					    break;
+										
+							}
+					}
+					
+					SDL_FreeSurface(screen);
+				}	
                         }
                         break;
                     }
@@ -1186,4 +1299,3 @@ int main(int argc, char** argv)
     return 0;
 
 }
-
