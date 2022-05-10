@@ -18,6 +18,7 @@ typedef struct {
 }Text;
 
 int initscore(Text* T);
+int initscore2(Text* T);
 int loadFontscore(Text* T, char* path);
 void afficher_score(Text T,SDL_Surface *screen);
 void freescore(Text T);

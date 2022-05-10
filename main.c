@@ -9,8 +9,11 @@
 
     int main()
 {
-    int done=1,dt=0;
+    int done=1,dt=0,g=0,fgh;
     SDL_Event event;
+    printf("jouer avec un joueur ou deux joueurs : \n 1 ->  1 joueur || 2 -> 2 joueurs ");
+	scanf("%d",&g);
+
     SDL_Init(SDL_INIT_VIDEO);
 
     SDL_Surface *screen;
@@ -35,11 +38,25 @@
     bg_pos.x = 0;
     bg_pos.y = 0;
     Personne p;
+     Personne p2;
     initPerso(&p);
+    initPerso2(&p2);
     SDL_EnableKeyRepeat(200, 0);
+    
     while(done)
     {
-
+    /*if(fgh==1){
+    animerPerso(&p);
+     deplacerPerso(&p,screen,dt);
+     saut(&p);
+     afficherPerso (p,screen);}
+     else
+      if (fgh==2){
+      animerPerso(&p2);
+     deplacerPerso(&p2,screen,dt);
+     saut(&p2);
+     afficherPerso (p2,screen);}*/
+      
         SDL_PollEvent(&event);
 
         switch(event.type)
@@ -59,15 +76,22 @@
             case
                     SDLK_RIGHT:
                 dt=1;
+                
                 deplacerPerso(&p,screen,dt);
                 break;
 
             case SDLK_LEFT:
                 dt=2;
+                
                 deplacerPerso(&p,screen,dt);
                 break;
-            case SDLK_SPACE:
+                case SDLK_w:
                 dt=3;
+                deplacerPerso(&p,screen,dt);
+                break;
+
+            case SDLK_SPACE:
+                dt=4;
                 deplacerPerso(&p,screen,dt);
                 saut(&p);
 
@@ -85,15 +109,59 @@
             case SDLK_ESCAPE:
                 done=0;
                 break;
+                case SDLK_l: 
+               	dt=0;
+               	deplacerPerso(&p2 ,screen,dt);
+		break;
+		
+		case SDLK_m: 
+               	dt=1;
+               	
+               	deplacerPerso(&p2 ,screen,dt);
+		break;
+			
+		case SDLK_k: 
+               	dt=2;
+               	
+               	deplacerPerso(&p2 ,screen,dt);
+		break;
+		case SDLK_s:
+			dt=3;
+               	deplacerPerso(&p2 ,screen,dt);
+			
+		break;
+		case SDLK_o:
+                dt=4;
+                deplacerPerso(&p2,screen,dt);
+                saut(&p2);
+
+		
+		
+		case SDLK_u:
+			augmenter_vitesse(&p2);
+		break;
+		
+		case SDLK_i:
+			diminuer_vitesse(&p2);
+		break;
 
             }
 
         }
 
         SDL_BlitSurface(bg,NULL,screen,&bg_pos);
-        afficherPerso (p,screen);
-        saut(&p);
+        if (g==1){
+		afficherPerso (p,screen);
+		saut(&p);
+	}
 
+	if(g==2){
+		afficherPerso (p,screen);
+		afficherPerso (p2,screen);
+		saut(&p);
+		saut(&p2);
+
+	}
 
 
         SDL_Flip(screen);
