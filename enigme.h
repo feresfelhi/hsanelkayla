@@ -2,33 +2,44 @@
 #define ENIGME_H_INCLUDED
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
-#include <SDL/SDL_ttf.h>
-#include <SDL/SDL_mixer.h>
 #include <string.h>
 #include <math.h>
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
 
-struct enigme
-{
-	SDL_Surface* image_enigme;
-	SDL_Rect position_enigme;
-	int resultat;
-	SDL_Surface *corrct,*wrg;
-	SDL_Rect position_corrct,position_wrg;
+/**
+* @struct enigme
+* @brief structure enigme
+*/
 
-	TTF_Font *police,*police_q;
-	SDL_Surface *reponse_1,*reponse_2,*reponse_3,*question,*qu;
-	SDL_Rect  pos_reponse_1,pos_reponse_2,pos_reponse_3,pos_question,pos_qu;
+typedef struct
+{	
+	SDL_Surface *image_enigme; /*!< Surface*/ 
+	SDL_Rect position_enigme; /*!< Rectangle*/ 
+	SDL_Surface *anim[6]; /*!< Surface*/
+	SDL_Rect position_anim; /*!< Rectangle*/
+	int resultat;
 	int alea;
 	
-};
-typedef struct enigme enigme;
+}enigme;
 
-void generer(enigme* e,SDL_Color Color);
-void initEnigme2( enigme* e ,SDL_Color Color);
-void blit_enigme2 ( enigme e, SDL_Surface screen);
-void free_surface_enigme2( enigme *e );
-int affiche2(enigme e, SDL_Surface screen );
+/**
+* @struct picture
+* @brief structure picture
+*/
+
+typedef struct
+{	
+	SDL_Rect pos_scrn; /*!< Rectangle*/
+	SDL_Rect pos_img; /*!< Rectangle*/
+	SDL_Surface *img; /*!< Surface*/ 
+}pic;
+
+void initImg(pic *, char *, int, int);
+void afficher_img(pic, SDL_Surface *);
+int initEnigme(enigme* e ,char *nomfichier);
+void afficheEnigme(enigme e, SDL_Surface *screen);
+void resoudreEnigme(enigme *e);
+void animerEnigme(enigme *e);
 #endif
