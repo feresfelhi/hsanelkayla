@@ -15,16 +15,29 @@ void initBack(Background * BG)
 	BG[0].mask[0]=IMG_Load("versionlvl1Mask.png");
 		if(BG[0].mask[0]==NULL)
 			return ;
+	/*BG[0].mask[1]=IMG_Load("lvl1.png");
+		if(BG[0].mask[1]==NULL)
+			return ;*/
+	BG[0].pos_img.x=0;
+	BG[0].pos_img.y=0;
+	BG[0].pos_img2.x=957;
+	BG[0].pos_img2.y=0;
 	BG[0].camera.x=0;
 	BG[0].camera.y=0;
 	BG[0].camera.w=1914;
 	BG[0].camera.h=878;
+	BG[0].camera2.x=0;
+	BG[0].camera2.y=0;
+	BG[0].camera2.w=957;
+	BG[0].camera2.h=878;
 	BG[0].nb_anim=0;
+	BG[0].multi_J=0;
 }
 
 void afficherBack(Background BG, SDL_Surface * scre)
 {
-	SDL_BlitSurface(BG.anim[BG.nb_anim], &BG.camera, scre, NULL);
+	SDL_BlitSurface(BG.anim[BG.nb_anim], &BG.camera2, scre, &BG.pos_img2);
+	SDL_BlitSurface(BG.anim[BG.nb_anim], &BG.camera, scre, &BG.pos_img);
 }
 
 void animerBackground(Background * BG)
@@ -32,20 +45,16 @@ void animerBackground(Background * BG)
 	BG->nb_anim++;
 }
 
-int collisionPP( SDL_Rect P, SDL_Surface * Mask)
+int collisionPP( SDL_Rect P, int direct, SDL_Surface * Mask)
 {
 	int i, collision=0;
 	SDL_Rect pte[8];
-	SDL_Color color[8], obs1, obs2;
+	SDL_Color color[8], obs;
 	Uint32 col=0;
 	
-	obs2.r=0;
-	obs2.g=0;
-	obs2.b=255;
-	
-	obs1.r=0;
-	obs1.g=255;
-	obs1.b=255;
+	obs.r=0;
+	obs.g=0;
+	obs.b=255;
 	
 	pte[0].x=P.x;
 	pte[0].y=P.y;
@@ -74,71 +83,93 @@ int collisionPP( SDL_Rect P, SDL_Surface * Mask)
 		memcpy(&col, pos, Mask->format->BytesPerPixel);
 		SDL_GetRGB(col, Mask->format, &color[i].r, &color[i].g, &color[i].b);
 	}
-	if((color[6].r==obs1.r && color[6].g==obs1.g && color[6].b==obs1.b) || (color[5].r==obs1.r && color[5].g==obs1.g && color[5].b==obs1.b) || (color[7].r==obs1.r && color[7].g==obs1.g && color[7].b==obs1.b))
-		return 1;
 	for(i=0; i<8; i++)
 	{
-		if(color[i].r==obs2.r && color[i].g==obs2.g && color[i].b==obs2.b)
-		/*{
-			if(direct==1)
-				return 2;
-			else if(direct==2)
-				return 3;
-			else if(direct==3)
-				return 4;
-			else if(direct==4)
-				return 5;
-		}*/
-			return 2;
+		if(color[i].r==obs.r && color[i].g==obs.g && color[i].b==obs.b)
+		{
+			return 1;
+		}
 	}
 	return 0;
 }
+int collisionGND( SDL_Rect P, SDL_Surface * Mask)
+{
+	int i, collision=0;
+	SDL_Rect pte[3];
+	SDL_Color color[3], obs;
+	Uint32 col=0;
+	
+	obs.r=0;
+	obs.g=255;
+	obs.b=255;
+	
+	pte[0].x=P.x;
+	pte[0].y=P.y+150;
+	pte[1].x=(P.x+(P.x+75))/2;
+	pte[1].y=P.y+150;
+	pte[2].x=P.x+75;
+	pte[2].y=P.y+150;
+	
+	for(i=0; i<3; i++)
+	{
+		char* pos=(char*)Mask->pixels;
+		pos+=(Mask->pitch*pte[i].y);
+		pos+=(Mask->format->BytesPerPixel*pte[i].x);
+		memcpy(&col, pos, Mask->format->BytesPerPixel);
+		SDL_GetRGB(col, Mask->format, &color[i].r, &color[i].g, &color[i].b);
+	}
+	if((color[1].r==obs.r && color[1].g==obs.g && color[1].b==obs.b) || (color[0].r==obs.r && color[0].g==obs.g && color[0].b==obs.b) || (color[2].r==obs.r && color[2].g==obs.g && color[2].b==obs.b))
+		return 1;
+	return 0;
+}
 
-void scrolling (Background * BG, int direct, int pasAvancement)
+void scrolling (SDL_Rect *pos, int direct, int pasAvancement)
 {
 	int i, j;
 	if(pasAvancement==0)
 	{
-		BG->camera.y+=5;
 		switch(direct)
 		{
 			case 0://right
-				if(BG->camera.x<6188-1914)
-					BG->camera.x+=5;
+				if(pos->x<6188-1914)
+					pos->x+=5;
 			break;
 			
 			case 1://left
-				if(BG->camera.x>0)
-					BG->camera.x-=5;
+				if(pos->x>0)
+					pos->x-=5;
+			break;
+
+			case 2://up
+				pos->y-=5;
+			break;
+
+			case 3://down
+				pos->y+=5;
 			break;
 		}
 	}
-	if(pasAvancement!=0)
+	if(pasAvancement==1)
 	{
-		if(pasAvancement==2)
-			BG->camera.y+=5;
-		else
+		switch(direct)
 		{
-			switch(direct)
-			{
-				case 0://right
-					if(BG->camera.x<6188-1914)
-						BG->camera.x+=5;
-				break;
-				
-				case 1://left
-					if(BG->camera.x>0)
-						BG->camera.x-=5;
-				break;
+			case 0://right
+				if(pos->x<6188-1914)
+					pos->x-=5;
+			break;
+			
+			case 1://left
+				if(pos->x>0)
+					pos->x+=5;
+			break;
 
-				case 2://up
-						BG->camera.y-=5;
-				break;
+			case 2://up
+				pos->y+=5;
+			break;
 
-				case 3://down
-						BG->camera.y+=5;
-				break;
-			}
+			case 3://down
+				pos->y-=5;
+			break;
 		}
 	}
 }

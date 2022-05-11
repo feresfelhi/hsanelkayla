@@ -12,12 +12,12 @@ int main(int argc, char** argv)
 	}
 	
 	SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO);
-	SDL_Surface *scre, *perso;
-	SDL_Rect P, pos;
+	SDL_Surface *scre, *perso, *perso2;
+	SDL_Rect P, P2, pos, pos2;
 	SDL_Event event, event2;
 	atexit(SDL_Quit);
-	int done=0, lvl=0, collision;
-	Background BG[3];
+	int done=0, lvl=0, collision, U_D1=0, U_D2=0, x=0;
+	Background BG[3], BG2[3];
 	Mix_Music *music;
 	music=Mix_LoadMUS("music menu.mp3");
 	Mix_PlayMusic(music, -1);
@@ -30,6 +30,7 @@ int main(int argc, char** argv)
 	}
 	
 	initBack(&BG[0]);
+	initBack(&BG2[0]);
 	
 	P.x=40;
 	P.y=564;
@@ -38,19 +39,45 @@ int main(int argc, char** argv)
 	pos.x=BG[0].camera.x+40;
 	pos.y=BG[0].camera.y+564;
 	perso=IMG_Load("black.png");
-		if(BG[0].anim[0]==NULL)
+		if(perso==NULL)
 			return 0;
-	
+	P2.x=997;
+	P2.y=564;
+	P2.w=75;
+	P2.h=150;
+	pos2.x=BG[0].camera2.x+40;
+	pos2.y=BG[0].camera2.y+564;
+	perso2=IMG_Load("black.png");
+		if(perso2==NULL)
+			return 0;
+	Uint8 *keystates;
 	while(!done)
 	{
 		SDL_Flip(scre);
+		if(BG[lvl].multi_J==1)
+		{
+			BG[0].camera.w=957;
+		}
+		else
+			BG[0].camera.w=1914;
+		//SDL_BlitSurface(BG[0].mask[0], NULL, scre, NULL);
 		afficherBack(BG[lvl], scre);
 		SDL_BlitSurface(perso, NULL, scre, &P);
+		if(BG[lvl].multi_J==1)
+			SDL_BlitSurface(perso2, NULL, scre, &P2);
 		
 		pos.x=BG[0].camera.x+40;
 		pos.y=BG[0].camera.y+564;
-		if(collisionPP( pos, BG[0].mask[0])!=1)
+		pos2.x=BG[0].camera2.x+40;
+		pos2.y=BG[0].camera2.y+564;
+		if(pos.x<1115 || pos.x>1185)
+			U_D1=0;
+		if(pos2.x<1115 || pos2.x>1185)
+			U_D2=0;
+		if(collisionGND( pos, BG[0].mask[0])!=1 && U_D1==0)
 			BG[lvl].camera.y+=5;
+		if(collisionGND( pos2, BG[0].mask[0])!=1 && U_D2==0)
+			BG[lvl].camera2.y+=5;
 		
 		SDL_PollEvent(&event);
 		
@@ -59,61 +86,132 @@ int main(int argc, char** argv)
 			case SDL_KEYDOWN:
 				switch(event.key.keysym.sym)
 				{
-					case SDLK_d:
-						collision=collisionPP( pos, BG[0].mask[0]);
-						scrolling (&BG[lvl], 0, collision);
+					case SDLK_m:
+						BG[lvl].multi_J++;
+						BG[lvl].multi_J=BG[lvl].multi_J%2;
+						printf("%d",BG[lvl].multi_J);
+						SDL_Delay(1000);
+						break;
+					/*case SDLK_d:
+						collision=collisionPP( pos, 0, BG[0].mask[0]);
+						scrolling (&(BG[lvl].camera), 0, collision);
 						break;
 						
 					case SDLK_q:
-						collision=collisionPP( pos, BG[0].mask[0]);
-						scrolling (&BG[lvl], 1, collision);
+						collision=collisionPP( pos, 1, BG[0].mask[0]);
+						scrolling (&(BG[lvl].camera), 1, collision);
 						break;
 						
 					case SDLK_z:
-						collision=collisionPP( pos, BG[0].mask[0]);
-						scrolling (&BG[lvl], 2, collision);
+						if(pos.x>=1115 && pos.x<=1185)
+						{
+							U_D=1;
+							collision=collisionPP( pos, 2, BG[0].mask[0]);
+							scrolling (&(BG[lvl].camera), 2, collision);
+						}
 						break;
 
 					case SDLK_s:
-						collision=collisionPP( pos, BG[0].mask[0]);
-						scrolling (&BG[lvl], 3, collision);
+						if(pos.x>=1115 && pos.x<=1185)
+						{
+							U_D=1;
+							collision=collisionPP( pos, 3, BG[0].mask[0]);
+							scrolling (&(BG[lvl].camera), 3, collision);
+						}
 						break;
 					case SDLK_SPACE:
 						while(BG[lvl].camera.y>(-100))
 						{
-							collision=collisionPP( pos, BG[0].mask[0]);
-							scrolling (&BG[lvl], 2, collision);
+							collision=collisionPP( pos, 2, BG[0].mask[0]);
+							scrolling (&(BG[lvl].camera), 2, collision);
 							SDL_Flip(scre);
 							afficherBack(BG[lvl], scre);
 							SDL_BlitSurface(perso, NULL, scre, &P);
-							SDL_PollEvent(&event2);
+							SDL_PollEvent(&event);
 							
-							switch(event2.type)
+							switch(event.type)
 							{
 								case SDL_KEYDOWN:
-								switch(event2.key.keysym.sym)
+								switch(event.key.keysym.sym)
 								{
 									case SDLK_d:
-										collision=collisionPP( pos, BG[0].mask[0]);
-										scrolling (&BG[lvl], 0, collision);
+										collision=collisionPP( pos, 0, BG[0].mask[0]);
+										scrolling (&(BG[lvl].camera), 0, collision);
 										break;
 						
 									case SDLK_q:
-										collision=collisionPP( pos, BG[0].mask[0]);
-										scrolling (&BG[lvl], 1, collision);
+										collision=collisionPP( pos, 1, BG[0].mask[0]);
+										scrolling (&(BG[lvl].camera), 1, collision);
 										break;
 								}
 							}
 						}
-						while(BG[lvl].camera.y<0)
+						break;
+						
+					case SDLK_RIGHT:
+						collision=collisionPP( pos2, 0, BG[0].mask[0]);
+						scrolling (&BG[lvl].camera2, 0, collision);
+						break;
+						
+					case SDLK_LEFT:
+						collision=collisionPP( pos2, 1, BG[0].mask[0]);
+						scrolling (&BG[lvl].camera2, 1, collision);
+						break;
+						
+					case SDLK_UP:
+						if(pos2.x>=1115 && pos2.x<=1185)
+						{
+							U_D=1;
+							collision=collisionPP( pos2, 2, BG[0].mask[0]);
+							scrolling (&BG[lvl].camera2, 2, collision);
+						}
+						break;
+
+					case SDLK_DOWN:
+						if(pos2.x>=1115 && pos2.x<=1185)
+						{
+							U_D=1;
+							collision=collisionPP( pos2, 3, BG[0].mask[0]);
+							scrolling (&BG[lvl].camera2, 3, collision);
+						}
+						break;
+					case SDLK_RSHIFT:
+						while(BG[lvl].camera2.y>(-100))
+						{
+							collision=collisionPP( pos2, 2, BG[0].mask[0]);
+							scrolling (&BG[lvl].camera2, 2, collision);
+							SDL_Flip(scre);
+							afficherBack(BG[lvl], scre);
+							SDL_BlitSurface(perso, NULL, scre, &P);
+							SDL_BlitSurface(perso2, NULL, scre, &P2);
+							SDL_PollEvent(&event);
+							
+							switch(event.type)
+							{
+								case SDL_KEYDOWN:
+								switch(event.key.keysym.sym)
+								{
+									case SDLK_RIGHT:
+										collision=collisionPP( pos2, 0, BG[0].mask[0]);
+										scrolling (&BG[lvl].camera2, 0, collision);
+										break;
+						
+									case SDLK_LEFT:
+										collision=collisionPP( pos2, 1, BG[0].mask[0]);
+										scrolling (&BG[lvl].camera2, 1, collision);
+										break;
+								}
+							}
+						}
+						/*while(BG[lvl].camera.y<0)
 						{
 						collision=collisionPP( pos, BG[0].mask[0]);
 						scrolling (&BG[lvl], 3, collision);
 							SDL_Flip(scre);
 							afficherBack(BG[lvl], scre);
 							SDL_BlitSurface(perso, NULL, scre, &P);
-						}
-						break;
+						}*/
+						//break;
 				}
 				break;
 			
@@ -121,6 +219,118 @@ int main(int argc, char** argv)
 				done=1;
 				break;
 		}
+		keystates = SDL_GetKeyState( NULL );
+        if( keystates[ SDLK_d ] )
+        {
+						collision=collisionPP( pos, 0, BG[0].mask[0]);
+						scrolling (&(BG[lvl].camera), 0, collision);
+        }
+        if( keystates[ SDLK_q ] )
+        {
+						collision=collisionPP( pos, 1, BG[0].mask[0]);
+						scrolling (&(BG[lvl].camera), 1, collision);
+        }
+        if( keystates[ SDLK_z ] && pos.x>=1115 && pos.x<=1185)
+        {
+							U_D1=1;
+							collision=collisionPP( pos, 2, BG[0].mask[0]);
+							scrolling (&(BG[lvl].camera), 2, collision);
+        }
+        if( keystates[ SDLK_s ] && pos.x>=1115 && pos.x<=1185)
+        {
+							U_D1=1;
+							collision=collisionPP( pos, 3, BG[0].mask[0]);
+							scrolling (&(BG[lvl].camera), 3, collision);
+        }
+        if( keystates[ SDLK_SPACE ] && collisionGND( pos, BG[0].mask[0])==1)
+        {
+						while(BG[lvl].camera.y>(-100))
+						{
+							collision=collisionPP( pos, 2, BG[0].mask[0]);
+							scrolling (&(BG[lvl].camera), 2, collision);
+							SDL_Flip(scre);
+							afficherBack(BG[lvl], scre);
+							SDL_BlitSurface(perso, NULL, scre, &P);
+							SDL_PollEvent(&event);
+							
+							switch(event.type)
+							{
+								case SDL_KEYDOWN:
+								switch(event.key.keysym.sym)
+								{
+									case SDLK_d:
+										collision=collisionPP( pos, 0, BG[0].mask[0]);
+										scrolling (&(BG[lvl].camera), 0, collision);
+										break;
+						
+									case SDLK_q:
+										collision=collisionPP( pos, 1, BG[0].mask[0]);
+										scrolling (&(BG[lvl].camera), 1, collision);
+										break;
+								}
+							}
+						}
+        }
+        if(BG[lvl].multi_J==1)
+        {
+        		if( keystates[ SDLK_RIGHT ] )
+        {
+						collision=collisionPP( pos2, 0, BG[0].mask[0]);
+						scrolling (&BG[lvl].camera2, 0, collision);
+        }
+        if( keystates[ SDLK_LEFT ] )
+        {
+						collision=collisionPP( pos2, 1, BG[0].mask[0]);
+						scrolling (&(BG[lvl].camera2), 1, collision);
+        }
+        if( keystates[ SDLK_UP ] )
+        {
+						if(pos2.x>=1115 && pos2.x<=1185)
+						{
+							U_D2=1;
+							collision=collisionPP( pos2, 2, BG[0].mask[0]);
+							scrolling (&(BG[lvl].camera2), 2, collision);
+						}
+        }
+        if( keystates[ SDLK_DOWN ] )
+        {
+						if(pos2.x>=1115 && pos2.x<=1185)
+						{
+							U_D2=1;
+							collision=collisionPP( pos2, 3, BG[0].mask[0]);
+							scrolling (&(BG[lvl].camera2), 3, collision);
+						}
+        }
+        if( keystates[ SDLK_RSHIFT ] && collisionGND( pos2, BG[0].mask[0])==1)
+        {
+						while(BG[lvl].camera2.y>(-100))
+						{
+							collision=collisionPP( pos2, 2, BG[0].mask[0]);
+							scrolling (&(BG[lvl].camera2), 2, collision);
+							SDL_Flip(scre);
+							afficherBack(BG[lvl], scre);
+							SDL_BlitSurface(perso, NULL, scre, &P);
+							SDL_PollEvent(&event);
+							
+							switch(event.type)
+							{
+								case SDL_KEYDOWN:
+								switch(event.key.keysym.sym)
+								{
+									case SDLK_RIGHT:
+										collision=collisionPP( pos2, 0, BG[0].mask[0]);
+										scrolling (&(BG[lvl].camera2), 0, collision);
+										break;
+						
+									case SDLK_LEFT:
+										collision=collisionPP( pos2, 1, BG[0].mask[0]);
+										scrolling (&(BG[lvl].camera2), 1, collision);
+										break;
+								}
+							}
+						}
+        }
+        }
 	}
 	free_BG(BG[0]);
 	return 0;
