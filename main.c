@@ -137,7 +137,9 @@ int main(int argc, char** argv)
     SDL_WM_SetCaption("game", NULL);
 
     Personne p;
+    Personne p2;
     initPerso(&p);
+    initPerso2(&p2);
     SDL_EnableKeyRepeat(200, 0);
 
     // enigme
@@ -451,8 +453,8 @@ int main(int argc, char** argv)
                     afficherminimap(m,screen);
                     pos.x=Bg[0].camera.x+p.position.x;
                     pos.y=Bg[0].camera.y+p.position.y;
-						  pos2.x=Bg[0].camera2.x+p.position.x;
-					     pos2.y=Bg[0].camera2.y+p.position.y;
+						  pos2.x=Bg[0].camera2.x+p2.position.x;
+					     pos2.y=Bg[0].camera2.y+p2.position.y;
 		if(pos.x<1115 || pos.x>1185)
 			U_D1=0;
 		if(pos2.x<1115 || pos2.x>1185)
@@ -461,8 +463,18 @@ int main(int argc, char** argv)
 			Bg[lvl].camera.y+=5;
 		if(collisionGND( pos2, Bg[0].mask[0])!=1 && pos.x>screen->w*3/4 && U_D2==0)
 			Bg[lvl].camera2.y+=5;
-                    afficherPerso (p,screen);
-                    saut(&p);
+                    if (Bg[lvl].multi_J==0){
+		afficherPerso (p,screen);
+		saut(&p);
+	}
+
+	if(Bg[lvl].multi_J==1){
+		afficherPerso (p,screen);
+		afficherPerso (p2,screen);
+		saut(&p);
+		saut(&p2);
+
+	}
                     animate_Enemy(&enmy);
                     move_enemy(&enmy);
                     if(collision_E(enmy,p))
