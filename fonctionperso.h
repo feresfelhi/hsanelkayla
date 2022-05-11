@@ -14,7 +14,7 @@ typedef struct {
 	SDL_Rect frame;
 	SDL_Surface *vie;
         SDL_Rect posvie;
-
+        SDL_Rect posvie2;
 	
 	int nbframe; 
 	int direction;  
@@ -38,5 +38,6 @@ void animerPerso(Personne *p);
 void saut(Personne *p);
 void augmenter_vitesse(Personne *p);
 void diminuer_vitesse(Personne *p);
+void afficherscore (SDL_Surface *screen,int *score);
 #endif
 

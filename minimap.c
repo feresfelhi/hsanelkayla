@@ -31,7 +31,7 @@ void affichertemps (int temps , SDL_Surface *screen)
   char s[19];
   SDL_Surface *txt;
   TTF_Font *police = NULL;
-  police = TTF_OpenFont("Urusans.TTF",40);
+  police = TTF_OpenFont("QUESTIONOFTIME.TTF",40);
   SDL_Color couleur = {0,0,0}; 
   SDL_Rect post; 
   post.x=0; 
@@ -41,7 +41,7 @@ void affichertemps (int temps , SDL_Surface *screen)
   SDL_BlitSurface(txt,NULL,screen,&post);
 }
 
-void afficherscore (SDL_Surface *screen,Personne p,int *score)
+/*void afficherscore (SDL_Surface *screen,Personne p,int *score)
 {
   char s[19];
   SDL_Surface *sc;
@@ -61,13 +61,12 @@ void afficherscore (SDL_Surface *screen,Personne p,int *score)
    }
    else
     {
-      //printf ("si\n");
       sprintf (s,"Score : %d",*score);
       sc = TTF_RenderText_Blended(police , s, couleur);
       SDL_BlitSurface(sc,NULL,screen,&possc);
     }
   TTF_CloseFont(police);
-}
+}*/
 
 SDL_Color GetPixel(SDL_Surface *BG, int x, int y)
 {

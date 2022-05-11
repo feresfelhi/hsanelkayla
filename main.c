@@ -8,6 +8,7 @@
 #include "minimap.h"
 #include "enemi.h"
 #include "enigmeImg.h"
+#include "blanc.h"
 
 int arduinoWriteData(int x)
 {
@@ -157,11 +158,13 @@ int main(int argc, char** argv)
 //mininap
     char nom[30]="\0";
     int distance=100, j,y=1;  //continuer=0; //exit variable de la boucle du jeux et continuer la variable de la boucle saisie du nom joueur
-    int score=30;
-    int temps=60;
-    int frame=0;//pour savoir frame par seconde  fps
-    Uint32 start;//pour fps
-    const int FPS=20;//fixation fps en 20
+    int score=0;
+    int xo ;
+    grille gril;
+    int temps=120;
+    int frame=0; //pour savoir frame par seconde  fps
+    Uint32 start; //pour fps
+    const int FPS=20; //fixation fps en 20
     char sh[70]="score.txt";
     minimap m;
     Personne pMprochaine ;
@@ -176,6 +179,7 @@ int main(int argc, char** argv)
     imageFond = IMG_Load("lvl1.png");//image kbira il principal
     //initialisation du minimap
     initminimap(&m);
+    InitGrille (&gril);
     masked = IMG_Load("map1_masked.png");
     //position prochaine du personnage principale
     pMprochaine.position.x = p.position.x;
@@ -449,8 +453,25 @@ int main(int argc, char** argv)
 			Bg[0].camera.w=1914;
                     afficherBack(Bg[0], screen);
                     SDL_Flip(screen);
+                    if (pos.x == 1250)
+                     {
+                       p.posvie2.x = 250 ;
+                     }
+                    if (p.posvie2.x > 200)
+                     {
+                      jeux (&gril,&xo) ;
+                      
+                       if (xo == 1)
+                        {
+                          p.posvie2.x = 146;
+                        }
+                       else
+                        {
+                          exit = 1;
+                        }
+                     }
                     //afficher_enemie (enmy,Bg[lvl].anim[Bg[lvl].nb_anim]);
-afficher_enemie(enmy,screen);
+                    afficher_enemie(enmy,screen);
 
                     SDL_Flip(screen);
                     afficherminimap(m,screen);
@@ -491,7 +512,7 @@ SDL_Flip(screen);
                     }
                     SDL_PollEvent(&event);
                     affichertemps ( temps,screen);
-                    afficherscore (screen,p, &score);
+                    afficherscore (screen,&score);
                     arduinoReadData(&receive);
                     printf("%d", receive);
 						  switch(receive)
@@ -808,6 +829,7 @@ SDL_Flip(screen);
                     case 0:
                         if(pos.x==1000 && boucle==1)
                         {
+                            
                             Init_Enigme(&e, "enigme/questions.txt", "enigme/reponses.txt", "enigme/vraireponses.txt");
                             while(boucle==1)
                             {
@@ -818,6 +840,7 @@ SDL_Flip(screen);
                             {
                                 printf("you win!!!");
                                 animerEnigme(porte,&port,screen);
+                                score += 10;
                             }
                             else if (!Game)
                             {
@@ -1530,6 +1553,7 @@ SDL_FreeSurface(chiffres[11]);
 SDL_FreeSurface(chiffres[12]);
 SDL_FreeSurface(chiffres[13]);
 SDL_FreeSurface(screen);
+freeGrille(&gril);
 TTF_Quit();
 SDL_Quit();
 //enemy

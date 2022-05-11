@@ -26,7 +26,7 @@ void affichertemps (int temps, SDL_Surface *screen);
 SDL_Color GetPixel (SDL_Surface *BG , int x , int y);//traj3ilna couleur ta3 position ili fiha il perso hkk nfar9ou bin perso w il be9i
 int collisionPPP (Personne p , SDL_Surface *masque);//mouvement
 //sauvegardage 
-void afficherscore (SDL_Surface *screen,Personne p,int *score);
+//void afficherscore (SDL_Surface *screen,Personne p,int *score);
 void sauvegarder (int score , char nomjoueur[] , char nomfichier[]);
 //option
 int entrernom (SDL_Surface * screen, char nom[30], int *x);

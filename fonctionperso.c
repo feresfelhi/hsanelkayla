@@ -8,7 +8,11 @@ void initPerso(Personne *p)
     p->vie=IMG_Load("love.png");
     p->posvie.x=1468;
     p->posvie.y=15;
-
+    p->posvie2.x=0;
+    p->posvie2.y=0;
+    p->posvie2.h=p->vie->h;
+    p->posvie2.w=p->vie->w;
+    
     p->image=IMG_Load("spritesheet mc.png");
 
     p->position.x=0;
@@ -64,12 +68,30 @@ void initPerso2(Personne *p){
 
 
 }
+
+void afficherscore (SDL_Surface *screen,int *score)
+{
+  char s[19];
+  SDL_Surface *sc;
+  TTF_Font *police = NULL;
+  police = TTF_OpenFont ("QUESTIONOFTIME.TTF",30);
+  SDL_Color couleur = {0,0,0}; 
+  SDL_Rect possc;
+  possc.x=1500; 
+  possc.y=40;
+  SDL_Flip(screen);
+  sprintf (s,"Score : %d" , *score );
+  sc = TTF_RenderText_Blended (police, s , couleur);
+  SDL_BlitSurface(sc,NULL,screen,&possc);
+  TTF_CloseFont(police);
+}
+
 void afficherPerso (Personne p,SDL_Surface *screen)
 {
 
 
-    SDL_BlitSurface(p.vie,NULL,screen,&(p.posvie));
-    afficher_score(p.score,screen);
+    SDL_BlitSurface(p.vie,&p.posvie2,screen,&(p.posvie));
+    //afficher_score(p.score,screen);
     SDL_BlitSurface(p.image,&(p.frame),screen,&(p.position));
 }
 void animerPerso(Personne *p)
