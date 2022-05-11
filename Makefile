@@ -16,3 +16,7 @@ enemi.o:enemi.c
 	gcc -c enemi.c -g
 enigmeImg.o:enigmeImg.c
 	gcc -c enigmeImg.c -g
+clean:
+	rm -fr prog
+execute:
+	./prog

@@ -9,6 +9,37 @@
 #include "enemi.h"
 #include "enigmeImg.h"
 
+int arduinoWriteData(int x)
+{
+    char chemin[]="/dev/ttyUSB0";
+    FILE*f;
+
+    f=fopen(chemin,"w");
+    if(f == NULL)
+        return(-1);
+
+    fprintf(f,"%d",x);
+    fclose(f);
+
+    return(0);
+}
+
+int arduinoReadData(int *x)
+{
+    char chemin[]="/dev/ttyUSB0";
+    FILE*f;
+    char c;
+    f=fopen(chemin,"r");
+
+    if(f == NULL)
+        return(-1);
+
+    fscanf(f,"%d",x);
+
+    fclose(f);
+
+    return(0);
+}
 
 int main(int argc, char** argv)
 {
@@ -21,7 +52,7 @@ int main(int argc, char** argv)
     SDL_Surface *screen;
     pic BG, BG2, str1, sett1, cred1, qt1, str2, sett2, cred2, qt2, settBG, sound2, sound1, arr1, arr2, X1, X2, plus1, plus2, mins1, mins2, on, off, on2, off2, res, res1, res2;
     pic qtBG, YES, YES2, NO, NO2, cred, Menu_anime[118];
-    int done=0, P=0, P2=0, choice=-1, choice2=-1, choice3=-1, exit, O=0, volM, volS, NSFX=0, fulls=1, x;
+    int done=0, P=0, P2=0, choice=-1, choice2=-1, choice3=-1, exit, O=0, volM, volS, NSFX=0, fulls=1, x, receive=-1, directionA;
     float i=0;
     char nbBG[20];
     SDL_Event event, event2, event3;
@@ -427,6 +458,65 @@ int main(int argc, char** argv)
                     SDL_PollEvent(&event);
                     affichertemps ( temps,screen);
                     afficherscore (screen,p, &score);
+                    arduinoReadData(&receive);
+                    printf("%d", receive);
+						  switch(receive)
+						  {
+						  		case 0: 
+						  			 p.direction=1;
+                        	 if(pos.x <= screen->w/2 || Bg[lvl].camera.x+screen->w == Bg[lvl].anim[0]->w)
+                            {
+                                dt=1;
+                                deplacerPerso(&p,screen,dt);
+                            }
+                            else
+                            {
+                                collision=collisionPP( pos, Bg[0].mask[0]);
+                    				  arduinoWriteData(collision);
+                                scrolling (&Bg[lvl], 0, collision);
+                                animerPerso(&p);
+                            }
+                            pMprochaine.position.x += distance;
+                            if (collisionPPP(pMprochaine, masked)==0)
+                                majminimap(&p,&m,Bg[lvl].camera,redimonsionnement);
+                            /*else
+                            {
+                            	if (j==13)
+                            	j=0;
+                            	j++;
+                            	pMprochaine.position.x = p.position.x;
+                            	SDL_BlitSurface(chiffres[j],NULL,screen,&p.position);
+                            	SDL_Delay(300);
+                            }*/
+									 break;
+								 case 1:
+                            p.direction=2;
+                            if (Bg[lvl].camera.x == 0 || pos.x >= Bg[lvl].anim[0]->w-(screen->w/2))
+                            {
+                                dt=2;
+                                deplacerPerso(&p,screen,dt);
+                            }
+                            else
+                            {
+                                collision=collisionPP( pos, Bg[0].mask[0]);
+                    				  arduinoWriteData(collision);
+                                scrolling (&Bg[lvl], 1, collision);
+                                animerPerso(&p);
+                            }
+                            pMprochaine.position.x -= distance;
+                            if (collisionPPP(pMprochaine, masked)==0)
+                                majminimap(&p,&m,Bg[lvl].camera,redimonsionnement);
+                            /*else
+                            {
+                            	if (j==13)
+                            	j=0;
+                            	j++;
+                            	pMprochaine.position.x = p.position.x;
+                            	SDL_BlitSurface(chiffres[j],NULL,screen,&p.position);
+                            	SDL_Delay(300);
+                            }*/
+                            break;
+							   }
                     switch(event.type)
                     {
                     case SDL_KEYDOWN:
@@ -590,7 +680,7 @@ int main(int argc, char** argv)
                             }
                             Mix_FadeOutMusic(1000);
                         }
-                        if(pos.x==1200)
+                        if(pos.x==5000)
                         {
                             P=0;
                             while(!boucle)

@@ -61,7 +61,7 @@ void afficherscore (SDL_Surface *screen,Personne p,int *score)
    }
    else
     {
-      printf ("si\n");
+      //printf ("si\n");
       sprintf (s,"Score : %d",*score);
       sc = TTF_RenderText_Blended(police , s, couleur);
       SDL_BlitSurface(sc,NULL,screen,&possc);
