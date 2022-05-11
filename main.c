@@ -52,7 +52,7 @@ int main(int argc, char** argv)
     SDL_Surface *screen;
     pic BG, BG2, str1, sett1, cred1, qt1, str2, sett2, cred2, qt2, settBG, sound2, sound1, arr1, arr2, X1, X2, plus1, plus2, mins1, mins2, on, off, on2, off2, res, res1, res2;
     pic qtBG, YES, YES2, NO, NO2, cred, Menu_anime[118];
-    int done=0, P=0, P2=0, choice=-1, choice2=-1, choice3=-1, exit, O=0, volM, volS, NSFX=0, fulls=1, x, receive=-1, directionA;
+    int done=0, P=0, P2=0, choice=-1, choice2=-1, choice3=-1, exit, O=0, volM, volS, NSFX=0, fulls=1, x, receive=-1, U_D2=0, U_D1=0;
     float i=0;
     char nbBG[20];
     SDL_Event event, event2, event3;
@@ -123,10 +123,11 @@ int main(int argc, char** argv)
     volS=Mix_Volume(-1, volM);
     sound2.pos_img.w=150;
 //BG
-    SDL_Rect pos;
+    SDL_Rect pos, pos2;
     SDL_Event event4;
     int lvl=0, collision;
     Background Bg[3];
+    Uint8 *keystates;
 
     initBack(&Bg[0]);
 
@@ -438,14 +439,28 @@ int main(int argc, char** argv)
                 while(!exit)
                 {
                     start = SDL_GetTicks();
+		if(Bg[lvl].multi_J==1)
+		{
+			Bg[0].camera.w=957;
+		}
+		else
+			Bg[0].camera.w=1914;
                     afficherBack(Bg[0], screen);
                     SDL_Flip(screen);
                     afficher_enemie (enmy,Bg[lvl].anim[Bg[lvl].nb_anim]);
                     afficherminimap(m,screen);
                     pos.x=Bg[0].camera.x+p.position.x;
                     pos.y=Bg[0].camera.y+p.position.y;
-                    if(collisionPP( pos, Bg[0].mask[0])!=1)
-                        Bg[lvl].camera.y+=5;
+						  pos2.x=Bg[0].camera2.x+p.position.x;
+					     pos2.y=Bg[0].camera2.y+p.position.y;
+		if(pos.x<1115 || pos.x>1185)
+			U_D1=0;
+		if(pos2.x<1115 || pos2.x>1185)
+			U_D2=0;
+		if(collisionGND( pos, Bg[0].mask[0])!=1 && pos.x>screen->w/2 && U_D1==0)
+			Bg[lvl].camera.y+=5;
+		if(collisionGND( pos2, Bg[0].mask[0])!=1 && pos.x>screen->w*3/4 && U_D2==0)
+			Bg[lvl].camera2.y+=5;
                     afficherPerso (p,screen);
                     saut(&p);
                     animate_Enemy(&enmy);
@@ -453,7 +468,7 @@ int main(int argc, char** argv)
                     if(collision_E(enmy,p))
                     {
                         printf("collison = 1 \n ");
-                        score-=5;
+                        score-=1;
                     }
                     SDL_PollEvent(&event);
                     affichertemps ( temps,screen);
@@ -473,7 +488,7 @@ int main(int argc, char** argv)
                             {
                                 collision=collisionPP( pos, Bg[0].mask[0]);
                     				  arduinoWriteData(collision);
-                                scrolling (&Bg[lvl], 0, collision);
+                                scrolling (&Bg[lvl].camera, 0, collision);
                                 animerPerso(&p);
                             }
                             pMprochaine.position.x += distance;
@@ -500,7 +515,7 @@ int main(int argc, char** argv)
                             {
                                 collision=collisionPP( pos, Bg[0].mask[0]);
                     				  arduinoWriteData(collision);
-                                scrolling (&Bg[lvl], 1, collision);
+                                scrolling (&Bg[lvl].camera, 1, collision);
                                 animerPerso(&p);
                             }
                             pMprochaine.position.x -= distance;
@@ -522,6 +537,12 @@ int main(int argc, char** argv)
                     case SDL_KEYDOWN:
                         switch(event.key.keysym.sym)
                         {
+                        case SDLK_m:
+									Bg[lvl].multi_J++;
+									Bg[lvl].multi_J=Bg[lvl].multi_J%2;
+									printf("%d",Bg[lvl].multi_J);
+									SDL_Delay(1000);
+									break;
                         case SDLK_a:
                             dt=0;
                             deplacerPerso(&p,screen,dt);
@@ -540,7 +561,7 @@ int main(int argc, char** argv)
                             SDL_Delay(200);
                             break;
 
-                        case SDLK_RIGHT:
+                        /*case SDLK_RIGHT:
                             p.direction=1;
                             if(pos.x <= screen->w/2 || Bg[lvl].camera.x+screen->w == Bg[lvl].anim[0]->w)
                             {
@@ -550,7 +571,7 @@ int main(int argc, char** argv)
                             else
                             {
                                 collision=collisionPP( pos, Bg[0].mask[0]);
-                                scrolling (&Bg[lvl], 0, collision);
+                                scrolling (&Bg[lvl].camera, 0, collision);
                                 animerPerso(&p);
                             }
                             pMprochaine.position.x += distance;
@@ -565,7 +586,7 @@ int main(int argc, char** argv)
                             	SDL_BlitSurface(chiffres[j],NULL,screen,&p.position);
                             	SDL_Delay(300);
                             }*/
-                            break;
+                            /*break;
 
                         case SDLK_LEFT:
                             p.direction=2;
@@ -577,7 +598,7 @@ int main(int argc, char** argv)
                             else
                             {
                                 collision=collisionPP( pos, Bg[0].mask[0]);
-                                scrolling (&Bg[lvl], 1, collision);
+                                scrolling (&Bg[lvl].camera, 1, collision);
                                 animerPerso(&p);
                             }
                             pMprochaine.position.x -= distance;
@@ -592,16 +613,16 @@ int main(int argc, char** argv)
                             	SDL_BlitSurface(chiffres[j],NULL,screen,&p.position);
                             	SDL_Delay(300);
                             }*/
-                            break;
+                            /*break;
 
                         case SDLK_UP:
                             collision=collisionPP( pos, Bg[0].mask[0]);
-                            scrolling (&Bg[lvl], 2, collision);
+                            scrolling (&Bg[lvl].camera, 2, collision);
                             break;
 
                         case SDLK_DOWN:
                             collision=collisionPP( pos, Bg[0].mask[0]);
-                            scrolling (&Bg[lvl], 3, collision);
+                            scrolling (&Bg[lvl].camera, 3, collision);
                             break;
                         case SDLK_SPACE:
                             if ( (pos.x>Bg[lvl].anim[0]->w-(screen->w/2)) || (pos.x<screen->w/2))
@@ -615,7 +636,7 @@ int main(int argc, char** argv)
                                 while(Bg[lvl].camera.y>(-50))
                                 {
                                     collision=collisionPP( pos, Bg[0].mask[0]);
-                                    scrolling (&Bg[lvl], 2, collision);
+                                    scrolling (&Bg[lvl].camera, 2, collision);
                                     SDL_Flip(screen);
                                     afficherBack(Bg[lvl], screen);
                                     afficherPerso (p,screen);
@@ -628,12 +649,12 @@ int main(int argc, char** argv)
                                         {
                                         case SDLK_RIGHT:
                                             collision=collisionPP( pos, Bg[0].mask[0]);
-                                            scrolling (&Bg[lvl], 0, collision);
+                                            scrolling (&Bg[lvl].camera, 0, collision);
                                             break;
 
                                         case SDLK_LEFT:
                                             collision=collisionPP( pos, Bg[0].mask[0]);
-                                            scrolling (&Bg[lvl], 1, collision);
+                                            scrolling (&Bg[lvl].camera, 1, collision);
                                             break;
                                         }
                                     }
@@ -648,7 +669,7 @@ int main(int argc, char** argv)
                             afficherBack(Bg[lvl], scre);
                             SDL_BlitSurface(perso, NULL, scre, &Pr);
                             }*/
-                            break;
+                            //break;
                         }
                         break;
 
@@ -657,6 +678,112 @@ int main(int argc, char** argv)
                         SDL_Delay(200);
                         break;
                     }
+                    
+		keystates = SDL_GetKeyState( NULL );
+        if( keystates[ SDLK_d ] )
+        {
+						p.direction=1;
+                            if(pos.x <= screen->w/2 || Bg[lvl].camera.x+screen->w == Bg[lvl].anim[0]->w)
+                            {
+                                dt=1;
+                                deplacerPerso(&p,screen,dt);
+                            }
+                            else
+                            {
+                                collision=collisionPP( pos, Bg[0].mask[0]);
+                                scrolling (&Bg[lvl].camera, 0, collision);
+                                animerPerso(&p);
+                            }
+                            pMprochaine.position.x += distance;
+                            if (collisionPPP(pMprochaine, masked)==0)
+                                majminimap(&p,&m,Bg[lvl].camera,redimonsionnement);
+                            /*else
+                            {
+                            	if (j==13)
+                            	j=0;
+                            	j++;
+                            	pMprochaine.position.x = p.position.x;
+                            	SDL_BlitSurface(chiffres[j],NULL,screen,&p.position);
+                            	SDL_Delay(300);
+                            }*/
+        }
+        if( keystates[ SDLK_q ] )
+        {
+        							p.direction=2;
+                            if (Bg[lvl].camera.x == 0 || pos.x >= Bg[lvl].anim[0]->w-(screen->w/2))
+                            {
+                                dt=2;
+                                deplacerPerso(&p,screen,dt);
+                            }
+                            else
+                            {
+                                collision=collisionPP( pos, Bg[0].mask[0]);
+                                scrolling (&Bg[lvl].camera, 1, collision);
+                                animerPerso(&p);
+                            }
+                            pMprochaine.position.x -= distance;
+                            if (collisionPPP(pMprochaine, masked)==0)
+                                majminimap(&p,&m,Bg[lvl].camera,redimonsionnement);
+                            /*else
+                            {
+                            	if (j==13)
+                            	j=0;
+                            	j++;
+                            	pMprochaine.position.x = p.position.x;
+                            	SDL_BlitSurface(chiffres[j],NULL,screen,&p.position);
+                            	SDL_Delay(300);
+                            }*/
+        }
+        if( keystates[ SDLK_z ] && pos.x>=1115 && pos.x<=1185)
+        {
+							U_D1=1;
+							collision=collisionPP( pos, Bg[0].mask[0]);
+							scrolling (&(Bg[lvl].camera), 2, collision);
+        }
+        if( keystates[ SDLK_s ] && pos.x>=1115 && pos.x<=1185)
+        {
+							U_D1=1;
+							collision=collisionPP( pos, Bg[0].mask[0]);
+							scrolling (&(Bg[lvl].camera), 3, collision);
+        }
+        if( keystates[ SDLK_SPACE ] && collisionGND( pos, Bg[0].mask[0])==1)
+        {
+						if ( (pos.x>Bg[lvl].anim[0]->w-(screen->w/2)) || (pos.x<screen->w/2))
+                            {
+                                dt=3;
+                                deplacerPerso(&p,screen,dt);
+                                saut(&p);
+                            }
+                  else
+                  {
+						while(Bg[lvl].camera.y>(-100))
+						{
+							collision=collisionPP( pos, Bg[0].mask[0]);
+							scrolling (&(Bg[lvl].camera), 2, collision);
+							SDL_Flip(screen);
+							afficherBack(Bg[lvl], screen);
+                     afficherPerso (p,screen);
+							SDL_PollEvent(&event4);
+							
+							switch(event4.type)
+							{
+								case SDL_KEYDOWN:
+								switch(event4.key.keysym.sym)
+								{
+									case SDLK_d:
+										collision=collisionPP( pos, Bg[0].mask[0]);
+										scrolling (&(Bg[lvl].camera), 0, collision);
+										break;
+						
+									case SDLK_q:
+										collision=collisionPP( pos, Bg[0].mask[0]);
+										scrolling (&(Bg[lvl].camera), 1, collision);
+										break;
+								}
+							}
+						}
+						}
+        }
                     switch(lvl)
                     {
                     case 0:
