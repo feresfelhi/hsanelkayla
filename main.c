@@ -449,7 +449,10 @@ int main(int argc, char** argv)
 			Bg[0].camera.w=1914;
                     afficherBack(Bg[0], screen);
                     SDL_Flip(screen);
-                    afficher_enemie (enmy,Bg[lvl].anim[Bg[lvl].nb_anim]);
+                    //afficher_enemie (enmy,Bg[lvl].anim[Bg[lvl].nb_anim]);
+afficher_enemie(enmy,screen);
+
+                    SDL_Flip(screen);
                     afficherminimap(m,screen);
                     pos.x=Bg[0].camera.x+p.position.x;
                     pos.y=Bg[0].camera.y+p.position.y;
@@ -475,9 +478,13 @@ int main(int argc, char** argv)
 		saut(&p2);
 
 	}
+SDL_Flip(screen);
                     animate_Enemy(&enmy);
                     move_enemy(&enmy);
-                    if(collision_E(enmy,p))
+SDL_Flip(screen);
+deplacerIA(&enmy,p);
+SDL_Flip(screen);
+                    if(collision_E(enmy,p)==1)
                     {
                         printf("collison = 1 \n ");
                         score-=1;

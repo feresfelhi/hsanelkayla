@@ -28,5 +28,5 @@ void afficher_enemie (enemie e,SDL_Surface *screen);
 void animate_Enemy(enemie * e);
 void move_enemy( enemie * e);
 int collision_E (enemie e,Personne p);//int collisionBB( SDL_Rect posSDL_Rect pos);
-//void moveIA( Enemy * e, SDL_Rect posPlayer);
+void deplacerIA(enemie *e,Personne p);
 #endif

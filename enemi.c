@@ -10,13 +10,13 @@
         e->sprite=IMG_Load("ennemi_spr.png");
         e->direction=0; //sprite la partie droite
         e->pos.x=1000;
-        e->pos.y=800;
+        e->pos.y=600;
         e->possprite.x=0; //0
         e->possprite.y=0;
         e->possprite.h=100;  //100
         e->possprite.w=100;  //100
         e->max.x= 1200;  
-        e->min.x=1000;  
+        e->min.x=20;  
         
     }
 
@@ -39,12 +39,12 @@
 
         if (e->direction==0)
         {
-            e->pos.x+=2;
+            e->pos.x+=20;
         }
 
         if (e->direction==1)
         {
-            e->pos.x-=2;
+            e->pos.x-=20;
         }
 
     }
@@ -52,7 +52,7 @@
 
 int collision_E (enemie e,Personne p){
     int collision;
-    if (((p.position.x + p.position.w-6) >= e.pos.x) && ((p.position.x + p.position.w-6) <= (e.pos.x + e.pos.w)) )//|| ((p.position.y + p.position.y) < e.pos.y) || (p.position.y > (e.pos.y + e.pos.h)))
+    if (((p.position.x + p.position.w) >= e.pos.x) ||(((p.position.x + p.position.w) <= (e.pos.x + e.pos.w)) ) || ((p.position.y + p.position.y) < e.pos.y) || (p.position.y > (e.pos.y + e.pos.h)))
     {
         collision = 0;
     }
@@ -64,8 +64,19 @@ int collision_E (enemie e,Personne p){
     return collision;
 }
 
-
- 
-
    
+void deplacerIA(enemie * e, Personne p) {
+  if (((e -> pos.x - p.position.x) < 200) && ((e -> pos.x - p.position.x) > 80)) {
+    e -> direction = 1;
+    e -> pos.x -= 20;
+  } else if (((e -> pos.x - p.position.x) < -80) && ((e -> pos.x - p.position.x) > -200)) {
+    e -> direction = 0;
+    e -> pos.x += 20;
+  } else if (((e -> pos.x - p.position.x) <= 80) && ((e -> pos.x - p.position.x) >= 0)) {
+    e -> direction = 3;
+  } else if (((e -> pos.x -p.position.x) <= 0) && ((e -> pos.x - p.position.x) >= -80)) {
+    e -> direction = 2;
+  }
+  else move_enemy(e);
 
+}
