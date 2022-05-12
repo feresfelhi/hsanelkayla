@@ -211,7 +211,7 @@ int Verify_Enigme(Enigme *e,int *Game,SDL_Surface *ecran)
 		SDL_BlitSurface(e->win,NULL,ecran,&position);
 		SDL_Flip(ecran);
                  Mix_PlayChannel(-1,win1,0);
-		SDL_Delay(3000);
+		SDL_Delay(1000);
 		return 0;//win
 	}
 	else
@@ -220,7 +220,7 @@ int Verify_Enigme(Enigme *e,int *Game,SDL_Surface *ecran)
 		SDL_BlitSurface(e->lost,NULL,ecran,&position);
 		SDL_Flip(ecran);
                 Mix_PlayChannel(-1,lose1,0);
-		SDL_Delay(3000);
+		SDL_Delay(1000);
 		return 0;//lost
 	}
 }
@@ -264,7 +264,7 @@ int Play_Enigme(Enigme *e,SDL_Surface *ecran,int *Game)
 			}
 			case SDL_MOUSEMOTION:
 			{
-				printf("Souris en position %d %d\n",event.motion.x, event.motion.y);
+				//printf("Souris en position %d %d\n",event.motion.x, event.motion.y);
 			}
 			case SDL_MOUSEBUTTONUP:
 			{

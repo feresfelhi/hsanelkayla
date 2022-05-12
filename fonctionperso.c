@@ -46,7 +46,7 @@ void initPerso2(Personne *p){
 
     p->image=IMG_Load("spritesheet mc.png");
 
-    p->position.x=100;
+    p->position.x=957;
     p->position.y=600;
 
     p->frame.w=110;

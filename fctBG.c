@@ -23,11 +23,11 @@ void initBack(Background * BG)
 	BG[0].pos_img2.x=957;
 	BG[0].pos_img2.y=0;
 	BG[0].camera.x=0;
-	BG[0].camera.y=0;
+	BG[0].camera.y=120;
 	BG[0].camera.w=1914;
 	BG[0].camera.h=878;
 	BG[0].camera2.x=0;
-	BG[0].camera2.y=0;
+	BG[0].camera2.y=120;
 	BG[0].camera2.w=957;
 	BG[0].camera2.h=878;
 	BG[0].nb_anim=0;
@@ -75,16 +75,16 @@ int collisionPP( SDL_Rect P, SDL_Surface * Mask)
 	pte[2].y=P.y;
 	
 	pte[3].x=P.x;
-	pte[3].y=(P.y+(P.y+100))/2;
+	pte[3].y=(P.y+(P.y+163))/2;
 	pte[4].x=P.x+50;
-	pte[4].y=(P.y+(P.y+100))/2;
+	pte[4].y=(P.y+(P.y+163))/2;
 	
 	pte[5].x=P.x;
-	pte[5].y=P.y+100;
+	pte[5].y=P.y+163;
 	pte[6].x=(P.x+(P.x+50))/2;
-	pte[6].y=P.y+100;
+	pte[6].y=P.y+163;
 	pte[7].x=P.x+50;
-	pte[7].y=P.y+100;
+	pte[7].y=P.y+163;
 	
 	for(i=0; i<8; i++)
 	{
@@ -111,11 +111,11 @@ int collisionGND( SDL_Rect P, SDL_Surface * Mask)
 	obs.b=255;
 	
 	pte[0].x=P.x;
-	pte[0].y=P.y+100;
+	pte[0].y=P.y+163;
 	pte[1].x=(P.x+(P.x+50))/2;
-	pte[1].y=P.y+100;
+	pte[1].y=P.y+163;
 	pte[2].x=P.x+50;
-	pte[2].y=P.y+100;
+	pte[2].y=P.y+163;
 	
 	for(i=0; i<3; i++)
 	{
@@ -135,20 +135,20 @@ void scrolling (SDL_Rect *pos, int direct, int pasAvancement)
 		{
 			case 0://right
 				if(pos->x<6188-1914)
-					pos->x+=5;
+					pos->x+=10;
 			break;
 			
 			case 1://left
 				if(pos->x>0)
-					pos->x-=5;
+					pos->x-=10;
 			break;
 
 			case 2://up
-				pos->y-=5;
+				pos->y-=10;
 			break;
 
 			case 3://down
-				pos->y+=5;
+				pos->y+=10;
 			break;
 		}
 	}
@@ -158,20 +158,20 @@ void scrolling (SDL_Rect *pos, int direct, int pasAvancement)
 		{
 			case 0://right
 				if(pos->x<6188-1914)
-					pos->x-=5;
+					pos->x-=10;
 			break;
 			
 			case 1://left
 				if(pos->x>0)
-					pos->x+=5;
+					pos->x+=10;
 			break;
 
 			case 2://up
-				pos->y+=5;
+				pos->y+=10;
 			break;
 
 			case 3://down
-				pos->y-=5;
+				pos->y-=10;
 			break;
 		}
 	}

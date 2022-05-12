@@ -15,7 +15,7 @@
         e->possprite.y=0;
         e->possprite.h=100;  //100
         e->possprite.w=100;  //100
-        e->max.x= 1200;  
+        e->max.x= 800;  
         e->min.x=20;  
         
     }
@@ -39,12 +39,12 @@
 
         if (e->direction==0)
         {
-            e->pos.x+=20;
+            e->pos.x+=5;
         }
 
         if (e->direction==1)
         {
-            e->pos.x-=20;
+            e->pos.x-=5;
         }
 
     }
@@ -66,12 +66,12 @@ int collision_E (enemie e,Personne p){
 
    
 void deplacerIA(enemie * e, Personne p) {
-  if (((e -> pos.x - p.position.x) < 200) && ((e -> pos.x - p.position.x) > 80)) {
+  if (((e -> pos.x - p.position.x) < 100) && ((e -> pos.x - p.position.x) > 80)) {
     e -> direction = 1;
-    e -> pos.x -= 20;
-  } else if (((e -> pos.x - p.position.x) < -80) && ((e -> pos.x - p.position.x) > -200)) {
+    e -> pos.x -= 3;
+  } else if (((e -> pos.x - p.position.x) < -80) && ((e -> pos.x - p.position.x) > -100)) {
     e -> direction = 0;
-    e -> pos.x += 20;
+    e -> pos.x += 3;
   } else if (((e -> pos.x - p.position.x) <= 80) && ((e -> pos.x - p.position.x) >= 0)) {
     e -> direction = 3;
   } else if (((e -> pos.x -p.position.x) <= 0) && ((e -> pos.x - p.position.x) >= -80)) {

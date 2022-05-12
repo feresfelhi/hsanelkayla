@@ -142,37 +142,137 @@ void sauvegarder (int score , char nomjoueur[] , char nomfichier[])
     fclose (sauvegarde);
 }
 
-int entrernom (SDL_Surface * screen, char nom[30], int *x)
+int entrernom (SDL_Surface * screen, char nom[30], int *x, Background *B)
 {
-  int continuer=1;
+  int continuer=1, done=0, a=0, b=0;
   char ch[30];
   char txt[50];
   SDL_Surface *surftxt;
-  SDL_Rect pos;
+  SDL_Rect pos, pos2, pos3, pos4, pos5, pos6, pos7;
   TTF_Font *font = NULL;
   SDL_Color noir = {0,0,0};
   SDL_Color blanc = {255,255,255};
   SDL_Surface *ecriture ;
   SDL_Rect posecriture;
   TTF_Init();
-  posecriture.x = 548;
-  posecriture.y = 213;
-  font = TTF_OpenFont("Urusans.TTF",45);
+  posecriture.x = 805;
+  posecriture.y = 375;
+  font = TTF_OpenFont("Urusans.TTF",80);
   SDL_Event event ;
-  SDL_Surface *image ;
+  SDL_Surface *image, *bg1, *bg2, *single, *multi, *C1, *C2, *C1Grey;
   SDL_Rect posimg ;
   posimg.x = 0;
   posimg.y = 0;
-  image = IMG_Load("BG2.png");
-  pos.x = 250;
-  pos.y = 213;
+  image = IMG_Load("taille/BG2_4.png");
+  bg1 = IMG_Load("menu/startbg0.png");
+  bg2 = IMG_Load("menu/startbg1.png");
+  single = IMG_Load("menu/single.png");
+  multi = IMG_Load("menu/multi.png");
+  C1 = IMG_Load("menu/1charac.png");
+  C2 = IMG_Load("menu/2charac.png");
+  C1Grey = IMG_Load("menu/greyed out.png");
+  pos.x = 455;
+  pos.y = 80;
+  pos2.x = 813;
+  pos2.y = 155;
+  pos3.x = 810;
+  pos3.y = 155;
+  pos4.x = 680;
+  pos4.y = 330;
+  pos5.x = 650;
+  pos5.y = 350;
+  pos6.x = 1200;
+  pos6.y = 330;
+  pos7.x = 1200;
+  pos7.y = 350;
   surftxt=TTF_RenderText_Blended(font, "entrer votre nom", noir);
+  SDL_BlitSurface(image,NULL,screen,&posimg);
+  SDL_BlitSurface(bg1,NULL,screen,&pos);
+  SDL_BlitSurface(single,NULL,screen,&pos2);
+  SDL_BlitSurface(C1,NULL,screen,&pos4);
+  SDL_BlitSurface(C1Grey,NULL,screen,&pos6);
+  while(!done)
+  {	
+  		SDL_Flip(screen);
+  		SDL_BlitSurface(image,NULL,screen,&posimg);
+  		SDL_BlitSurface(bg1,NULL,screen,&pos);
+  		if(B->multi_J==0)
+  		{
+  			SDL_BlitSurface(single,NULL,screen,&pos2);
+  			SDL_BlitSurface(C1Grey,NULL,screen,&pos6);
+  		}
+  		else
+  		{
+  			SDL_BlitSurface(multi,NULL,screen,&pos3);
+			if(b==0)
+				SDL_BlitSurface(C1,NULL,screen,&pos6);
+			else
+				SDL_BlitSurface(C2,NULL,screen,&pos7);
+      }
+       if(a==0)
+			SDL_BlitSurface(C1,NULL,screen,&pos4);
+		else
+			SDL_BlitSurface(C2,NULL,screen,&pos5);
+    	affichermeilleurscore(screen);
+    	
+    	SDL_WaitEvent(&event);
+    	switch(event.type)
+    	{
+    	  case SDL_QUIT :
+    	     	*x=0;
+    	     	done=1;
+    	      continuer = 0;
+    	      break;
+    	   
+        case SDL_MOUSEBUTTONDOWN :
+            if(event.button.button==SDL_BUTTON_LEFT && event.button.x>=935 && event.button.x<=975 && event.button.y>=225 && event.button.y<=260)
+            {    
+  					if(B->multi_J==0)
+  						B->multi_J=1;
+  					else
+  						B->multi_J=0;
+            }
+            else if(event.button.button==SDL_BUTTON_LEFT && event.button.x>=555 && event.button.x<=635 && event.button.y>=410 && event.button.y<=445)
+            {
+                if(a==0)
+                	a=1;
+  					else
+  						a=0;
+            }
+            else if(event.button.button==SDL_BUTTON_LEFT && event.button.x>=770 && event.button.x<=855 && event.button.y>=410 && event.button.y<=445)
+            {
+                if(a==0)
+                	a=1;
+  					else
+  						a=0;
+            }
+            else if(event.button.button==SDL_BUTTON_LEFT && event.button.x>=1075 && event.button.x<=1160 && event.button.y>=410 && event.button.y<=445 && B->multi_J==1)
+            {
+                if(b==0)
+                	b=1;
+  					else
+  						b=0;
+            }
+            else if(event.button.button==SDL_BUTTON_LEFT && event.button.x>=1290 && event.button.x<=1375 && event.button.y>=410 && event.button.y<=445 && B->multi_J==1)
+            {
+                if(b==0)
+                	b=1;
+  					else
+  						b=0;
+            }
+            else if(event.button.button==SDL_BUTTON_LEFT && event.button.x>=835 && event.button.x<=1075 && event.button.y>=650 && event.button.y<=715)
+            {
+                done=1;
+            }
+            break;
+    	}
+  }
   while (continuer)
   {
     SDL_BlitSurface(image,NULL,screen,&posimg);
-    ecriture = TTF_RenderText_Blended (font , nom , blanc);
+    SDL_BlitSurface(bg2, NULL, screen, &pos);
+    ecriture = TTF_RenderText_Blended (font , nom , noir);
     SDL_BlitSurface(ecriture,NULL,screen,&posecriture);
-    SDL_BlitSurface(surftxt, NULL, screen, &pos);
     affichermeilleurscore(screen);
     SDL_Flip(screen);
     SDL_WaitEvent(&event);

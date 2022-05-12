@@ -7,6 +7,7 @@
 #include <SDL/SDL_image.h>
 #include "score.h"
 #include "fonctionperso.h"
+#include "fctBG.h"
 //structure minimap
 typedef struct 
 { 
@@ -29,7 +30,7 @@ int collisionPPP (Personne p , SDL_Surface *masque);//mouvement
 //void afficherscore (SDL_Surface *screen,Personne p,int *score);
 void sauvegarder (int score , char nomjoueur[] , char nomfichier[]);
 //option
-int entrernom (SDL_Surface * screen, char nom[30], int *x);
+int entrernom (SDL_Surface * screen, char nom[30], int *x, Background *B);
 void cherchermeuilleurscore (int *score , char nomjoueur[10] , FILE* f) ;
 void affichermeilleurscore (SDL_Surface *screen);
 
