@@ -6,7 +6,7 @@
 
 typedef struct
 {
-	SDL_Surface *anim[1];
+	SDL_Surface *anim[2];
 	SDL_Rect pos_img;
 	SDL_Rect pos_img2;
 	SDL_Surface *mask[1];

@@ -14,7 +14,7 @@ void Init_Enigme(Enigme *e, char *f1 , char *f2 ,char *f3)
 	for(int i=1;i<5;i++)
 	{
 		char str[30];
-		sprintf(str,"%d.png",i);
+		sprintf(str,"enigme/%d.png",i);
 		e->boutons[i]=IMG_Load(str);
 	}
 
@@ -325,13 +325,13 @@ void animerEnigme (SDL_Surface *porte[14],SDL_Rect *port,SDL_Surface *ecran)
     port->x=  0 ;
     port->y=  0 ;
 
-    for(j=1; j<15; j++)
+    for(j=0; j<11; j++)
     {
-        sprintf(ch,"../projet1/enigme/animation/%d.png",j);
+        sprintf(ch,"enigme/animation/%d.png",j+1);
         porte[j]=IMG_Load(ch);
     }
 
-    for(j=1; j<15; j++)
+    for(j=0; j<11; j++)
     {
         SDL_BlitSurface(porte[j], NULL,ecran,port);
         SDL_Flip(ecran);
@@ -347,13 +347,13 @@ void animerEnigmee (SDL_Surface *porte[14],SDL_Rect *port,SDL_Surface *ecran)
     port->x=  0 ;
     port->y=  0 ;
 
-    for(j=1; j<14; j++)
+    for(j=0; j<11; j++)
     {
-        sprintf(ch,"../projet1/enigme/animation/%d.png",j);
+        sprintf(ch,"enigme/animation/%d.png",j);
         porte[j]=IMG_Load(ch);
     }
 
-    for(j=1; j<14; j++)
+    for(j=0; j<11; j++)
     {
         SDL_BlitSurface(porte[j], NULL,ecran,port);
         SDL_Flip(ecran);

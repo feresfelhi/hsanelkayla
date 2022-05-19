@@ -120,7 +120,7 @@ void majminimap (Personne *p, minimap *m ,SDL_Rect camera , int redimensionnemen
   JoueurABSx = p->position.x + camera.x;
   JoueurABSy = p->position.y + camera.y;
   m->posbonhomme.x = (JoueurABSx * redimensionnement/100)+100;
-  m->posbonhomme.y = (JoueurABSy * redimensionnement/100)-135;
+  m->posbonhomme.y = (JoueurABSy * redimensionnement/100)-120;
 }
 
 void sauvegarder (int score , char nomjoueur[] , char nomfichier[])
@@ -428,5 +428,5 @@ void affichermeilleurscore (SDL_Surface *screen)
   surfmeil = TTF_RenderText_Blended(font,copie,noir);
   SDL_BlitSurface(surftxt,NULL,screen,&pos);
   SDL_BlitSurface(surfmeil,NULL,screen,&pos1);
-  SDL_Flip(screen);
+  //SDL_Flip(screen);
 }

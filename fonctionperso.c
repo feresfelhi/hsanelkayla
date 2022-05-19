@@ -16,7 +16,7 @@ void initPerso(Personne *p)
     p->image=IMG_Load("spritesheet mc.png");
 
     p->position.x=0;
-    p->position.y=600;
+    p->position.y=500;
 
     p->frame.w=110;
     p->frame.h=200;
@@ -79,7 +79,6 @@ void afficherscore (SDL_Surface *screen,int *score)
   SDL_Rect possc;
   possc.x=1500; 
   possc.y=40;
-  SDL_Flip(screen);
   sprintf (s,"Score : %d" , *score );
   sc = TTF_RenderText_Blended (police, s , couleur);
   SDL_BlitSurface(sc,NULL,screen,&possc);
@@ -154,7 +153,7 @@ void deplacerPerso(Personne *p,SDL_Surface *screen,int dt)
 
     if (dt==0)
     {
-        while(p->position.y<600)
+        while(p->position.y<500)
         {
             p->position.y= p->position.y+3;
         }
@@ -195,7 +194,7 @@ void deplacerPerso(Personne *p,SDL_Surface *screen,int dt)
 }
 void saut(Personne *p)
 {
-    if(p->position.y<600)
+    if(p->position.y<500)
     {
 
         p->position.x =  p->position.x +p->vx;
@@ -203,7 +202,7 @@ void saut(Personne *p)
         p->vy =p->vy + p->vgrav;
 
     }
-    if (p->position.y> 600)
+    if (p->position.y> 500)
 
 
         p->vy = p->vsaut;

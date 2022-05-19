@@ -16,7 +16,7 @@ void InitGrille (grille * g)
      {
        g->matrice[i][j] = FREE; //la matrice est initialiser a 0
      }
-  g->ecran = SDL_SetVideoMode(1914, 878, 32, SDL_HWSURFACE|SDL_DOUBLEBUF);
+  g->ecran = SDL_SetVideoMode(1914, 878, 32, SDL_HWSURFACE|SDL_DOUBLEBUF| SDL_RESIZABLE);
   g->til.image = SDL_LoadBMP(resource[0]); //telechargement de l'image resource
   for (i=0;i<NUMBER_OF_TILES;i++) //initialisation des dimensions des cases de la grilles
   {
