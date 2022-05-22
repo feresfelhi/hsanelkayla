@@ -120,7 +120,7 @@ void majminimap (Personne *p, minimap *m ,SDL_Rect camera , int redimensionnemen
   JoueurABSx = p->position.x + camera.x;
   JoueurABSy = p->position.y + camera.y;
   m->posbonhomme.x = (JoueurABSx * redimensionnement/100)+100;
-  m->posbonhomme.y = (JoueurABSy * redimensionnement/100)-120;
+  m->posbonhomme.y = (JoueurABSy * redimensionnement/100)-83;
 }
 
 void sauvegarder (int score , char nomjoueur[] , char nomfichier[])

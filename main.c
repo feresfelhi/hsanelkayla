@@ -172,7 +172,7 @@ int main(int argc, char** argv)
     SDL_Surface *b;
     SDL_Surface *imageFond = NULL, *masked = NULL, *chiffres[30];
     SDL_Rect posBG, poschiffres, poscamera;
-    int redimonsionnement = 30;
+    int redimonsionnement = 18;
 
     posBG.x=0;
     posBG.y=0;
@@ -1129,7 +1129,7 @@ int main(int argc, char** argv)
                             }
                             Mix_FadeOutMusic(1000);
                         }
-                        if((pos.x>=200 || pos2.x==200)
+                        if((pos.x>=200 || pos2.x==200))
                         {
                             P=0;
                             while(!boucle)
