@@ -10,7 +10,7 @@ void initBack(Background * BG)
 		BG[0].anim[0]=IMG_Load("0versionlvl1.png");
 		if(BG[0].anim[0]==NULL)
 			return ;
-		BG[1].anim[0]=IMG_Load("0versionlvl1.png");
+		BG[1].anim[0]=IMG_Load("lvl2.png");
 		if(BG[1].anim[0]==NULL)
 			return ;
 	//}

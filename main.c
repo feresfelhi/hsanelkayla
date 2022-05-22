@@ -53,7 +53,7 @@ int main(int argc, char** argv)
     SDL_Surface *screen;
     pic BG, BG2, str1, sett1, cred1, qt1, str2, sett2, cred2, qt2, settBG, sound2, sound1, arr1, arr2, X1, X2, plus1, plus2, mins1, mins2, on, off, on2, off2, res, res1, res2;
     pic qtBG, YES, YES2, NO, NO2, cred, Menu_anime[118];
-    int done=0, P=0, P2=0, choice=0, choice2=-1, choice3=-1, exit, O=0, volM, volS, NSFX=0, fulls=1, x, receive=-1, U_D2=0, U_D1=0, a, posmax;
+    int done=0, P=0, P2=0, choice=0, choice2=-1, choice3=-1, exit, O=0, volM, volS, NSFX=0, fulls=1, x, receive=-1, U_D2=0, U_D1=0, a, posmax, q=0;
     float i=0;
     char nbBG[20];
     SDL_Event event, event2, event3;
@@ -189,8 +189,9 @@ int main(int argc, char** argv)
     posb.y = 570;
 
 //enemy
-    enemie enmy;
+    enemie enmy, enmy2;
     initenemie (&enmy);
+    initenemie2 (&enmy2);
 
 //enigmeimg
     enigme en;
@@ -247,7 +248,7 @@ int main(int argc, char** argv)
             {
 					  surftxt = TTF_RenderText_Blended(font,"meilleur score : ",noir);
 					  surfmeil = TTF_RenderText_Blended(font,copie,noir);
-					  SDL_BlitSurface(surftxt,NULL,screen,&pos);
+					  SDL_BlitSurface(surftxt,NULL,screen,&pos3);
 					  SDL_BlitSurface(surfmeil,NULL,screen,&pos1);
                 if(P==0)
                     afficher_img(str2, screen);
@@ -754,7 +755,9 @@ int main(int argc, char** argv)
                         }
                     }
                     //afficher_enemie (enmy,Bg[lvl].anim[Bg[lvl].nb_anim]);
-                    afficher_enemie(enmy,screen);
+                    if(pos.x- enmy.pos.x < 157)
+                    		//afficher_enemie(enmy,screen);
+                    		afficher_enemie(enmy2,screen);
                     afficherminimap(m,screen);
                     pos.x=Bg[lvl].camera.x+p.position.x;
                     pos.y=Bg[lvl].camera.y+p.position.y;
@@ -763,6 +766,13 @@ int main(int argc, char** argv)
                     collision=collisionPP( pos, Bg[lvl].mask[0]);
                     collision2=collisionPP( pos2, Bg[lvl].mask[0]);
                     printf("%d", pos2.x);
+                    /*if(pos.y>1240)
+                    {
+                    		SDL_Surface* gameover;
+								gameover=IMG_Load("gameover.jpg");
+								SDL_BlitSurface(gameover, NULL, screen, &(Bg[0].pos_img));
+								choice=0;
+                    }*/
                     if(pos.x<1115 || pos.x>1185)
                         U_D1=0;
                     if(pos2.x<1115 || pos2.x>1185)
@@ -793,13 +803,17 @@ int main(int argc, char** argv)
 		                 		 lvl++;
 
                     }
-                    animate_Enemy(&enmy);
-                    move_enemy(&enmy);
-                    deplacerIA(&enmy,p);
+                    //animate_Enemy(&enmy);
+                    animate_Enemy2(&enmy2);
+                    //move_enemy(&enmy);
+                    move_enemy(&enmy2);
+                    //deplacerIA(&enmy,p);
+                    deplacerIA(&enmy2,p);
                     if(collision_E(enmy,p)==1)
                     {
                         printf("collison = 1 \n ");
                         //score-=1;
+                        q++;
                     }
                     SDL_PollEvent(&event);
                     //affichertemps ( temps,screen);
@@ -1115,7 +1129,7 @@ int main(int argc, char** argv)
                             }
                             Mix_FadeOutMusic(1000);
                         }
-                        if(pos.x==200 || pos2.x==200)
+                        if((pos.x>=200 || pos2.x==200)
                         {
                             P=0;
                             while(!boucle)
