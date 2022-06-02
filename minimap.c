@@ -9,7 +9,7 @@
 void initminimap (minimap *m)
 {
   m->posminimap.x=100;
-  m->posminimap.y=40;
+  m->posminimap.y=30;
   m->minimap = IMG_Load("lvl1.png");
   m->bonhomme = IMG_Load("miniperso.png");
   m->posbonhomme.x = 100;

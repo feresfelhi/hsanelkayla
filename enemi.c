@@ -20,7 +20,7 @@
         
     }
     void initenemie2 (enemie *e){
-        e->sprite=IMG_Load("spritesheet enemy.png");
+        e->sprite=IMG_Load("ennemie10.png");
         e->direction=0; //sprite la partie droite
         e->pos.x=800;
         e->pos.y=500;

@@ -765,7 +765,7 @@ int main(int argc, char** argv)
                             p.posvie2.x=0;
                         }
                     }
-                    if(dead==0)
+                    if(dead==0 && lvl==0)
                     {
 		                 enmy2.pos.x=6300-pos.x+ enmy2.max.x;
 		                 enmy2.pos.y=(500-pos.y)+500;
