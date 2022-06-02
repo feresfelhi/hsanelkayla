@@ -44,9 +44,13 @@ void initBack(Background * BG)
 }
 
 void afficherBack(Background BG, SDL_Surface * scre)
+{
+	SDL_BlitSurface(BG.anim[BG.nb_anim], &BG.camera, scre, &BG.pos_img);
+}
+
+void afficherBack2(Background BG, SDL_Surface * scre)
 {	
 	SDL_BlitSurface(BG.anim[BG.nb_anim], &BG.camera2, scre, &BG.pos_img2);
-	SDL_BlitSurface(BG.anim[BG.nb_anim], &BG.camera, scre, &BG.pos_img);
 }
 
 void animerBackground(Background * BG)

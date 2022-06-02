@@ -53,7 +53,7 @@ int main(int argc, char** argv)
     SDL_Surface *screen;
     pic BG, BG2, str1, sett1, cred1, qt1, str2, sett2, cred2, qt2, settBG, sound2, sound1, arr1, arr2, X1, X2, plus1, plus2, mins1, mins2, on, off, on2, off2, res, res1, res2;
     pic qtBG, YES, YES2, NO, NO2, cred, Menu_anime[118];
-    int done=0, P=0, P2=0, choice=0, choice2=-1, choice3=-1, exit, O=0, volM, volS, NSFX=0, fulls=1, x, receive=-1, U_D2=0, U_D1=0, a, posmax, dead=0;
+    int done=0, P=0, P2=0, choice=0, choice2=-1, choice3=-1, exit, O=0, volM, volS, NSFX=0, fulls=1, x, receive=-1, U_D2=0, U_D1=0, a, posmax, dead=0, dead1=0;
     float i=0;
     char nbBG[20];
     SDL_Event event, event2, event3;
@@ -139,13 +139,13 @@ int main(int argc, char** argv)
 
     Personne p;
     Personne p2;
-    initPerso(&p);
-    initPerso2(&p2);
+    initPerso(&p, "spritesheet mc.png");
+    initPerso2(&p2, "spritesheet mc.png");
     SDL_EnableKeyRepeat(200, 0);
 
     // enigme
 
-    SDL_Surface *porte[14];
+    SDL_Surface *porte[230];
 
     SDL_Rect port ;
     Enigme e;
@@ -189,9 +189,10 @@ int main(int argc, char** argv)
     posb.y = 570;
 
 //enemy
-    enemie enmy, enmy2;
+    enemie enmy, enmy2, enmy3;
     initenemie (&enmy);
-    initenemie2 (&enmy2);
+    initenemie2 (&enmy2, "ennemie10.png");
+    initenemie2 (&enmy3, "ennemie11.png");
 
 //enigmeimg
     enigme en;
@@ -718,6 +719,18 @@ int main(int argc, char** argv)
         else
         {
             if(entrernom(screen,nom,&y, &Bg[lvl])) ;
+            if(Bg[0].charac1==1)
+            {
+            	initPerso(&p, "caractere2.png");
+            	p.frame.w=150;
+            	p.nbmax=4;
+            }
+            if(Bg[0].charac2==1)
+            {
+            	initPerso2(&p2, "caractere2.png");
+            	p2.frame.w=150;
+            	p2.nbmax=4;
+            }
             if(y==1)
             {
                 Mix_FadeOutMusic(1000);
@@ -765,14 +778,23 @@ int main(int argc, char** argv)
                             p.posvie2.x=0;
                         }
                     }
+                    
                     if(dead==0 && lvl==0)
                     {
-		                 enmy2.pos.x=6300-pos.x+ enmy2.max.x;
-		                 enmy2.pos.y=(500-pos.y)+500;
+                    	  if(Bg[lvl].multi_J==0)
+                    	  {
+		                 		enmy2.pos.x=6300-pos.x+ enmy2.max.x;
+		                 		enmy2.pos.y=(500-pos.y)+500;
+		                 }
+		                 else
+		                 {
+		                 		enmy2.pos.x=5823-pos.x+ enmy2.max.x;
+		                 		enmy2.pos.y=(500-pos.y)+500;
+		                 }
 		                 //afficher_enemie(enmy,screen);
 		                 afficher_enemie(enmy2,screen);
 		                 //animate_Enemy(&enmy);
-		                 animate_Enemy2(&enmy2);
+		                 animate_Enemy2(&enmy2, 1050);
 		                 //deplacerIA(&enmy,p);
 		                 deplacerIA(&enmy2,p);
 		                 //printf("%d \n ", enmy2.max.x);
@@ -810,13 +832,119 @@ int main(int argc, char** argv)
 		                 }
 		                 //printf("%d", enmy2.direction);
                     }
-                    else if(dead==1 && enmy2.possprite.x<400)
+                    
+                    if(dead==0 && lvl==1)
                     {
-                    		enmy2.possprite.y= 600 ;
+		                 if(Bg[lvl].multi_J==0)
+                    	  {
+				               enmy2.pos.x=5000-pos.x+ enmy2.max.x;
+				               enmy2.pos.y=(500-pos.y)+500;
+		                 }
+		                 else
+		                 {
+		                 		enmy2.pos.x=4523-pos.x+ enmy2.max.x;
+		                 		enmy2.pos.y=(500-pos.y)+500;
+		                 }
+		                 afficher_enemie(enmy2,screen);
+		                 animate_Enemy2(&enmy2, 1050);
+		                 deplacerIA(&enmy2,p);
+		                 //printf("%d \n ", enmy3.max.x);
+		                 //printf("%d \n ", enmy3.pos.x);
+		                 //printf("%d \n ", pos.x);
+		                 
+		                 if((enmy2.direction==2 || enmy2.direction==3))
+		                 {
+		                 		p.posvie2.w -= 49 ;
+		                     Bg[lvl].camera.x-=50;
+		                     if(enmy2.direction==3)
+		                     {
+				                  p.frame.y=800;
+				                  for(p.nbframe=0; p.nbframe<4; p.nbframe++)
+				                  {
+									  		p.frame.x=p.nbframe * p.frame.w;
+									  		afficherPerso (p,screen);
+									  	}
+				                  p.nbframe=0;
+		                     }
+		                     if(enmy2.direction==2)
+		                     {
+				                  p.frame.y=1000;
+				                  for(p.nbframe=0; p.nbframe<4; p.nbframe++)
+				                  {
+									  		p.frame.x=p.nbframe * p.frame.w;
+									  		afficherPerso (p,screen);
+									  	}
+				                  p.nbframe=0;
+		                     }
+		                     enmy2.direction=1;
+		                     if(score<=5)
+				                score=0;
+				               else
+				                score-=5;
+		                 }
+		                 //printf("%d", enmy2.direction);
+                    }
+                    
+                    if(dead1==0 && lvl==1)
+                    {
+		                 if(Bg[lvl].multi_J==0)
+                    	  {
+		                 		enmy3.pos.x=3200-pos.x+ enmy3.max.x;
+		                 		enmy3.pos.y=(500-pos.y)+770;
+		                 }
+		                 else
+		                 {
+		                 		enmy3.pos.x=2723-pos.x+ enmy3.max.x;
+		                 		enmy3.pos.y=(500-pos.y)+770;
+		                 }
+		                 afficher_enemie(enmy3,screen);
+		                 animate_Enemy2(&enmy3, 750);
+		                 deplacerIA(&enmy3,p);
+		                 //printf("%d \n ", enmy2.max.x);
+		                 //printf("%d \n ", enmy2.pos.x);
+		                 
+		                 if((enmy3.direction==2 || enmy3.direction==3))
+		                 {
+		                 		p.posvie2.w -= 49 ;
+		                     Bg[lvl].camera.x-=50;
+		                     if(enmy3.direction==3)
+		                     {
+				                  p.frame.y=800;
+				                  for(p.nbframe=0; p.nbframe<4; p.nbframe++)
+				                  {
+									  		p.frame.x=p.nbframe * p.frame.w;
+									  		afficherPerso (p,screen);
+									  	}
+				                  p.nbframe=0;
+		                     }
+		                     if(enmy3.direction==2)
+		                     {
+				                  p.frame.y=1000;
+				                  for(p.nbframe=0; p.nbframe<4; p.nbframe++)
+				                  {
+									  		p.frame.x=p.nbframe * p.frame.w;
+									  		afficherPerso (p,screen);
+									  	}
+				                  p.nbframe=0;
+		                     }
+		                     enmy3.direction=1;
+		                     if(score<=5)
+				                score=0;
+				               else
+				                score-=5;
+		                 }
+		                 //printf("%d", enmy2.direction);
+                    }
+                    if(dead==1 && enmy2.possprite.x<750)
+                    {
+                    		enmy2.possprite.y= 800 ;
         						enmy2.possprite.x += 150;
                     }
-                    afficherminimap(m,screen);
-                    majminimap(&p,&m,Bg[lvl].camera,redimonsionnement);
+                    if(Bg[lvl].multi_J==0)
+                    {
+                    		afficherminimap(m,screen);
+                    		majminimap(&p,&m,Bg[lvl].camera,redimonsionnement);
+                    }
                     collision=collisionPP( pos, Bg[lvl].mask[0]);
                     collision2=collisionPP( pos2, Bg[lvl].mask[0]);
                     //printf("%d", pos2.x);
@@ -829,42 +957,31 @@ int main(int argc, char** argv)
                     if(collisionGND( pos2, Bg[lvl].mask[0])!=1 && U_D2==0)
                         Bg[lvl].camera2.y+=5;
                         
-                    if (Bg[lvl].multi_J==0)
-                    {
-                        afficherPerso (p,screen);
-                        saut(&p);
-		                  if(pos.x>=Bg[lvl].anim[0]->w)
-		                  {
-		                 		 	lvl++;
-		                 		 	m.niv++;
-		                 		 	p.position.x=0;
-		                 		 	p.position.y=500;
-		                 	}
-                    }
+		               afficherPerso (p,screen);
+		               saut(&p);
+			            if(pos.x>=Bg[lvl].anim[0]->w && Bg[lvl].multi_J==0)
+			            {
+			           		 lvl++;
+			           		 m.niv++;
+			           		 p.position.x=0;
+			           		 p.position.y=500;
+			           		 dead=0;
+			           	}
 
                     if(Bg[lvl].multi_J==1)
                     {
-                        afficherPerso (p,screen);
+                    		afficherBack2(Bg[lvl], screen);
                         afficherPerso (p2,screen);
-                        if(collisionGND( pos, Bg[lvl].mask[0])!=1)
-                        {
-                        saut(&p);
-                        } 
-		                  if(pos.x>=Bg[lvl].anim[0]->w)
-		                  {
-		                 		 	lvl++;
-		                 		 	m.niv++;
-		                 		 	p.position.x=0;
-		                 		 	p.position.y=500;
-		                 	}
-		                 	
-                        if(collisionGND( pos2, Bg[lvl].mask[0])!=1)
-                        {
                         saut(&p2);
-                        }
+                        
 		                  if(pos.x>=Bg[lvl].anim[0]->w && pos2.x>=Bg[lvl].anim[0]->w)
+		                  {
 		                 		 lvl++;
-
+			           		 	 m.niv++;
+			           		 	 p.position.x=0;
+			           		 	 p.position.y=500;
+			           		  	 dead=0;
+								}
                     }
                     
                     SDL_PollEvent(&event);
@@ -1044,6 +1161,13 @@ int main(int argc, char** argv)
 					                dead=1;
 					                enmy2.pos.x=0;
 					            }
+								   if(collision_E(enmy3,p.position, 10)==1)
+					            {
+					                printf("collison = 1 \n ");
+					                score+=50;
+					                dead1=1;
+					                enmy3.pos.x=0;
+					            }
                     		}
                     		if(p.direction==2)
                     		{
@@ -1060,6 +1184,13 @@ int main(int argc, char** argv)
 					                score+=50;
 					                dead=1;
 					                enmy2.pos.x=0;
+					            }
+								   if(collision_E(enmy3,p.position, (-60))==1)
+					            {
+					                printf("collison = 1 \n ");
+					                score+=50;
+					                dead1=1;
+					                enmy3.pos.x=0;
 					            }
                     		}
                     }
@@ -1081,10 +1212,11 @@ int main(int argc, char** argv)
                                 scrolling (&(Bg[lvl].camera), 2, collision);
                                 SDL_Flip(screen);
                                 afficherBack(Bg[lvl], screen);
-                    				  afficherminimap(m,screen);
-                        //pMprochaine.position.x += distance;
-                        //if (collisionPPP(pMprochaine, masked)==0)
-                            	  majminimap(&p,&m,Bg[lvl].camera,redimonsionnement);
+								        if(Bg[lvl].multi_J==0)
+								        {
+								        		afficherminimap(m,screen);
+								        		majminimap(&p,&m,Bg[lvl].camera,redimonsionnement);
+								        }
                                 afficherPerso (p,screen);
                                 if(Bg[lvl].multi_J==1)
                                     afficherPerso (p2,screen);
@@ -1328,7 +1460,7 @@ int main(int argc, char** argv)
                 //sauvegarder(score,nom,sh);
 
             }
-            //Mix_FadeInMusic(music,-1,1000);
+            Mix_FadeInMusic(music,-1,1000);
         }
     }
     for(i=0; i<49; i++)

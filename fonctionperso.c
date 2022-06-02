@@ -1,6 +1,6 @@
 #include "fonctionperso.h"
 
-void initPerso(Personne *p)
+void initPerso(Personne *p, char* ch)
 {
 
     int s;
@@ -13,7 +13,7 @@ void initPerso(Personne *p)
     p->posvie2.h=p->vie->h;
     p->posvie2.w=p->vie->w;
     
-    p->image=IMG_Load("spritesheet mc.png");
+    p->image=IMG_Load(ch);
 
     p->position.x=0;
     p->position.y=500;
@@ -24,6 +24,7 @@ void initPerso(Personne *p)
     p->frame.y=0;
 
     p->nbframe=0;
+    p->nbmax=9;
     p->direction=0;
     p->courant=0;
 
@@ -36,7 +37,7 @@ void initPerso(Personne *p)
     p->vitesse=10;
 
 }
-void initPerso2(Personne *p){
+void initPerso2(Personne *p, char* ch){
 
  int s;
    s=initscore2 (&p->score);
@@ -46,7 +47,7 @@ void initPerso2(Personne *p){
     p->posvie2.x=0;
     p->posvie2.y=0;
 
-    p->image=IMG_Load("spritesheet mc.png");
+    p->image=IMG_Load(ch);
 
     p->position.x=957;
     p->position.y=500;
@@ -57,6 +58,7 @@ void initPerso2(Personne *p){
     p->frame.y=0;
 
     p->nbframe=0;
+    p->nbmax=9;
     p->direction=0;
     p->courant=0;
 
@@ -102,7 +104,7 @@ void animerPerso(Personne *p)
     {
         p->frame.y=0;
         p->nbframe++;
-        if(p->nbframe>=9)
+        if(p->nbframe>=p->nbmax)
         {
             p->nbframe=0;
         }
@@ -113,7 +115,7 @@ void animerPerso(Personne *p)
     {
         p->frame.y=200;
         p->nbframe++;
-        if(p->nbframe>=9)
+        if(p->nbframe>=p->nbmax)
         {
             p->nbframe=0;
         }

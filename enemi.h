@@ -24,10 +24,10 @@ typedef struct
     
 }enemie;
 void initenemie (enemie *e);
-void initenemie2 (enemie *e);
+void initenemie2 (enemie *e, char *ch);
 void afficher_enemie (enemie e,SDL_Surface *screen);
 void animate_Enemy(enemie * e);
-void animate_Enemy2(enemie * e);
+void animate_Enemy2(enemie * e, int a);
 void move_enemy( enemie * e);
 int collision_E (enemie e,SDL_Rect p, int x);//int collisionBB( SDL_Rect posSDL_Rect pos);
 void deplacerIA(enemie *e,Personne p);

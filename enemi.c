@@ -19,8 +19,8 @@
         e->min.x=1980;  
         
     }
-    void initenemie2 (enemie *e){
-        e->sprite=IMG_Load("ennemie10.png");
+    void initenemie2 (enemie *e, char* ch){
+        e->sprite=IMG_Load(ch);
         e->direction=0; //sprite la partie droite
         e->pos.x=800;
         e->pos.y=500;
@@ -45,15 +45,15 @@
         if (e->possprite.x > 300) e->possprite.x=0;
 	
     }
-  void animate_Enemy2(enemie * e){
+  void animate_Enemy2(enemie * e, int a){
         e->possprite.y= e->direction * 200 ;
         e->possprite.x += 150;
-        if (e->possprite.x > 300) e->possprite.x=0;
+        if (e->possprite.x > a) e->possprite.x=0;
 	
     }
 
   void move_enemy( enemie * e){
-   if (e->max.x>=100) e->direction=1; // si pose enemie > max (limite) retoure a droite (0)
+   if (e->max.x>=200) e->direction=1; 
         if (e->max.x<=0) e->direction=0;                         // retoure a gauche (1)
 
         if (e->direction==0)

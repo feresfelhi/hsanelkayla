@@ -172,7 +172,7 @@ int entrernom (SDL_Surface * screen, char nom[30], int *x, Background *B)
   single = IMG_Load("menu/single.png");
   multi = IMG_Load("menu/multi.png");
   C1 = IMG_Load("menu/1charac.png");
-  C2 = IMG_Load("menu/2charac.png");
+  C2 = IMG_Load("menu/charac2.png");
   C1Grey = IMG_Load("menu/greyed out.png");
   pos.x = 455;
   pos.y = 80;
@@ -270,6 +270,8 @@ int entrernom (SDL_Surface * screen, char nom[30], int *x, Background *B)
             break;
     	}
   }
+  B->charac1=a;
+  B->charac2=b;
   while (continuer)
   {
     SDL_BlitSurface(image,NULL,screen,&posimg);

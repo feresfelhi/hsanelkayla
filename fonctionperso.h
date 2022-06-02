@@ -17,7 +17,7 @@ typedef struct {
         SDL_Rect posvie;
         SDL_Rect posvie2;
 	
-	int nbframe; 
+	int nbframe, nbmax; 
 	int direction;  
         int courant;    
 	double acceleration;  	 
@@ -31,8 +31,8 @@ typedef struct {
 }Personne;
 
 
-void initPerso(Personne *p);  
-void initPerso2(Personne *p);
+void initPerso(Personne *p, char* ch);  
+void initPerso2(Personne *p, char* ch);
 void afficherPerso (Personne p,SDL_Surface *screen);
 void deplacerPerso(Personne *p ,SDL_Surface *screen,int dt);
 void animerPerso(Personne *p);

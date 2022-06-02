@@ -317,7 +317,7 @@ int Play_Enigme(Enigme *e,SDL_Surface *ecran,int *Game)
 
 
 
-void animerEnigme (SDL_Surface *porte[14],SDL_Rect *port,SDL_Surface *ecran)
+void animerEnigme (SDL_Surface *porte[230],SDL_Rect *port,SDL_Surface *ecran)
 {
     int j;
     char ch[50];
@@ -325,21 +325,20 @@ void animerEnigme (SDL_Surface *porte[14],SDL_Rect *port,SDL_Surface *ecran)
     port->x=  0 ;
     port->y=  0 ;
 
-    for(j=0; j<11; j++)
+    for(j=34; j<230; j++)
     {
-        sprintf(ch,"enigme/animation/%d.png",j+1);
-        porte[j]=IMG_Load(ch);
+        sprintf(ch,"paper/Mappp%d.png",j);
+        porte[j-34]=IMG_Load(ch);
     }
 
-    for(j=0; j<11; j++)
+    for(j=34; j<230; j++)
     {
-        SDL_BlitSurface(porte[j], NULL,ecran,port);
+        SDL_BlitSurface(porte[j-34], NULL,ecran,port);
         SDL_Flip(ecran);
-        SDL_Delay(120);
     }  
 }
 
-void animerEnigmee (SDL_Surface *porte[14],SDL_Rect *port,SDL_Surface *ecran)
+void animerEnigmee (SDL_Surface *porte[230],SDL_Rect *port,SDL_Surface *ecran)
 {
     int j;
     char ch[50];
@@ -347,13 +346,13 @@ void animerEnigmee (SDL_Surface *porte[14],SDL_Rect *port,SDL_Surface *ecran)
     port->x=  0 ;
     port->y=  0 ;
 
-    for(j=0; j<11; j++)
+    for(j=0; j<326; j++)
     {
-        sprintf(ch,"enigme/animation/%d.png",j);
+        sprintf(ch,"paper/Mappp%d.png",j);
         porte[j]=IMG_Load(ch);
     }
 
-    for(j=0; j<11; j++)
+    for(j=0; j<326; j++)
     {
         SDL_BlitSurface(porte[j], NULL,ecran,port);
         SDL_Flip(ecran);

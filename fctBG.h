@@ -12,12 +12,13 @@ typedef struct
 	SDL_Surface *mask[1];
 	SDL_Rect camera;
 	SDL_Rect camera2;
-	int nb_anim, gravity, multi_J;
+	int nb_anim, gravity, multi_J, charac1, charac2;
 }Background;
 
 
 void initBack(Background * BG);
 void afficherBack(Background BG, SDL_Surface * scre);
+void afficherBack2(Background BG, SDL_Surface * scre);
 void animerBackground( Background * BG);
 int collisionGND( SDL_Rect P, SDL_Surface * Mask);
 int collisionPP( SDL_Rect P, SDL_Surface * Mask);
