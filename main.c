@@ -836,6 +836,7 @@ int main(int argc, char** argv)
 		                  if(pos.x>=Bg[lvl].anim[0]->w)
 		                  {
 		                 		 	lvl++;
+		                 		 	m.niv++;
 		                 		 	p.position.x=0;
 		                 		 	p.position.y=500;
 		                 	}
@@ -852,6 +853,7 @@ int main(int argc, char** argv)
 		                  if(pos.x>=Bg[lvl].anim[0]->w)
 		                  {
 		                 		 	lvl++;
+		                 		 	m.niv++;
 		                 		 	p.position.x=0;
 		                 		 	p.position.y=500;
 		                 	}

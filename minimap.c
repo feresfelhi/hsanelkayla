@@ -10,20 +10,23 @@ void initminimap (minimap *m)
 {
   m->posminimap.x=100;
   m->posminimap.y=30;
-  m->minimap = IMG_Load("lvl1.png");
+  m->minimap[0] = IMG_Load("lvl1.png");
+  m->minimap[1] = IMG_Load("lvl 2mini.png");
   m->bonhomme = IMG_Load("miniperso.png");
   m->posbonhomme.x = 100;
   m->posbonhomme.y = 90;
+  m->niv=0;
 }
 
 void afficherminimap (minimap m, SDL_Surface *screen)
 {
-  SDL_BlitSurface(m.minimap , NULL , screen , &m.posminimap);
+  SDL_BlitSurface(m.minimap[m.niv] , NULL , screen , &m.posminimap);
   SDL_BlitSurface(m.bonhomme ,NULL,screen,&m.posbonhomme);
 }
 void freeminimap(minimap *m)
 {
-    SDL_FreeSurface(m->minimap);
+    SDL_FreeSurface(m->minimap[0]);
+    SDL_FreeSurface(m->minimap[1]);
 }
 
 void affichertemps (int temps , SDL_Surface *screen)

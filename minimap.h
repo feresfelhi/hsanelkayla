@@ -12,9 +12,10 @@
 typedef struct 
 { 
   SDL_Rect posminimap;
-  SDL_Surface *minimap;
+  SDL_Surface *minimap[2];
   SDL_Surface *bonhomme;
   SDL_Rect posbonhomme; 
+  int niv;
 }minimap;
 
 //minimap
