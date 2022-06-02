@@ -10,7 +10,7 @@ void initBack(Background * BG)
 		BG[0].anim[0]=IMG_Load("0versionlvl1.png");
 		if(BG[0].anim[0]==NULL)
 			return ;
-		BG[1].anim[0]=IMG_Load("lvl2.png");
+		BG[1].anim[0]=IMG_Load("lvl 2.png");
 		if(BG[1].anim[0]==NULL)
 			return ;
 	//}
@@ -18,8 +18,8 @@ void initBack(Background * BG)
 	BG[0].mask[0]=IMG_Load("0versionlvl1Mask.png");
 		if(BG[0].mask[0]==NULL)
 			return ;
-	BG[1].mask[0]=IMG_Load("0versionlvl1Mask.png");
-		if(BG[0].mask[0]==NULL)
+	BG[1].mask[0]=IMG_Load("lvl 2Mask.png");
+		if(BG[1].mask[0]==NULL)
 			return ;
 	/*BG[0].mask[1]=IMG_Load("lvl1.png");
 		if(BG[0].mask[1]==NULL)

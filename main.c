@@ -53,7 +53,7 @@ int main(int argc, char** argv)
     SDL_Surface *screen;
     pic BG, BG2, str1, sett1, cred1, qt1, str2, sett2, cred2, qt2, settBG, sound2, sound1, arr1, arr2, X1, X2, plus1, plus2, mins1, mins2, on, off, on2, off2, res, res1, res2;
     pic qtBG, YES, YES2, NO, NO2, cred, Menu_anime[118];
-    int done=0, P=0, P2=0, choice=0, choice2=-1, choice3=-1, exit, O=0, volM, volS, NSFX=0, fulls=1, x, receive=-1, U_D2=0, U_D1=0, a, posmax, q=0;
+    int done=0, P=0, P2=0, choice=0, choice2=-1, choice3=-1, exit, O=0, volM, volS, NSFX=0, fulls=1, x, receive=-1, U_D2=0, U_D1=0, a, posmax, dead=0;
     float i=0;
     char nbBG[20];
     SDL_Event event, event2, event3;
@@ -158,7 +158,7 @@ int main(int argc, char** argv)
 //mininap
     char nom[30]="\0";
     int distance=100, j,y=1;  //continuer=0; //exit variable de la boucle du jeux et continuer la variable de la boucle saisie du nom joueur
-    int score=0;
+    int score=100;
     int xo ;
     grille gril;
     int temps=120;
@@ -233,6 +233,8 @@ int main(int argc, char** argv)
   fclose(f);
   sprintf(copie,"%s %d",nomjoueur,scoree);
 
+                    		SDL_Surface* gameover;
+								gameover=IMG_Load("gameover.jpg");
     while(!done)
     {
         SDL_Flip(screen);
@@ -723,6 +725,18 @@ int main(int argc, char** argv)
                 while(!exit)
                 {
                     start = SDL_GetTicks();
+                    
+                    pos.x=Bg[lvl].camera.x+p.position.x;
+                    pos.y=Bg[lvl].camera.y+p.position.y;
+                    pos2.x=Bg[lvl].camera2.x+p2.position.x-957;
+                    pos2.y=Bg[lvl].camera2.y+p2.position.y;
+                    if(pos.y>1240)
+                    {
+								SDL_BlitSurface(gameover, NULL, screen, &(Bg[lvl].pos_img));
+								SDL_Delay(2000);
+								choice=0;
+                    }
+                    
                     if(Bg[lvl].multi_J==1)
                     {
                         Bg[lvl].camera.w=957;
@@ -735,11 +749,8 @@ int main(int argc, char** argv)
                     }
                     afficherBack(Bg[lvl], screen);
                     SDL_Flip(screen);
-                    if (pos.x == 1250 || pos2.x==1250)
-                    {
-                        p.posvie2.x = 250 ;
-                    }
-                    if (p.posvie2.x > 200)
+
+                    if (p.posvie2.w <10)
                     {
                         jeux (&gril,&xo) ;
 
@@ -754,33 +765,70 @@ int main(int argc, char** argv)
                             p.posvie2.x=0;
                         }
                     }
-                    //afficher_enemie (enmy,Bg[lvl].anim[Bg[lvl].nb_anim]);
-                    if(pos.x- enmy.pos.x < 157)
-                    		//afficher_enemie(enmy,screen);
-                    		afficher_enemie(enmy2,screen);
+                    if(dead==0)
+                    {
+		                 enmy2.pos.x=6300-pos.x+ enmy2.max.x;
+		                 enmy2.pos.y=(500-pos.y)+500;
+		                 //afficher_enemie(enmy,screen);
+		                 afficher_enemie(enmy2,screen);
+		                 //animate_Enemy(&enmy);
+		                 animate_Enemy2(&enmy2);
+		                 //deplacerIA(&enmy,p);
+		                 deplacerIA(&enmy2,p);
+		                 //printf("%d \n ", enmy2.max.x);
+		                 //printf("%d \n ", enmy2.pos.x);
+		                 
+		                 if((enmy2.direction==2 || enmy2.direction==3))
+		                 {
+		                 		p.posvie2.w -= 49 ;
+		                     Bg[lvl].camera.x-=50;
+		                     if(enmy2.direction==3)
+		                     {
+				                  p.frame.y=800;
+				                  for(p.nbframe=0; p.nbframe<4; p.nbframe++)
+				                  {
+									  		p.frame.x=p.nbframe * p.frame.w;
+									  		afficherPerso (p,screen);
+									  	}
+				                  p.nbframe=0;
+		                     }
+		                     if(enmy2.direction==2)
+		                     {
+				                  p.frame.y=1000;
+				                  for(p.nbframe=0; p.nbframe<4; p.nbframe++)
+				                  {
+									  		p.frame.x=p.nbframe * p.frame.w;
+									  		afficherPerso (p,screen);
+									  	}
+				                  p.nbframe=0;
+		                     }
+		                     enmy2.direction=1;
+		                     if(score<=5)
+				                score=0;
+				               else
+				                score-=5;
+		                 }
+		                 //printf("%d", enmy2.direction);
+                    }
+                    else if(dead==1 && enmy2.possprite.x<400)
+                    {
+                    		enmy2.possprite.y= 600 ;
+        						enmy2.possprite.x += 150;
+                    }
                     afficherminimap(m,screen);
-                    pos.x=Bg[lvl].camera.x+p.position.x;
-                    pos.y=Bg[lvl].camera.y+p.position.y;
-                    pos2.x=Bg[lvl].camera2.x+p2.position.x-957;
-                    pos2.y=Bg[lvl].camera2.y+p2.position.y;
+                    majminimap(&p,&m,Bg[lvl].camera,redimonsionnement);
                     collision=collisionPP( pos, Bg[lvl].mask[0]);
                     collision2=collisionPP( pos2, Bg[lvl].mask[0]);
-                    printf("%d", pos2.x);
-                    /*if(pos.y>1240)
-                    {
-                    		SDL_Surface* gameover;
-								gameover=IMG_Load("gameover.jpg");
-								SDL_BlitSurface(gameover, NULL, screen, &(Bg[0].pos_img));
-								choice=0;
-                    }*/
+                    //printf("%d", pos2.x);
                     if(pos.x<1115 || pos.x>1185)
                         U_D1=0;
                     if(pos2.x<1115 || pos2.x>1185)
                         U_D2=0;
-                    if(collisionGND( pos, Bg[lvl].mask[0])!=1 && pos.x>screen->w/2 && U_D1==0)
+                    if(collisionGND( pos, Bg[lvl].mask[0])!=1 && U_D1==0)
                         Bg[lvl].camera.y+=5;
-                    if(collisionGND( pos2, Bg[lvl].mask[0])!=1 && pos2.x>screen->w*3/4 && U_D2==0)
+                    if(collisionGND( pos2, Bg[lvl].mask[0])!=1 && U_D2==0)
                         Bg[lvl].camera2.y+=5;
+                        
                     if (Bg[lvl].multi_J==0)
                     {
                         afficherPerso (p,screen);
@@ -797,29 +845,30 @@ int main(int argc, char** argv)
                     {
                         afficherPerso (p,screen);
                         afficherPerso (p2,screen);
+                        if(collisionGND( pos, Bg[lvl].mask[0])!=1)
+                        {
                         saut(&p);
+                        } 
+		                  if(pos.x>=Bg[lvl].anim[0]->w)
+		                  {
+		                 		 	lvl++;
+		                 		 	p.position.x=0;
+		                 		 	p.position.y=500;
+		                 	}
+		                 	
+                        if(collisionGND( pos2, Bg[lvl].mask[0])!=1)
+                        {
                         saut(&p2);
+                        }
 		                  if(pos.x>=Bg[lvl].anim[0]->w && pos2.x>=Bg[lvl].anim[0]->w)
 		                 		 lvl++;
 
                     }
-                    //animate_Enemy(&enmy);
-                    animate_Enemy2(&enmy2);
-                    //move_enemy(&enmy);
-                    move_enemy(&enmy2);
-                    //deplacerIA(&enmy,p);
-                    deplacerIA(&enmy2,p);
-                    if(collision_E(enmy,p)==1)
-                    {
-                        printf("collison = 1 \n ");
-                        //score-=1;
-                        q++;
-                    }
+                    
                     SDL_PollEvent(&event);
                     //affichertemps ( temps,screen);
                     afficherscore (screen,&score);
                     arduinoReadData(&receive);
-                    printf("%d", receive);
                     switch(receive)
                     {
                     case 0:
@@ -945,9 +994,8 @@ int main(int argc, char** argv)
                             scrolling (&Bg[lvl].camera, 0, collision);
                             animerPerso(&p);
                         }
-                        pMprochaine.position.x += distance;
-                        if (collisionPPP(pMprochaine, masked)==0)
-                            majminimap(&p,&m,Bg[lvl].camera,redimonsionnement);
+                        //pMprochaine.position.x += distance;
+                        //if (collisionPPP(pMprochaine, masked)==0)
                     }
                     if( keystates[ SDLK_q ] && p.position.x>0 && collision!=2)
                     {
@@ -962,9 +1010,9 @@ int main(int argc, char** argv)
                             scrolling (&Bg[lvl].camera, 1, collision);
                             animerPerso(&p);
                         }
-                        pMprochaine.position.x -= distance;
+                        /*pMprochaine.position.x -= distance;
                         if (collisionPPP(pMprochaine, masked)==0)
-                            majminimap(&p,&m,Bg[lvl].camera,redimonsionnement);
+                            majminimap(&p,&m,Bg[lvl].camera,redimonsionnement);*/
                     }
                     if( keystates[ SDLK_z ] && pos.x>=1115 && pos.x<=1185)
                     {
@@ -976,9 +1024,47 @@ int main(int argc, char** argv)
                         U_D1=1;
                         scrolling (&(Bg[lvl].camera), 3, collision);
                     }
+                    if( keystates[ SDLK_a ] )
+                    {
+                    		if(p.direction==1)
+                    		{
+                    			p.frame.y=1600;
+								   p.nbframe++;
+								   if(p.nbframe>=5)
+								   {
+									   p.nbframe=0;
+								   }
+								   p.frame.x=p.nbframe * p.frame.w;
+								   if(collision_E(enmy2,p.position, 10)==1)
+					            {
+					                printf("collison = 1 \n ");
+					                score+=50;
+					                dead=1;
+					                enmy2.pos.x=0;
+					            }
+                    		}
+                    		if(p.direction==2)
+                    		{
+                    			p.frame.y=1800;
+								   p.nbframe++;
+								   if(p.nbframe>=5)
+								   {
+									   p.nbframe=0;
+								   }
+								   p.frame.x=p.nbframe * p.frame.w;
+								   if(collision_E(enmy2,p.position, (-60))==1)
+					            {
+					                printf("collison = 1 \n ");
+					                score+=50;
+					                dead=1;
+					                enmy2.pos.x=0;
+					            }
+                    		}
+                    }
                     if( keystates[ SDLK_SPACE ] && collisionGND( pos, Bg[lvl].mask[0])==1)
                     {
-                        if (pos.x <= screen->w/a || Bg[lvl].camera.x+Bg[lvl].camera.w == Bg[lvl].anim[0]->w)
+                        printf("\naa %d  %d aa", pos.y, p.position.x);
+                        if (pos.x <= screen->w/2 || Bg[lvl].camera.x+Bg[lvl].camera.w == Bg[lvl].anim[0]->w)
                         {
                             dt=4;
                             deplacerPerso(&p,screen,dt);
@@ -993,6 +1079,10 @@ int main(int argc, char** argv)
                                 scrolling (&(Bg[lvl].camera), 2, collision);
                                 SDL_Flip(screen);
                                 afficherBack(Bg[lvl], screen);
+                    				  afficherminimap(m,screen);
+                        //pMprochaine.position.x += distance;
+                        //if (collisionPPP(pMprochaine, masked)==0)
+                            	  majminimap(&p,&m,Bg[lvl].camera,redimonsionnement);
                                 afficherPerso (p,screen);
                                 if(Bg[lvl].multi_J==1)
                                     afficherPerso (p2,screen);
@@ -1129,7 +1219,7 @@ int main(int argc, char** argv)
                             }
                             Mix_FadeOutMusic(1000);
                         }
-                        if((pos.x>=200 || pos2.x==200))
+                        /*if((pos.x>=200 || pos2.x==200))
                         {
                             P=0;
                             while(!boucle)
@@ -1217,7 +1307,7 @@ int main(int argc, char** argv)
                             }
 
                             SDL_FreeSurface(screen);
-                        }
+                        }*/
                         break;
                     }
 

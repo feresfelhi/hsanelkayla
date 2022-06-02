@@ -11,6 +11,7 @@ typedef struct {
 
 	SDL_Surface *image;
 	SDL_Rect position;
+	SDL_Rect pos;
 	SDL_Rect frame;
 	SDL_Surface *vie;
         SDL_Rect posvie;

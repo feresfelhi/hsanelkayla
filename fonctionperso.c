@@ -6,8 +6,8 @@ void initPerso(Personne *p)
     int s;
     s=initscore(&p->score);
     p->vie=IMG_Load("love.png");
-    p->posvie.x=1468;
-    p->posvie.y=15;
+    p->posvie.x=1500;
+    p->posvie.y=77;
     p->posvie2.x=0;
     p->posvie2.y=0;
     p->posvie2.h=p->vie->h;
@@ -41,13 +41,15 @@ void initPerso2(Personne *p){
  int s;
    s=initscore2 (&p->score);
     p->vie=IMG_Load("love.png");
-    p->posvie.x=1268;
-    p->posvie.y=15;
+    p->posvie.x=1300;
+    p->posvie.y=77;
+    p->posvie2.x=0;
+    p->posvie2.y=0;
 
     p->image=IMG_Load("spritesheet mc.png");
 
     p->position.x=957;
-    p->position.y=600;
+    p->position.y=500;
 
     p->frame.w=110;
     p->frame.h=200;

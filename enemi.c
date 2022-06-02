@@ -15,8 +15,8 @@
         e->possprite.y=0;
         e->possprite.h=100; //100
         e->possprite.w=100;  //100
-        e->max.x= 800;  
-        e->min.x=700;  
+        e->max.x= 2290;  
+        e->min.x=1980;  
         
     }
     void initenemie2 (enemie *e){
@@ -28,8 +28,8 @@
         e->possprite.y=0;
         e->possprite.h=183;  //100
         e->possprite.w=136;  //100
-        e->max.x= 1050;  
-        e->min.x=700;  
+        e->max.x=0;  
+        e->min.x=0;  
         
     }
 
@@ -46,7 +46,6 @@
 	
     }
   void animate_Enemy2(enemie * e){
-
         e->possprite.y= e->direction * 200 ;
         e->possprite.x += 150;
         if (e->possprite.x > 300) e->possprite.x=0;
@@ -54,31 +53,31 @@
     }
 
   void move_enemy( enemie * e){
-   if (e->pos.x > e->max.x) e->direction=1; // si pose enemie > max (limite) retoure a droite (0)
-        if (e->pos.x < e->min.x) e->direction=0;                         // retoure a gauche (1)
+   if (e->max.x>=100) e->direction=1; // si pose enemie > max (limite) retoure a droite (0)
+        if (e->max.x<=0) e->direction=0;                         // retoure a gauche (1)
 
         if (e->direction==0)
         {
-            e->pos.x+=2;
+            e->max.x+=2;
         }
 
         if (e->direction==1)
         {
-            e->pos.x-=2;
+            e->max.x-=2;
         }
 
     }
 
 
-int collision_E (enemie e,Personne p){
+int collision_E (enemie e,SDL_Rect p, int x){
     int collision;
-    if (((p.position.x + p.position.w) >= e.pos.x) ||(((p.position.x + p.position.w) <= (e.pos.x + e.pos.w)) ) || ((p.position.y + p.position.y) < e.pos.y) || (p.position.y > (e.pos.y + e.pos.h)))
+    if (((p.x + 50+ x) >= e.pos.x) && ((p.x + 50+ x) <= (e.pos.x + e.pos.w) ))
     {
-        collision = 0;
+        collision = 1;
     }
     else
     {
-        collision = 1;
+        collision = 0;
     }
     
     return collision;
@@ -88,13 +87,13 @@ int collision_E (enemie e,Personne p){
 void deplacerIA(enemie * e, Personne p) {
   if (((e -> pos.x - p.position.x) < 100) && ((e -> pos.x - p.position.x) > 80)) {
     e -> direction = 1;
-    e -> pos.x -= 3;
+    e -> pos.x -= 2;
   } else if (((e -> pos.x - p.position.x) < -80) && ((e -> pos.x - p.position.x) > -100)) {
     e -> direction = 0;
-    e -> pos.x += 3;
-  } else if (((e -> pos.x - p.position.x) <= 80) && ((e -> pos.x - p.position.x) >= 0)) {
+    e -> pos.x += 2;
+  } else if (((e -> pos.x - p.position.x) <= 50) && ((e -> pos.x - p.position.x) >= 0)) {
     e -> direction = 3;
-  } else if (((e -> pos.x -p.position.x) <= 0) && ((e -> pos.x - p.position.x) >= -80)) {
+  } else if (((e -> pos.x -p.position.x) <= 0) && ((e -> pos.x - p.position.x) >= -50)) {
     e -> direction = 2;
   }
   else move_enemy(e);
